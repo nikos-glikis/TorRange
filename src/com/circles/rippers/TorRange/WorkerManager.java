@@ -16,8 +16,11 @@ public abstract class WorkerManager extends Thread
     protected boolean exiting= false;
     private static final String LATEST_ENTRY = "LATEST_PHONE";
     static private int activeThreadCount;
-    private int threadCount;
+    private int threadCount = 50;
     static private int torRangeStart = 0;
+    protected boolean useTor = true;
+    private int saveEvery = 300;
+
 
     Vector<EntriesRange> ranges = new Vector<EntriesRange>();
     EntriesRange currentRange;
@@ -74,17 +77,67 @@ public abstract class WorkerManager extends Thread
         try {
             session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
-
-            threadCount = Integer.parseInt(prefs.get("WorkerManager", "threads"));
+            doneRanges = new DB(session, "doneRanges");
+            try
+            {
+                threadCount = Integer.parseInt(prefs.get("WorkerManager", "threads"));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
             torRangeStart = Integer.parseInt(prefs.get("WorkerManager", "torRangeStart"));
-
+            readRanges("input/" + prefs.get("WorkerManager", "rangesfile"));
+            state = new DB(session, "state");
             prefix ="";
             try {
                 prefix = prefs.get("WorkerManager", "prefix");
+                if (prefix == null)
+                {
+                    prefix = "";
+                }
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
-        } catch (Exception e) {
+            try {
+                saveEvery = Integer.parseInt(prefs.get("WorkerManager", "saveEvery"));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println("Save Every value is: "+saveEvery);
+            try
+            {
+                String useTor = prefs.get("WorkerManager", "useTor");
+                if (useTor != null)
+                {
+                    if (useTor.equals("false"))
+                    {
+                        this.useTor = false;
+                    }
+                    else
+                    {
+                        this.useTor = true;
+                    }
+                }
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            if (this.useTor)
+            {
+                System.out.println("Tor is enabled.");
+            }
+            else
+            {
+                System.out.println("Tor is disabled");
+            }
+            System.out.println("Sleeping for 5 seconds, just in case this is an error.");
+            Thread.sleep(5000);
+ 
+
+        } catch (Exception e)
+        {
             e.printStackTrace();
             System.out.println("Some error happened while reading the session ini. ["+filename+"]");
             System.exit(0);
@@ -158,7 +211,7 @@ public abstract class WorkerManager extends Thread
             currentEntry = currentRange.getStart();
             saveCurrentEntry();
         }
-        if (currentEntry % 300 ==0) {
+        if (currentEntry % saveEvery ==0) {
             saveCurrentEntry();
         }
         return  prefix +""+(currentEntry++);

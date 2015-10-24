@@ -13,9 +13,9 @@ import java.util.Scanner;
 
 abstract public class TorWorker extends Thread
 {
-    TorConnection torConnection;
+    protected TorConnection torConnection;
     public WorkerManager manager;
-    int id;
+    protected int id;
     public Proxy proxy;
 
     int timeToSleepAfterKillTor = 30;
@@ -27,7 +27,7 @@ abstract public class TorWorker extends Thread
         torConnection = new TorConnection(WorkerManager.getTorRangeStart() + id);
     }
 
-    public TorWorker()
+    private TorWorker()
     {
         System.out.println("Error, TorWorker called without arguments.");
         System.exit(0);
@@ -44,6 +44,18 @@ abstract public class TorWorker extends Thread
     {
         SocketAddress addr = new InetSocketAddress("127.0.0.1", torConnection.getSocksPort());
         proxy = new Proxy(Proxy.Type.SOCKS, addr);
+    }
+
+    public String readUrl(String url) throws Exception
+    {
+        if (manager.useTor)
+        {
+            return readUrl(url, proxy);
+        }
+        else
+        {
+            return readUrl(url, null);
+        }
     }
 
     public String readUrl(String url, Proxy proxy) throws Exception

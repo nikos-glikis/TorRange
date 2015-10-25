@@ -12,8 +12,8 @@ public class TorRangeSimpleExampleWorker extends TorWorker
         System.out.println("Entry: "+entry);
         try
         {
-            Thread.sleep(100);
             System.out.println(readUrl("http://cpanel.com/showip.shtml"));
+            Thread.sleep(1000);
         }
         catch (Exception e)
         {

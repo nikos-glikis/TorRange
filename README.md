@@ -68,4 +68,4 @@ TODO
 ----
 
 - Autocreate start_tor_instances.sh from params
-- Create tar.
+- Create jar

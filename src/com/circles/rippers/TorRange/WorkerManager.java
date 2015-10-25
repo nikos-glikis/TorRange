@@ -4,6 +4,7 @@ import org.ini4j.Ini;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.StringTokenizer;
@@ -32,6 +33,7 @@ public abstract class WorkerManager extends Thread
 
     public WorkerManager(String iniFilename)
     {
+
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
                 try
@@ -73,6 +75,27 @@ public abstract class WorkerManager extends Thread
         if (iniFilename != null) {
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
+        }
+        createTorScript();
+    }
+
+    /* Creates start_tor_instances.sh script */
+    protected void createTorScript()
+    {
+        try
+        {
+            String template = Utilities.readFile("start_tor_instances_template.sh");
+            String finalScript = template.replace("[[threadCount]]", new Integer(threadCount+5).toString() );
+            finalScript = finalScript.replace("[[controlPortStart]]" , new Integer(torRangeStart+10000).toString());
+            finalScript = finalScript.replace("[[controlPortEnd]]" , new Integer(torRangeStart+20000).toString());
+            PrintWriter pr = new PrintWriter("start_tor_instances.sh");
+            pr.println(finalScript);
+            pr.close();
+            //System.exit(0);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -332,7 +355,7 @@ public abstract class WorkerManager extends Thread
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.exit(0);
+            //System.exit(0);
         }
     }
 

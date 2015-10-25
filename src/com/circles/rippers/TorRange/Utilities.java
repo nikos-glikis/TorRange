@@ -141,6 +141,10 @@ public class Utilities
             }
         }
     }
+
+    /**
+     * Ignores https errors.
+     */
     static public void trustEverybody()
     {
         TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){

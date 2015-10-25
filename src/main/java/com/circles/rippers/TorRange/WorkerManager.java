@@ -307,9 +307,9 @@ public abstract class WorkerManager extends Thread
                 String startString = st.nextToken();
                 String endString = st.nextToken();
 
-                if (startString.length() != endString.length()) {
+                /*if (startString.length() != endString.length()) {
                     throw new Exception("Start has different length that stop.");
-                }
+                }*/
 
                 long start = Long.parseLong(startString);
                 long end = Long.parseLong(endString);

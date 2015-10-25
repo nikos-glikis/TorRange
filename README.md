@@ -67,5 +67,4 @@ Steps to create a new software.
 TODO
 ----
 
-- Autocreate start_tor_instances.sh from params
 - Create jar

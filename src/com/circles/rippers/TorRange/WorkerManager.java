@@ -4,6 +4,7 @@ import org.ini4j.Ini;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -20,7 +21,7 @@ public abstract class WorkerManager extends Thread
     static private int torRangeStart = 0;
     protected boolean useTor = true;
     private int saveEvery = 300;
-
+    int exitSeconds = 10;
 
     Vector<EntriesRange> ranges = new Vector<EntriesRange>();
     EntriesRange currentRange;
@@ -33,11 +34,41 @@ public abstract class WorkerManager extends Thread
     {
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {
+                try
+                {
+                    System.out.println("\nExiting in " + exitSeconds + " seconds.");
+                    exiting = true;
+                    Thread.sleep(exitSeconds * 1000);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
 
                 prepareForExit();
-
             }
         });
+
+
+        new Thread()
+        {
+            public void run() {
+                try {
+
+                    while (true) {
+                        Thread.sleep(10000);
+
+                        ConsoleColors.printCyan("Active Thread Count: " + WorkerManager.getActiveThreadCount());
+                        double persentage = ((getDoneCount()+0.0)*100)/ totalEntriesCount;
+                        DecimalFormat df = new DecimalFormat("#.00");
+
+                        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + totalEntriesCount + " - " + df.format(persentage) + "%");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
         if (iniFilename != null) {
             readGeneralOptions(iniFilename);
@@ -124,6 +155,19 @@ public abstract class WorkerManager extends Thread
             {
                 e.printStackTrace();
             }
+
+            try
+            {
+                exitSeconds = Integer.parseInt(prefs.get("WorkerManager", "exitSeconds"));
+            }
+            catch (Exception e)
+            {
+                System.out.println("Exit seconds error.");
+                System.out.println(e);
+            }
+
+            System.out.println("Exit Seconds is: "+exitSeconds);
+
             if (this.useTor)
             {
                 System.out.println("Tor is enabled.");
@@ -134,9 +178,8 @@ public abstract class WorkerManager extends Thread
             }
             System.out.println("Sleeping for 5 seconds, just in case this is an error.");
             Thread.sleep(5000);
- 
-
-        } catch (Exception e)
+        }
+        catch (Exception e)
         {
             e.printStackTrace();
             System.out.println("Some error happened while reading the session ini. ["+filename+"]");
@@ -305,7 +348,7 @@ public abstract class WorkerManager extends Thread
             if (phone >= currentRange.getStart() && phone <= currentRange.getEnd()) {
                 return phone;
             } else {
-                throw new Exception("Current Phone error, returning range start. "+phone);
+                throw new Exception("Current entry error, returning range start. "+phone);
             }
         } catch (Exception e) {
             e.printStackTrace();

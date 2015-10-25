@@ -64,3 +64,8 @@ Steps to create a new software.
 
 3) Create all abstract methods. Read the comments for more info of what each method does.
 
+TODO
+----
+
+- Autocreate start_tor_instances.sh from params
+- Create tar.

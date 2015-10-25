@@ -137,7 +137,10 @@ abstract public class TorWorker extends Thread
                 System.exit(0);
             }
             manager.increaseThreadCount();
-            changeIp();
+            if (manager.useTor)
+            {
+                changeIp();
+            }
 
             if (proxy == null)
             {
@@ -150,6 +153,10 @@ abstract public class TorWorker extends Thread
 
                 String nextToProcess = manager.getNextEntry();
                 process(nextToProcess);
+                if (manager.exiting)
+                {
+                    Thread.sleep(60000000);
+                }
             }
         }
         catch (Exception e)

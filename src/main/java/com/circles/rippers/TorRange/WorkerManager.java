@@ -61,10 +61,10 @@ public abstract class WorkerManager extends Thread
                         Thread.sleep(10000);
 
                         ConsoleColors.printCyan("Active Thread Count: " + WorkerManager.getActiveThreadCount());
-                        double persentage = ((getDoneCount()+0.0)*100)/ totalEntriesCount;
+                        double percentage = ((getDoneCount()+0.0)*100)/ totalEntriesCount;
                         DecimalFormat df = new DecimalFormat("#.00");
 
-                        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + totalEntriesCount + " - " + df.format(persentage) + "%");
+                        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + totalEntriesCount + " - " + df.format(percentage) + "%");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -127,6 +127,11 @@ public abstract class WorkerManager extends Thread
     public abstract void readOptions(String filename);
 
     public void readGeneralOptions(String filename)
+    {
+        basicReadGeneralOptions(filename);
+    }
+
+    public void basicReadGeneralOptions(String filename)
     {
         try {
             session = filename.replace(".ini", "");
@@ -224,7 +229,7 @@ public abstract class WorkerManager extends Thread
 
         for (EntriesRange range : ranges) {
             if (isRangeDone(range)) {
-                System.out.println("Range is done: "+range);
+                //System.out.println("Range is done: "+range);
                 doneCount += range.getSize();
             }
         }
@@ -255,7 +260,12 @@ public abstract class WorkerManager extends Thread
         }
     }
 
-    public synchronized String getNextEntry()
+    public String getNextEntry()
+    {
+        return basicGetNextEntry();
+    }
+
+    public synchronized String basicGetNextEntry()
     {
         if (exiting) {
             sleepForALogTime();

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 #rm -rf /tmp/tor
-
-for i in {0..105}
+while :
 do
-    mkdir -p /tmp/tor/$socksport
-    controlport=$((i + 10300))
-    socksport=$((i + 20300))
-    tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword "" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &
-    sleep 0.3
+    for i in {0..105}
+    do
+        mkdir -p /tmp/tor/$socksport
+        controlport=$((i + 10300))
+        socksport=$((i + 20300))
+        tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword "" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &
+        sleep 0.3
+    done
+    sleep 5
 done
-
-sleep 5
-

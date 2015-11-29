@@ -1,7 +1,7 @@
 package com.circles.rippers.TorRange;
 
 
-public class Main {
+public class MainDb {
 
     public static void main(String[] args)
     {
@@ -15,7 +15,7 @@ public class Main {
 
         try
         {
-            WorkerManager torRangeSimpleExampleManager = new TorRangeSimpleExampleManager(args[0]);
+            WorkerManager torRangeSimpleExampleManager = new DbWorkerManagerExample(args[0]);
 
             System.out.println("Starting "+torRangeSimpleExampleManager.getThreadCount()+" Threads");
             for (int i = 0 ; i < torRangeSimpleExampleManager.getThreadCount(); i++)

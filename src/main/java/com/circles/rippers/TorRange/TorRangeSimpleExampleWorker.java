@@ -8,8 +8,8 @@ public class TorRangeSimpleExampleWorker extends TorWorker
 {
     public void process(String entry)
     {
-        //TODO tor in ini
         System.out.println("Entry: "+entry);
+
         try
         {
             System.out.println(readUrl("http://cpanel.com/showip.shtml"));

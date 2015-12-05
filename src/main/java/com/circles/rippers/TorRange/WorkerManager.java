@@ -40,7 +40,7 @@ public abstract class WorkerManager extends Thread
                 {
                     System.out.println("\nExiting in " + exitSeconds + " seconds.");
                     exiting = true;
-                    Thread.sleep(exitSeconds * 1000);
+                    //Thread.sleep(exitSeconds * 1000);
                 }
                 catch (Exception e)
                 {
@@ -205,7 +205,7 @@ public abstract class WorkerManager extends Thread
                 System.out.println("Tor is disabled");
             }
             System.out.println("Sleeping for 5 seconds, just in case this is an error.");
-            Thread.sleep(5000);
+            //Thread.sleep(5000);
         }
         catch (Exception e)
         {

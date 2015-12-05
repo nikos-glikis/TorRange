@@ -47,6 +47,7 @@ public class Utilities
     {
         return postRequest(targetURL, postParams, false, "");
     }
+
     public static String postRequest(String targetURL, String postParams, boolean returnCookies)
     {
         return postRequest(targetURL, postParams, returnCookies, "");

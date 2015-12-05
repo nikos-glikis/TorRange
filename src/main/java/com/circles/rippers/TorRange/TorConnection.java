@@ -9,8 +9,8 @@ public class TorConnection
     private int socksPort;
     private int controlPort;
     private String password;
-    static int DEFAULT_SOCKS_PORT = 10100;
-    static int DEFAULT_CONTROL_PORT = 20100;
+    static int DEFAULT_SOCKS_PORT = 10000;
+    static int DEFAULT_CONTROL_PORT = 20000;
     static String DEFAULT_PASSWORD = "";
     static String tmpDir;
 

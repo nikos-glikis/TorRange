@@ -1,7 +1,8 @@
 package com.circles.rippers.TorRange;
 
 
-public class MainDb {
+public class MainDb
+{
 
     public static void main(String[] args)
     {

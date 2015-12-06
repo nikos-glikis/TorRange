@@ -84,7 +84,21 @@ public abstract class WorkerManager extends Thread
     {
         try
         {
-            String template = Utilities.readFile("start_tor_instances_template.sh");
+            //String template = Utilities.readFile("start_tor_instances_template.sh");
+            String template = "#!/usr/bin/env bash\n" +
+                    "#rm -rf /tmp/tor\n" +
+                    "while :\n" +
+                    "do\n" +
+                    "    for i in {0..[[threadCount]]}\n" +
+                    "    do\n" +
+                    "        mkdir -p /tmp/tor/$socksport\n" +
+                    "        controlport=$((i + [[controlPortStart]]))\n" +
+                    "        socksport=$((i + [[controlPortEnd]]))\n" +
+                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \"\" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
+                    "        sleep 0.3\n" +
+                    "    done\n" +
+                    "    sleep 5\n" +
+                    "done";
             String finalScript = template.replace("[[threadCount]]", new Integer(threadCount+5).toString() );
             finalScript = finalScript.replace("[[controlPortStart]]" , new Integer(torRangeStart+10000).toString());
             finalScript = finalScript.replace("[[controlPortEnd]]" , new Integer(torRangeStart+20000).toString());
@@ -255,7 +269,7 @@ public abstract class WorkerManager extends Thread
     void saveCurrentEntry()
     {
         if (currentEntry != 0) {
-            System.out.println("Saving CurrentPhone: " + currentEntry);
+            System.out.println("Saving Current Number: " + currentEntry);
             state.put(LATEST_ENTRY, currentEntry);
         }
     }

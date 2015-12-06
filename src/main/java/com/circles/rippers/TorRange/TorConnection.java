@@ -14,19 +14,19 @@ public class TorConnection
     static String DEFAULT_PASSWORD = "";
     static String tmpDir;
 
-    public TorConnection()
-    {
-        this(DEFAULT_CONTROL_PORT, DEFAULT_SOCKS_PORT, DEFAULT_PASSWORD);
-    }
+        public TorConnection()
+        {
+            this(DEFAULT_CONTROL_PORT, DEFAULT_SOCKS_PORT, DEFAULT_PASSWORD);
+        }
 
-    public TorConnection(int offset)
-    {
-        this(DEFAULT_CONTROL_PORT+offset, DEFAULT_SOCKS_PORT+offset, DEFAULT_PASSWORD);
-        //System.out.println(offset);
-    }
+        public TorConnection(int offset)
+        {
+            this(DEFAULT_CONTROL_PORT+offset, DEFAULT_SOCKS_PORT+offset, DEFAULT_PASSWORD);
+            //System.out.println(offset);
+        }
 
-    public TorConnection(int socksPort, int controlPort, String password)
-    {
+        public TorConnection(int socksPort, int controlPort, String password)
+        {
         this.socksPort = socksPort;
         //System.out.println("Port is: "+this.socksPort);
         this.controlPort = controlPort;

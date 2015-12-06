@@ -8,24 +8,35 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-abstract public class DbWorkerManager  extends WorkerManager
+abstract public class DbWorkerManager extends WorkerManager
 {
 
     static Connection dbConnection;
-    static String dbConnectionClass;
-    static String dbConnectionUrl;
-    static String dbConnectionUsername;
-    static String dbConnectionPassword;
-    static String dbValuesTable;
-    static String dbIdColumn;
-    static String dbValueColumn;
-    static String dbFetchSize;
+    static public String dbConnectionClass;
+    static public String dbConnectionUrl;
+    static public String dbConnectionUsername;
+    static public String dbConnectionPassword;
+    static public String dbValuesTable;
+    static public String dbIdColumn;
+    static public String dbValueColumn;
+    static public String dbFetchSize;
 
-    static DbRangeResult dbRangeResult;
+    static public DbRangeResult dbRangeResult;
 
     public DbWorkerManager(String iniFilename)
     {
         super(iniFilename);
+    }
+
+    public int getNextIdInt()
+    {
+        String stringId = basicGetNextEntry();
+        int id = Integer.parseInt(stringId);
+        if (dbRangeResult == null || id > dbRangeResult.end)
+        {
+            fetchNewResult(id);
+        }
+        return id;
     }
 
     public synchronized String getNextEntry()
@@ -34,30 +45,17 @@ abstract public class DbWorkerManager  extends WorkerManager
         {
             try
             {
-                String stringId = basicGetNextEntry();
-                int id = Integer.parseInt(stringId);
                 if (dbConnection == null )
                 {
                     Class.forName(dbConnectionClass);
                     dbConnection = DriverManager.getConnection(dbConnectionUrl, dbConnectionUsername, dbConnectionPassword);
                 }
-
-                if (dbRangeResult == null || id > dbRangeResult.end)
-                {
-                    fetchNewResult(id);
-                }
-
+                int id = getNextIdInt();
                 String value = dbRangeResult.getValue(id);
                 while (value == null)
                 {
-                    if (id > dbRangeResult.end)
-                    {
-                        fetchNewResult(id);
-                    }
-                    else
-                    {
-                        value=dbRangeResult.getValue(id);
-                    }
+                    id = getNextIdInt();
+                    value=dbRangeResult.getValue(id);
                 }
                 return value;
 
@@ -67,7 +65,7 @@ abstract public class DbWorkerManager  extends WorkerManager
                 e.printStackTrace();
                 System.exit(0);
             }
-       }
+        }
         catch (Exception e)
         {
             e.printStackTrace();

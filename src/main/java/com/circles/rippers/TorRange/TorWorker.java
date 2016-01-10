@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.*;
-import java.util.Random;
 import java.util.Scanner;
 
 abstract public class TorWorker extends Thread
@@ -27,11 +26,6 @@ abstract public class TorWorker extends Thread
         torConnection = new TorConnection(WorkerManager.getTorRangeStart() + id);
     }
 
-    private TorWorker()
-    {
-        System.out.println("Error, TorWorker called without arguments.");
-        System.exit(0);
-    }
 
     public void changeIp()
     {

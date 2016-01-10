@@ -31,6 +31,11 @@ public abstract class WorkerManager extends Thread
 
     protected DB doneRanges;
 
+    public boolean useTor()
+    {
+        return useTor;
+    }
+
     public WorkerManager(String iniFilename)
     {
 

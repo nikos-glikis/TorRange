@@ -152,3 +152,10 @@ Steps to create a new software.
 
 3) Create all abstract methods. Read the comments for more info of what each method does.
 
+
+Install Jar in local maven repo
+===============================
+
+mvn install:install-file  -DgroupId=Object0r -DartifactId=TorRange -Dversion={version} -Dpackaging=jar -Dfile=target/TorRange-{version}-jar-with-dependencies.jar
+
+On above adjust the version.

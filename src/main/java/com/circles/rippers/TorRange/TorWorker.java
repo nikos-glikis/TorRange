@@ -2,13 +2,12 @@ package com.circles.rippers.TorRange;
 
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import java.util.zip.GZIPInputStream;
 
 abstract public class TorWorker extends Thread
 {
@@ -36,8 +35,16 @@ abstract public class TorWorker extends Thread
 
     public void initProxy()
     {
-        SocketAddress addr = new InetSocketAddress("127.0.0.1", torConnection.getSocksPort());
-        proxy = new Proxy(Proxy.Type.SOCKS, addr);
+        if (manager.useTor)
+        {
+            SocketAddress addr = new InetSocketAddress("127.0.0.1", torConnection.getSocksPort());
+            proxy = new Proxy(Proxy.Type.SOCKS, addr);
+        }
+        else
+        {
+            //SocketAddress addr = new InetSocketAddress("127.0.0.1", torConnection.getSocksPort());
+            proxy = Proxy.NO_PROXY;
+        }
     }
 
     public String readUrl(String url) throws Exception
@@ -168,5 +175,66 @@ abstract public class TorWorker extends Thread
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public ReadUrlResult resilientReadUrl(String url)
+    {
+        //TODO research what happens in https redirect, and www
+        //System.out.print(".");
+        String contents = null;
+        ReadUrlResult readUrlResult = new ReadUrlResult();
+
+        try
+        {
+            URL oracle = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection )oracle.openConnection(proxy);
+
+
+            InputStream is;
+            if (connection.getHeaderField("Content-Encoding") != null && connection.getHeaderField("Content-Encoding").equals("gzip"))
+            {
+                //System.out.println("Gzip ole");
+                byte[] buffer = new byte[1024];
+                //GZIPInputStream  gzip = new GZIPInputStream (new ByteArrayInputStream (tBytes));
+                GZIPInputStream gzis = new GZIPInputStream(connection.getInputStream());
+                is = gzis;
+            }
+            else
+            {
+                is = connection.getInputStream();
+            }
+            //BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(is));
+            byte[] bytes = IOUtils.toByteArray(is);
+            in.close();
+            readUrlResult.setBody(bytes);
+            readUrlResult.setSuccessful(true);
+        }
+        catch (FileNotFoundException e)
+        {
+            readUrlResult.setException(e);
+        }
+        catch (IllegalArgumentException e)
+        {
+            readUrlResult.setException(e);
+        }
+        catch (UnknownHostException e)
+        {
+            readUrlResult.setException(e);
+            //return RESILIENT_UNKNOWN_HOST_EXCEPTION;
+        }
+        catch (IOException e)
+        {
+            readUrlResult.setException(e);
+            //e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            readUrlResult.setException(e);
+            //This should never happen.
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return readUrlResult;
     }
 }

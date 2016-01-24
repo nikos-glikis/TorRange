@@ -421,10 +421,15 @@ public abstract class WorkerManager extends Thread
         simpleLog(text, "sessions/" + session + "/" + LOG_FILE);
     }
 
-    synchronized void simpleLog(String text, String filename)
+    synchronized public void simpleLog(String text, String filename)
     {
         try
         {
+            if (!new File(filename).getParentFile().exists())
+            {
+                new File(filename).getParentFile().mkdirs();
+            }
+
             PrintWriter pr;
             pr = new PrintWriter(new FileOutputStream(filename));
             pr.println(text);

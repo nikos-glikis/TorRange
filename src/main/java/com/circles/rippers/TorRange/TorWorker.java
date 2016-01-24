@@ -238,7 +238,7 @@ abstract public class TorWorker extends Thread
         return readUrlResult;
     }
 
-    void simpleLog(String message)
+    public void simpleLog(String message)
     {
         this.manager.simpleLog(message);
     }

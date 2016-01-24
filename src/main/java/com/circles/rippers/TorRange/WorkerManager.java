@@ -4,6 +4,7 @@ import org.ini4j.Ini;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.Scanner;
@@ -12,6 +13,7 @@ import java.util.Vector;
 
 public abstract class WorkerManager extends Thread
 {
+    private static final String LOG_FILE =  "log.txt";
     String prefix;
     protected String session;
     protected DB state;
@@ -411,6 +413,27 @@ public abstract class WorkerManager extends Thread
     static public int getTorRangeStart()
     {
         return torRangeStart;
+    }
+
+
+    void simpleLog(String text)
+    {
+        simpleLog(text, "sessions/" + session + "/" + LOG_FILE);
+    }
+
+    synchronized void simpleLog(String text, String filename)
+    {
+        try
+        {
+            PrintWriter pr;
+            pr = new PrintWriter(new FileOutputStream(filename));
+            pr.println(text);
+            pr.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

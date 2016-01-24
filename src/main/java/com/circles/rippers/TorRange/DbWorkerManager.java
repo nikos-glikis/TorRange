@@ -143,4 +143,4 @@ abstract public class DbWorkerManager extends WorkerManager
             System.exit(0);
         }
     }
-}
+    }

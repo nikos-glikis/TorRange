@@ -159,3 +159,11 @@ Install Jar in local maven repo
 mvn install:install-file  -DgroupId=Object0r -DartifactId=TorRange -Dversion={version} -Dpackaging=jar -Dfile=target/TorRange-{version}-jar-with-dependencies.jar
 
 On above adjust the version.
+
+In pom.xml
+
+        <dependency>
+            <groupId>Object0r</groupId>
+            <artifactId>TorRange</artifactId>
+            <version>1.0.2</version>
+        </dependency>

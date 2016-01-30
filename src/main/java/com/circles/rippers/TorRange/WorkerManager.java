@@ -431,7 +431,7 @@ public abstract class WorkerManager extends Thread
             }
 
             PrintWriter pr;
-            pr = new PrintWriter(new FileOutputStream(filename));
+            pr = new PrintWriter(new FileOutputStream(filename, true));
             pr.println(text);
             pr.close();
         }

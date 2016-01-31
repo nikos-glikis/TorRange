@@ -281,6 +281,10 @@ public abstract class WorkerManager extends Thread
         }
     }
 
+    /**
+     * Override this when needed.
+     * @return
+     */
     public String getNextEntry()
     {
         return basicGetNextEntry();

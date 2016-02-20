@@ -33,6 +33,11 @@ public abstract class WorkerManager extends Thread
 
     protected DB doneRanges;
 
+    public boolean useProxy()
+    {
+        return useProxy;
+    }
+
     public boolean useTor()
     {
         return useProxy;

@@ -122,7 +122,7 @@ public class TorConnection extends ProxyConnection
         } catch (Exception e) { }
         proxyInfo.setHost("localhost");
         proxyInfo.setPort(this.getSocksPort()+"");
-        return getProxyInfo();
+        return proxyInfo;
     }
 
     boolean connect()

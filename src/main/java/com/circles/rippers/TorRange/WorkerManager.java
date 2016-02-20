@@ -22,7 +22,7 @@ public abstract class WorkerManager extends Thread
     static private int activeThreadCount;
     private int threadCount = 50;
     static private int torRangeStart = 0;
-    protected boolean useTor = true;
+    protected boolean useProxy = true;
     private int saveEvery = 300;
     int exitSeconds = 10;
 
@@ -35,7 +35,7 @@ public abstract class WorkerManager extends Thread
 
     public boolean useTor()
     {
-        return useTor;
+        return useProxy;
     }
 
     public WorkerManager(String iniFilename)
@@ -188,16 +188,16 @@ public abstract class WorkerManager extends Thread
             System.out.println("Save Every value is: "+saveEvery);
             try
             {
-                String useTor = prefs.get("WorkerManager", "useTor");
+                String useTor = prefs.get("WorkerManager", "useProxy");
                 if (useTor != null)
                 {
                     if (useTor.equals("false"))
                     {
-                        this.useTor = false;
+                        this.useProxy = false;
                     }
                     else
                     {
-                        this.useTor = true;
+                        this.useProxy = true;
                     }
                 }
             } catch (Exception e)
@@ -217,7 +217,7 @@ public abstract class WorkerManager extends Thread
 
             System.out.println("Exit Seconds is: "+exitSeconds);
 
-            if (this.useTor)
+            if (this.useProxy)
             {
                 System.out.println("Tor is enabled.");
             }

@@ -17,7 +17,7 @@ public class ProxymityConnection extends ProxyConnection
     Connection dbConnection;
     String databaseName;
     String tableName = "proxymity_proxies";
-    public void ProxymityConnection(Connection sqlConnection, String database)
+    public ProxymityConnection(Connection sqlConnection, String database)
     {
         this.dbConnection = sqlConnection;
         this.databaseName = database;

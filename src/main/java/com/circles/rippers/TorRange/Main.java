@@ -23,6 +23,8 @@ public class Main {
                 new TorRangeSimpleExampleWorker( torRangeSimpleExampleManager, i).start();
                 Thread.sleep(2000);
             }
+
+            //ProxymityConnection proxymityConnection = new ProxymityConnection();
         }
         catch (Exception e)
         {

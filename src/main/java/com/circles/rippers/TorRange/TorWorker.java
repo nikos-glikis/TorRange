@@ -11,7 +11,7 @@ import java.util.zip.GZIPInputStream;
 
 abstract public class TorWorker extends Thread
 {
-    protected TorConnection torConnection;
+    protected ProxyConnection torConnection;
     public WorkerManager manager;
     protected int id;
     public Proxy proxy;
@@ -37,8 +37,18 @@ abstract public class TorWorker extends Thread
     {
         if (manager.useTor)
         {
-            SocketAddress addr = new InetSocketAddress("127.0.0.1", torConnection.getSocksPort());
-            proxy = new Proxy(Proxy.Type.SOCKS, addr);
+            proxy = torConnection.getProxy();
+            /*ProxyInfo proxyInfo = torConnection.getProxyInfo();
+            SocketAddress addr = new InetSocketAddress(proxyInfo.getHost(), Integer.parseInt(proxyInfo.getPort()));
+            if (proxyInfo.getType().equals(ProxyInfo.PROXY_TYPES_SOCKS4) || proxyInfo.getType().equals(ProxyInfo.PROXY_TYPES_SOCKS5))
+            {
+                proxy = new Proxy(Proxy.Type.SOCKS, addr);
+            }
+            else
+            {
+                proxy = new Proxy(Proxy.Type.THT, addr);
+            }*/
+
         }
         else
         {
@@ -101,8 +111,9 @@ abstract public class TorWorker extends Thread
         return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0";
     }
 
-    public void printTorPort() {
-        ConsoleColors.printRed("Tor Socks Port: " + torConnection.getSocksPort());
+    public void printTorPort()
+    {
+        ConsoleColors.printRed("Tor Socks Port: " + torConnection.getProxyInfo().getPort());
     }
 
 
@@ -112,7 +123,7 @@ abstract public class TorWorker extends Thread
         try {
             manager.decreaseThreadCount();
             try {
-                sc = new Scanner(new FileInputStream("/tmp/tor/" + torConnection.getSocksPort() + "/my.pid"));
+                sc = new Scanner(new FileInputStream("/tmp/tor/" +torConnection.getProxyInfo().getPort() + "/my.pid"));
                 int pid = Integer.parseInt(sc.nextLine());
                 Runtime r = Runtime.getRuntime();
                 Process p = r.exec("kill -9 " + pid);
@@ -121,7 +132,7 @@ abstract public class TorWorker extends Thread
                 ConsoleColors.printRed(e.toString());
             }
 
-            FileUtils.deleteDirectory(new File("/tmp/tor/" + torConnection.getSocksPort() + "/"));
+            FileUtils.deleteDirectory(new File("/tmp/tor/" + torConnection.getProxyInfo().getPort() + "/"));
             if (waitSeconds == 0) {
                 waitSeconds =timeToSleepAfterKillTor;
             }

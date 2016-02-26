@@ -2,9 +2,12 @@ package com.circles.rippers.TorRange;
 
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
+import java.net.SocketAddress;
 
-public class TorConnection
+public class TorConnection extends ProxyConnection
 {
     private int socksPort;
     private int controlPort;
@@ -101,6 +104,25 @@ public class TorConnection
             //e.printStackTrace();
 
         }
+    }
+
+    @Override
+    public Proxy getProxy() {
+        SocketAddress addr = new
+                InetSocketAddress("localhost", getSocksPort());
+        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+        return proxy;
+    }
+
+    @Override
+    public ProxyInfo getProxyInfo() {
+        ProxyInfo proxyInfo = new ProxyInfo();
+        try {
+            proxyInfo.setType(ProxyInfo.PROXY_TYPES_SOCKS5);
+        } catch (Exception e) { }
+        proxyInfo.setHost("localhost");
+        proxyInfo.setPort(this.getSocksPort()+"");
+        return proxyInfo;
     }
 
     boolean connect()

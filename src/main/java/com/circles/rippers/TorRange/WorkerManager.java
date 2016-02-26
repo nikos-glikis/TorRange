@@ -22,7 +22,7 @@ public abstract class WorkerManager extends Thread
     static private int activeThreadCount;
     private int threadCount = 50;
     static private int torRangeStart = 0;
-    protected boolean useTor = true;
+    protected boolean useProxy = true;
     private int saveEvery = 300;
     int exitSeconds = 10;
 
@@ -33,9 +33,14 @@ public abstract class WorkerManager extends Thread
 
     protected DB doneRanges;
 
+    public boolean useProxy()
+    {
+        return useProxy;
+    }
+
     public boolean useTor()
     {
-        return useTor;
+        return useProxy;
     }
 
     public WorkerManager(String iniFilename)
@@ -101,7 +106,7 @@ public abstract class WorkerManager extends Thread
                     "        mkdir -p /tmp/tor/$socksport\n" +
                     "        controlport=$((i + [[controlPortStart]]))\n" +
                     "        socksport=$((i + [[controlPortEnd]]))\n" +
-                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \"\" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
+                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 3000 --HashedControlPassword \"\" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
                     "        sleep 0.3\n" +
                     "    done\n" +
                     "    sleep 5\n" +
@@ -188,16 +193,16 @@ public abstract class WorkerManager extends Thread
             System.out.println("Save Every value is: "+saveEvery);
             try
             {
-                String useTor = prefs.get("WorkerManager", "useTor");
+                String useTor = prefs.get("WorkerManager", "useProxy");
                 if (useTor != null)
                 {
                     if (useTor.equals("false"))
                     {
-                        this.useTor = false;
+                        this.useProxy = false;
                     }
                     else
                     {
-                        this.useTor = true;
+                        this.useProxy = true;
                     }
                 }
             } catch (Exception e)
@@ -217,7 +222,7 @@ public abstract class WorkerManager extends Thread
 
             System.out.println("Exit Seconds is: "+exitSeconds);
 
-            if (this.useTor)
+            if (this.useProxy)
             {
                 System.out.println("Tor is enabled.");
             }
@@ -281,6 +286,10 @@ public abstract class WorkerManager extends Thread
         }
     }
 
+    /**
+     * Override this when needed.
+     * @return
+     */
     public String getNextEntry()
     {
         return basicGetNextEntry();
@@ -431,7 +440,7 @@ public abstract class WorkerManager extends Thread
             }
 
             PrintWriter pr;
-            pr = new PrintWriter(new FileOutputStream(filename));
+            pr = new PrintWriter(new FileOutputStream(filename, true));
             pr.println(text);
             pr.close();
         }

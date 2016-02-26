@@ -114,6 +114,9 @@ public class TorConnection
 
             }
             //System.out.println("tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \""+password+"\" --ControlPort " + controlPort + " --SocksPort " + socksPort);
+            // To run on windows
+            // 1) Create dir
+            // tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword "" --ControlPort 20001 --SocksPort 10001 --DataDirectory  tmp\\tor\\10001 --PidFile tmp\\tor\\10001\\pid.txt | more
             String command = "tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \""+password+"\" --ControlPort " + controlPort + " --SocksPort " + socksPort +" --DataDirectory  /tmp/tor/"+getSocksPort();
             System.out.println(command);
 

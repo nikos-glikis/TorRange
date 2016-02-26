@@ -1,13 +1,9 @@
 package com.circles.rippers.TorRange;
 
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
-
-import java.io.*;
+import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
-import java.util.zip.GZIPInputStream;
 
 abstract public class TorWorker extends ProxyWorker
 {
@@ -18,59 +14,49 @@ abstract public class TorWorker extends ProxyWorker
     {
         super(manager, id);
         proxyConnection = new TorConnection(WorkerManager.getTorRangeStart() + id);
+        if (manager.useTor())
+        {
+            new Thread(){
+                public void run()
+                {
+                    isActive = false;
+                    ((TorConnection) proxyConnection).connect();
+                    while (true)
+                    {
+
+                        SocketAddress addr = new
+                                InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
+
+                        //Try to connect.
+                        //Stops here until connection is established.
+                        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+                        try
+                        {
+                            URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
+                            Scanner sc = new Scanner(uc.getInputStream());
+                            while (sc.hasNext())
+                            {
+                                sc.nextLine();
+                            }
+                            break;
+                        } catch (Exception e)
+                        {
+                            //e.printStackTrace();
+                            System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
+                            try { Thread.sleep(5000);} catch (Exception ee){ }
+                        }
+                    }
+                    System.out.println("Seems that tor client is connected.");
+                    isActive = true;
+                }
+            }.start();
+        }
     }
 
-
-    /**
-     * @deprecated
-     */
-/*    public void printTorPort()
+    @Override
+    public synchronized void shutDown()
     {
-        ConsoleColors.printRed("Tor Socks Port: " + proxyConnection.getProxyInfo().getPort());
-    }*/
-
-
-    /**
-     * @deprecated
-     * @param waitSeconds
-     */
-    /*public void killTorProcess(int waitSeconds)
-    {
-        Scanner sc =null;
-        try {
-            manager.decreaseThreadCount();
-            try {
-                sc = new Scanner(new FileInputStream("/tmp/tor/" + proxyConnection.getProxyInfo().getPort() + "/my.pid"));
-                int pid = Integer.parseInt(sc.nextLine());
-                Runtime r = Runtime.getRuntime();
-                Process p = r.exec("kill -9 " + pid);
-                p.waitFor();
-            } catch (Exception e) {
-                ConsoleColors.printRed(e.toString());
-            }
-
-            FileUtils.deleteDirectory(new File("/tmp/tor/" + proxyConnection.getProxyInfo().getPort() + "/"));
-            if (waitSeconds == 0) {
-                waitSeconds =timeToSleepAfterKillTor;
-            }
-            ConsoleColors.printRed("Sleeping for "+waitSeconds);
-
-            sleepSeconds(waitSeconds);
-            manager.increaseThreadCount();
-        } catch (Exception e) {
-            if (sc!= null) {
-                sc.close();
-            }
-
-            ConsoleColors.printRed(e.toString());
-            manager.increaseThreadCount();
-            //killYourSelf();
-        }
-    }*/
-
-
-
-
-
-
+        System.out.println("Closing tor connection ...");
+        ((TorConnection) proxyConnection).closeTor();
+    }
 }

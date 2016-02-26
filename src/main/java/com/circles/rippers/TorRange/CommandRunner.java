@@ -40,6 +40,11 @@ public class CommandRunner extends Thread
                 System.out.println(line);
             }
 
+           /* b = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            while ((line = b.readLine()) != null) {
+                System.out.println(line);
+            }
+*/
             b.close();
             return true;
         }

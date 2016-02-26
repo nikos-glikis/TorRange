@@ -13,6 +13,8 @@ import java.util.Vector;
 
 public abstract class WorkerManager extends Thread
 {
+    Vector<ProxyWorker> workers = new Vector<ProxyWorker>();
+
     private static final String LOG_FILE =  "log.txt";
     String prefix;
     protected String session;
@@ -43,6 +45,11 @@ public abstract class WorkerManager extends Thread
         return useProxy;
     }
 
+    public void registerWorker(ProxyWorker worker)
+    {
+        workers.add(worker);
+    }
+
     public WorkerManager(String iniFilename)
     {
 
@@ -52,7 +59,24 @@ public abstract class WorkerManager extends Thread
                 {
                     System.out.println("\nExiting in " + exitSeconds + " seconds.");
                     exiting = true;
-                    //Thread.sleep(exitSeconds * 1000);
+                    for (final ProxyWorker worker: workers)
+                    {
+                        new Thread() {
+                            public void run()
+                            {
+                                try
+                                {
+                                    worker._shutDown();
+                                }
+                                catch (Exception e )
+                                {
+
+                                }
+                            }
+
+                        }.start();
+                    }
+                    Thread.sleep(exitSeconds * 1000);
                 }
                 catch (Exception e)
                 {
@@ -106,7 +130,7 @@ public abstract class WorkerManager extends Thread
                     "        mkdir -p /tmp/tor/$socksport\n" +
                     "        controlport=$((i + [[controlPortStart]]))\n" +
                     "        socksport=$((i + [[controlPortEnd]]))\n" +
-                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 3000 --HashedControlPassword \"\" --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
+                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 3000  --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
                     "        sleep 0.3\n" +
                     "    done\n" +
                     "    sleep 5\n" +

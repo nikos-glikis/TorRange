@@ -11,10 +11,16 @@ abstract public class ProxyWorker extends  Thread
     protected Proxy proxy;
     protected WorkerManager manager;
     protected ProxyConnection proxyConnection;
+    protected boolean isActive = true;
 
     protected int id;
 
-
+    public ProxyWorker(WorkerManager manager, int id)
+    {
+        this.manager = manager;
+        manager.registerWorker(this);
+        this.id = id;
+    }
 
     public void changeIp()
     {
@@ -33,12 +39,6 @@ abstract public class ProxyWorker extends  Thread
             //SocketAddress addr = new InetSocketAddress("127.0.0.1", proxyConnection.getSocksPort());
             proxy = Proxy.NO_PROXY;
         }
-    }
-
-    public ProxyWorker(WorkerManager manager, int id)
-    {
-        this.manager = manager;
-        this.id = id;
     }
 
     public String readUrl(String url) throws Exception
@@ -126,6 +126,11 @@ abstract public class ProxyWorker extends  Thread
             {
 
                 String nextToProcess = manager.getNextEntry();
+                if (!isActive)
+                {
+                    Thread.sleep(5000);
+                    continue;
+                }
                 process(nextToProcess);
                 if (manager.exiting)
                 {
@@ -209,7 +214,14 @@ abstract public class ProxyWorker extends  Thread
         }
     }
 
+    public abstract void shutDown();
 
+    public synchronized  void _shutDown()
+    {
+        isActive = false;
+        shutDown();
+
+    }
 
     public void simpleLog(String message)
     {

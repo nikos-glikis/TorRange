@@ -17,6 +17,64 @@ public class TorConnection extends ProxyConnection
     static String DEFAULT_PASSWORD = "";
     static String tmpDir;
 
+    public boolean connect()
+    {
+        try
+        {
+
+            String path = "/tmp/tor/"+getSocksPort();
+            if (!new File(path).exists()) {
+                new File(path).mkdirs();
+                //System.out.println("Does not exist");
+
+            }
+            String directory = "tmp/tor/"+getSocksPort();
+            File f = new File(directory);
+
+            if (!f.exists())
+            {
+                new File(directory).mkdirs();
+                if (!new File(directory).exists())
+                {
+                    System.out.println("Error, directory does not exist.");
+                    System.exit(0);
+                }
+            }
+            String command=null;
+            if (OsHelper.isLinux())
+            {
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
+            }
+            else
+            {
+                System.out.println("Windows are not yet supported.");
+                System.exit(0);
+            }
+
+            System.out.println(command);
+            /*if (isFirstConnect)
+            {
+                isFirstConnect = false;
+                Thread.sleep(firstConnectSleepSeconds*1000);
+            }*/
+            //TODO check if tor is in path.
+
+            /*Runtime rt = Runtime.getRuntime();
+            Process pr = rt.exec(command);
+            pr.waitFor();
+            System.out.println("Error code from tor is: "+pr.exitValue());*/
+
+
+
+            new CommandRunner(command);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
         public TorConnection()
         {
             this(DEFAULT_CONTROL_PORT, DEFAULT_SOCKS_PORT, DEFAULT_PASSWORD);
@@ -43,9 +101,16 @@ public class TorConnection extends ProxyConnection
             }
             try
             {
+                //Write restart script.
                 PrintWriter pr = new PrintWriter(new FileOutputStream(tmpDir+controlPort));
                 pr.println("(echo authenticate '\"\"'; echo signal newnym; echo quit) | nc localhost "+controlPort);
                 pr.close();
+
+                //Write shutdown script.
+                pr = new PrintWriter(new FileOutputStream(tmpDir+controlPort+".exit"));
+                pr.println("(echo authenticate '\"\"'; echo SIGNAL SHUTDOWN) | nc localhost "+controlPort);
+                pr.close();
+
             }
             catch (Exception e)
             {
@@ -55,6 +120,38 @@ public class TorConnection extends ProxyConnection
         }
 
         //connect();
+    }
+
+    public void closeTor()
+    {
+        try
+        {
+            if (OsHelper.isWindows())
+            {
+                Socket echoSocket = new Socket("localhost", controlPort);
+                PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+                out.println("authenticate \""+password+"\"");
+                out.println("signal shutdown");
+                out.println("quit");
+                out.close();
+                /*Scanner sc = new Scanner(in);
+                while (sc.hasNext())
+                {
+                    System.out.println(sc.nextLine());
+                }*/
+            }
+            else
+            {
+
+                String command = "sh "+tmpDir+controlPort+".exit" ;
+                OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public void changeIp()
@@ -80,14 +177,9 @@ public class TorConnection extends ProxyConnection
             }
             else
             {
-                //(echo authenticate '""'; echo signal newnym; echo quit) | nc localhost 9051
-                //System.out.println(OsHelper.runCommandAndGetOutput(" echo authenticate '\"\"'; echo signal newnym; echo quit   | nc localhost "+controlPort).getErrorOutput());
-                //String command = "/usr/bin/printf \"authenticate \\\"\\\"\\nsignal newnym\\nquit\\n\" | /bin/nc localhost " + controlPort;
+
                 String command = "sh "+tmpDir+controlPort ;
-                //System.out.println(command);
                 OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
-                //System.out.println(out.getStandardOutput());
-                //System.out.println(out.getErrorOutput());
             }
 
             Thread.sleep(10000);
@@ -125,28 +217,7 @@ public class TorConnection extends ProxyConnection
         return proxyInfo;
     }
 
-    boolean connect()
-    {
-        try
-        {
-            String path = "/tmp/tor/"+getSocksPort();
-            if (!new File(path).exists()) {
-                new File(path).mkdirs();
-                //System.out.println("Does not exist");
 
-            }
-            //System.out.println("tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \""+password+"\" --ControlPort " + controlPort + " --SocksPort " + socksPort);
-            String command = "tor --RunAsDaemon 0 --CookieAuthentication 0 --HashedControlPassword \""+password+"\" --ControlPort " + controlPort + " --SocksPort " + socksPort +" --DataDirectory  /tmp/tor/"+getSocksPort();
-            System.out.println(command);
-
-            new CommandRunner(command);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     public int getSocksPort()
     {

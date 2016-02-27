@@ -61,7 +61,7 @@ public class CommandRunner extends Thread
             String line = "";
 
             while ((line = b.readLine()) != null) {
-                System.out.println(line);
+                //System.out.println(line);
             }
 
            /* b = new BufferedReader(new InputStreamReader(p.getErrorStream()));

@@ -21,7 +21,6 @@ public class TorConnection extends ProxyConnection
     {
         try
         {
-
             String path = "/tmp/tor/"+getSocksPort();
             if (!new File(path).exists()) {
                 new File(path).mkdirs();
@@ -206,7 +205,7 @@ public class TorConnection extends ProxyConnection
         }
         catch (Exception e)
         {
-            System.out.println("Exception happened. (tor change ip)");
+            System.out.println("Exception happened. (tor change ip)"+e);
             String newIp = Utilities.getIp();
             //System.out.println("new ip: "+newIp);
             //e.printStackTrace();

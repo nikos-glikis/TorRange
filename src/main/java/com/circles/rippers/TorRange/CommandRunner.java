@@ -22,18 +22,24 @@ public class CommandRunner extends Thread
 
             if (forever)
             {
-                while (true)
-                {
-                    try
-                    {
-                        Thread.sleep(5000);
-                        runCommand(command);
-                    }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();;
-                    }
-                }
+                new Thread(){
+                 public void run()
+                 {
+                     while (true)
+                     {
+                         try
+                         {
+                             Thread.sleep(5000);
+                             runCommand(command);
+                         }
+                         catch (Exception e)
+                         {
+                             e.printStackTrace();;
+                         }
+                     }
+                 }
+                }.start();
+
             }
         }
         catch (Exception e)
@@ -47,6 +53,7 @@ public class CommandRunner extends Thread
         try
         {
             String s = null;
+            //System.out.println("Executing command: "+command);
             Process p = Runtime.getRuntime().exec(command);
 
             p.waitFor();
@@ -54,7 +61,7 @@ public class CommandRunner extends Thread
             String line = "";
 
             while ((line = b.readLine()) != null) {
-                //System.out.println(line);
+                System.out.println(line);
             }
 
            /* b = new BufferedReader(new InputStreamReader(p.getErrorStream()));

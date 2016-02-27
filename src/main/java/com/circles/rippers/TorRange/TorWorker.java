@@ -10,7 +10,7 @@ abstract public class TorWorker extends ProxyWorker
 
     int timeToSleepAfterKillTor = 30;
 
-    public TorWorker(WorkerManager manager, int id)
+    public TorWorker(WorkerManager manager, final int id)
     {
         super(manager, id);
         proxyConnection = new TorConnection(WorkerManager.getTorRangeStart() + id);
@@ -46,7 +46,7 @@ abstract public class TorWorker extends ProxyWorker
                             try { Thread.sleep(5000);} catch (Exception ee){ }
                         }
                     }
-                    //System.out.println("Seems that tor client is connected.");
+                    System.out.println("Tor ("+id+") is up and running.");
                     isActive = true;
                 }
             }.start();

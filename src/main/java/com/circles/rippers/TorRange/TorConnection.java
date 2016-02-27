@@ -57,7 +57,7 @@ public class TorConnection extends ProxyConnection
             {
                 directory = "tmp\\tor\\"+getSocksPort();
                 command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
-                System.out.println(command);
+                //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/
             }
@@ -67,7 +67,7 @@ public class TorConnection extends ProxyConnection
                 System.exit(0);
             }
 
-            System.out.println(command);
+            //System.out.println(command);
             /*if (isFirstConnect)
             {
                 isFirstConnect = false;

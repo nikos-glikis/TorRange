@@ -46,7 +46,7 @@ abstract public class TorWorker extends ProxyWorker
                             try { Thread.sleep(5000);} catch (Exception ee){ }
                         }
                     }
-                    System.out.println("Seems that tor client is connected.");
+                    //System.out.println("Seems that tor client is connected.");
                     isActive = true;
                 }
             }.start();

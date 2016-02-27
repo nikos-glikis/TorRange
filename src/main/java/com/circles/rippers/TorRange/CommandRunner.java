@@ -6,10 +6,11 @@ import java.io.InputStreamReader;
 public class CommandRunner extends Thread
 {
     String command ;
-    public CommandRunner(String command)
+    boolean forever;
+    public CommandRunner(String command, boolean runForever)
     {
         this.command = command;
-
+        this.forever = runForever;
         this.start();
     }
 
@@ -18,6 +19,22 @@ public class CommandRunner extends Thread
         try
         {
             runCommand(command);
+
+            if (forever)
+            {
+                while (true)
+                {
+                    try
+                    {
+                        Thread.sleep(5000);
+                        runCommand(command);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();;
+                    }
+                }
+            }
         }
         catch (Exception e)
         {
@@ -37,7 +54,7 @@ public class CommandRunner extends Thread
             String line = "";
 
             while ((line = b.readLine()) != null) {
-                System.out.println(line);
+                //System.out.println(line);
             }
 
            /* b = new BufferedReader(new InputStreamReader(p.getErrorStream()));

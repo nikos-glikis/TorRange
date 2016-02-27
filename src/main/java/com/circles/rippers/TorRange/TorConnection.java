@@ -28,7 +28,15 @@ public class TorConnection extends ProxyConnection
                 //System.out.println("Does not exist");
 
             }
-            String directory = "tmp/tor/"+getSocksPort();
+            String directory;
+            if (OsHelper.isWindows())
+            {
+                directory = "tmp\\tor\\"+getSocksPort();
+            }
+            else
+            {
+                directory = "tmp/tor/"+getSocksPort();
+            }
             File f = new File(directory);
 
             if (!f.exists())
@@ -45,9 +53,17 @@ public class TorConnection extends ProxyConnection
             {
                 command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
             }
+            else if (OsHelper.isWindows())
+            {
+                directory = "tmp\\tor\\"+getSocksPort();
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
+                System.out.println(command);
+                /*System.out.println("Windows are not yet supported.");
+                System.exit(0);*/
+            }
             else
             {
-                System.out.println("Windows are not yet supported.");
+                System.out.println("Os Not supported");
                 System.exit(0);
             }
 
@@ -66,7 +82,7 @@ public class TorConnection extends ProxyConnection
 
 
 
-            new CommandRunner(command);
+            new CommandRunner(command, true);
         }
         catch (Exception e)
         {

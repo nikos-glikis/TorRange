@@ -160,14 +160,19 @@ public abstract class TorWorkerManager extends WorkerManager
                 String useTor = prefs.get("TorWorkerManager", "useProxy");
                 if (useTor != null)
                 {
-                    if (useTor.equals("false"))
-                    {
-                        this.useProxy = false;
-                    }
-                    else
-                    {
-                        this.useProxy = true;
-                    }
+
+                }
+                else
+                {
+                    useTor = prefs.get("TorWorkerManager", "useTor");
+                }
+                if (useTor.equals("false"))
+                {
+                    this.useProxy = false;
+                }
+                else
+                {
+                    this.useProxy = true;
                 }
             } catch (Exception e)
             {

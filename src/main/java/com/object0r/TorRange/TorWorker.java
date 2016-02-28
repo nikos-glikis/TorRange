@@ -18,7 +18,8 @@ abstract public class TorWorker extends ProxyWorker
         proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
         if (manager.useTor())
         {
-            new Thread(){
+            new Thread()
+            {
                 public void run()
                 {
                     isActive = false;

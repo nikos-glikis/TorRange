@@ -21,7 +21,7 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
     protected DB state;
     int exitSeconds;
     private static final String LATEST_ENTRY = "LATEST_PHONE";
-    static private int torRangeStart = 0;
+
 
     Vector<EntriesRange> ranges = new Vector<EntriesRange>();
     EntriesRange currentRange;
@@ -47,7 +47,24 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
             {
                 Ini prefs = new Ini(new File(iniFilename));
                 saveEvery = Integer.parseInt(prefs.get("TorWorkerManager", "saveEvery"));
-            } catch (Exception e) {
+                doneRanges = new DB(session, "doneRanges");
+
+                readRanges("input/" + prefs.get("TorWorkerManager", "rangesfile"));
+                prefix ="";
+                try {
+                    prefix = prefs.get("TorWorkerManager", "prefix");
+                    if (prefix == null)
+                    {
+                        prefix = "";
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                state = new DB(session, "state");
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
             System.out.println("Save Every value is: "+saveEvery);
@@ -60,11 +77,6 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
     }
 
     public abstract void readOptions(String filename);
-
-    public void readGeneralOptions(String filename)
-    {
-        basicReadGeneralOptions(filename);
-    }
 
     /**
      * Returns how many phones are already processed.
@@ -256,11 +268,6 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
             e.printStackTrace();
             return currentRange.getStart();
         }
-    }
-
-    static public int getTorRangeStart()
-    {
-        return torRangeStart;
     }
 
 

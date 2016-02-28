@@ -62,7 +62,17 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                         Thread.sleep(10000);
 
                         ConsoleColors.printCyan("Active Thread Count: " + TorWorkerManager.getActiveThreadCount());
-                        double percentage = ((getDoneCount()+0.0)*100)/ getTotalJobsCount();
+
+                        double percentage;
+                        if (getTotalJobsCount() == 0)
+                        {
+                            percentage = 0;
+                        }
+                        else
+                        {
+                            percentage = ((getDoneCount()+0.0)*100)/ getTotalJobsCount();
+                        }
+
                         DecimalFormat df = new DecimalFormat("#.00");
 
                         ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");

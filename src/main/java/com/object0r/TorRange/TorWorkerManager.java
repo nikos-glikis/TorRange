@@ -17,18 +17,14 @@ public abstract class TorWorkerManager extends WorkerManager
     String prefix;
     protected String session;
     protected DB state;
-    int exitSeconds;
+    int exitSeconds = 5;
     private static final String LATEST_ENTRY = "LATEST_PHONE";
     static private int activeThreadCount;
     private int threadCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
 
-
-    Vector<EntriesRange> ranges = new Vector<EntriesRange>();
-    EntriesRange currentRange;
     long currentEntry;
-    protected long totalEntriesCount;
 
     protected DB doneRanges;
 
@@ -51,6 +47,7 @@ public abstract class TorWorkerManager extends WorkerManager
     {
         if (iniFilename != null)
         {
+            basicReadGeneralOptions(iniFilename);
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
         }
@@ -140,7 +137,7 @@ public abstract class TorWorkerManager extends WorkerManager
         try {
             session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
-            doneRanges = new DB(session, "doneRanges");
+
             try
             {
                 threadCount = Integer.parseInt(prefs.get("TorWorkerManager", "threads"));
@@ -149,18 +146,13 @@ public abstract class TorWorkerManager extends WorkerManager
             {
                 e.printStackTrace();
             }
-            torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
-            readRanges("input/" + prefs.get("TorWorkerManager", "rangesfile"));
-            state = new DB(session, "state");
-            prefix ="";
+
+            System.out.println("Starting "+threadCount + " threads");
+
             try {
-                prefix = prefs.get("TorWorkerManager", "prefix");
-                if (prefix == null)
-                {
-                    prefix = "";
-                }
+                torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
 
             try
@@ -188,8 +180,8 @@ public abstract class TorWorkerManager extends WorkerManager
             }
             catch (Exception e)
             {
-                System.out.println("Exit seconds error.");
-                System.out.println(e);
+               /* System.out.println("Exit seconds error.");
+                System.out.println(e);*/
             }
 
             System.out.println("Exit Seconds is: "+exitSeconds);
@@ -203,7 +195,7 @@ public abstract class TorWorkerManager extends WorkerManager
                 System.out.println("Tor is disabled");
             }
             System.out.println("Sleeping for 5 seconds, just in case this is an error.");
-            //Thread.sleep(5000);
+            Thread.sleep(5000);
         }
         catch (Exception e)
         {
@@ -213,125 +205,12 @@ public abstract class TorWorkerManager extends WorkerManager
         }
     }
 
-    boolean isRangeDone(EntriesRange range)
-    {
-        String done = doneRanges.get(range.toString());
-        return ! (done==null);
-    }
-
-    void addRangeToDone(EntriesRange range)
-    {
-        doneRanges.put(range.toString(), "true");
-    }
-
-
-    void saveCurrentEntry()
-    {
-        if (currentEntry != 0) {
-            System.out.println("Saving Current Number: " + currentEntry);
-            state.put(LATEST_ENTRY, currentEntry);
-        }
-    }
 
     /**
      * Override this when needed.
      * @return
      */
     abstract public String getNextEntry();
-
-
-
-    protected synchronized void readRanges(String filename)
-    {
-        try {
-
-            Scanner sc = new Scanner(new FileInputStream(filename));
-            while (sc.hasNext()) {
-                String line = sc.nextLine().trim().replace(" ","");
-                if (line.charAt(0)=='#') {
-                    continue;
-                }
-
-                StringTokenizer st = new StringTokenizer(line,"-");
-                String startString = st.nextToken();
-                String endString = st.nextToken();
-
-                /*if (startString.length() != endString.length()) {
-                    throw new Exception("Start has different length that stop.");
-                }*/
-
-                long start = Long.parseLong(startString);
-                long end = Long.parseLong(endString);
-
-                if (start> end) {
-                    throw new Exception("start is bigger than end in phone range.");
-                }
-
-                EntriesRange entriesRange = new EntriesRange(start, end);
-                if (ranges == null) {
-                    ranges = new Vector<EntriesRange>();
-                }
-                ranges.add(entriesRange);
-                System.out.println("Added Entry range: "+ entriesRange);
-            }
-
-            for (EntriesRange range : ranges) {
-                totalEntriesCount +=range.getSize();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
-
-    private void updateCurrentRange()
-    {
-        System.out.println("CurrentPhoneRange does not exist, new start.");
-        boolean found = false;
-        for (EntriesRange range: ranges) {
-            if (!isRangeDone(range)) {
-                currentRange = range;
-                System.out.println("Updating range, new range is: "+range);
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("Seems that all ranges have ended. Will stop in a few seconds.");
-            try {
-                Thread.sleep(20000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            //System.exit(0);
-        }
-    }
-
-    long getCurrentEntry() {
-        try {
-            String latestPhoneString  = state.get(LATEST_ENTRY);
-            long phone;
-            try {
-                phone = Long.parseLong(latestPhoneString) - 50;
-            } catch (Exception e) {
-                return currentRange.getStart();
-            }
-            if (phone >= currentRange.getStart() && phone <= currentRange.getEnd()) {
-                return phone;
-            } else {
-                throw new Exception("Current entry error, returning range start. "+phone);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return currentRange.getStart();
-        }
-    }
-
-    static public int getTorRangeStart()
-    {
-        return torRangeStart;
-    }
 
     void simpleLog(String text)
     {
@@ -362,5 +241,11 @@ public abstract class TorWorkerManager extends WorkerManager
     public int exitInSeconds()
     {
         return exitSeconds;
+    }
+
+
+    static public int getTorRangeStart()
+    {
+        return torRangeStart;
     }
 }

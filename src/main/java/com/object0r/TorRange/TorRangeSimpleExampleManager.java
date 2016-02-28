@@ -1,7 +1,5 @@
-package com.circles.rippers.TorRange;
+package com.object0r.TorRange;
 
-import com.circles.rippers.TorRange.TorWorker;
-import com.circles.rippers.TorRange.WorkerManager;
 import org.ini4j.Ini;
 
 import java.io.File;

@@ -1,7 +1,6 @@
-package com.circles.rippers.TorRange;
+package com.object0r.TorRange;
 
 
-import java.io.IOException;
 import java.net.*;
 import java.util.Scanner;
 

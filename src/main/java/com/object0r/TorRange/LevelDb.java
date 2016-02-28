@@ -1,4 +1,4 @@
-package com.circles.rippers.TorRange;
+package com.object0r.TorRange;
 
 import org.apache.commons.io.FileUtils;
 import org.iq80.leveldb.DB;

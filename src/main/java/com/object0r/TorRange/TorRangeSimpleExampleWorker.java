@@ -1,8 +1,4 @@
-package com.circles.rippers.TorRange;
-
-import com.circles.rippers.TorRange.TorConnection;
-import com.circles.rippers.TorRange.TorWorker;
-import com.circles.rippers.TorRange.WorkerManager;
+package com.object0r.TorRange;
 
 public class TorRangeSimpleExampleWorker extends TorWorker
 {
@@ -13,7 +9,7 @@ public class TorRangeSimpleExampleWorker extends TorWorker
         try
         {
             System.out.println(readUrl("http://cpanel.com/showip.shtml"));
-            Thread.sleep(1000);
+            sleep(1000);
             changeIp();
         }
         catch (Exception e)

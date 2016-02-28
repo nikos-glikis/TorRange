@@ -1,4 +1,4 @@
-package com.circles.rippers.TorRange;
+package com.object0r.TorRange;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -156,15 +156,15 @@ Steps to create a new software.
 Install Jar in local maven repo
 ===============================
 
-mvn install:install-file  -DgroupId=Object0r -DartifactId=TorRange -Dversion={version} -Dpackaging=jar -Dfile=target/TorRange-{version}-jar-with-dependencies.jar
-mvn install:install-file  -DgroupId=Object0r -DartifactId=TorRange -Dversion=1.0.2 -Dpackaging=jar -Dfile=target/TorRange-1.0.2-jar-with-dependencies.jar
+mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion={version} -Dpackaging=jar -Dfile=target/TorRange-{version}-jar-with-dependencies.jar
+mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.3 -Dpackaging=jar -Dfile=target/TorRange-1.0.3-jar-with-dependencies.jar
 
 On above adjust the version.
 
 In pom.xml
 
         <dependency>
-            <groupId>Object0r</groupId>
+            <groupId>com.object0r</groupId>
             <artifactId>TorRange</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>

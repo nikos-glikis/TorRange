@@ -1,4 +1,4 @@
-package com.circles.rippers.TorRange;
+package com.object0r.TorRange;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;

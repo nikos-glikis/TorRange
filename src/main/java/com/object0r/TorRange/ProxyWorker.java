@@ -9,13 +9,13 @@ import java.util.zip.GZIPInputStream;
 abstract public class ProxyWorker extends  Thread
 {
     protected Proxy proxy;
-    protected WorkerManager manager;
+    protected TorWorkerManager manager;
     protected ProxyConnection proxyConnection;
     protected boolean isActive = true;
 
     protected int id;
 
-    public ProxyWorker(WorkerManager manager, int id)
+    public ProxyWorker(TorWorkerManager manager, int id)
     {
         this.manager = manager;
         manager.registerWorker(this);

@@ -16,7 +16,7 @@ public class MainDb
 
         try
         {
-            WorkerManager torRangeSimpleExampleManager = new DbWorkerManagerExample(args[0]);
+            TorWorkerManager torRangeSimpleExampleManager = new DbTorWorkerManagerExample(args[0]);
 
             System.out.println("Starting "+torRangeSimpleExampleManager.getThreadCount()+" Threads");
             for (int i = 0 ; i < torRangeSimpleExampleManager.getThreadCount(); i++)

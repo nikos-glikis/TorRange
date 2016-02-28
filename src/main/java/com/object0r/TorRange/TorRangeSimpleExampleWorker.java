@@ -18,7 +18,7 @@ public class TorRangeSimpleExampleWorker extends TorWorker
         }
     }
 
-    public TorRangeSimpleExampleWorker(WorkerManager manager, int id)
+    public TorRangeSimpleExampleWorker(TorWorkerManager manager, int id)
     {
         super(manager, id);
     }

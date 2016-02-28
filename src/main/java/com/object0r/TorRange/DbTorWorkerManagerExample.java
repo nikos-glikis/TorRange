@@ -1,9 +1,9 @@
 package com.object0r.TorRange;
 
-public class DbWorkerManagerExample extends DbWorkerManager
+public class DbTorWorkerManagerExample extends DbTorWorkerManager
 {
 
-    public DbWorkerManagerExample(String iniFilename)
+    public DbTorWorkerManagerExample(String iniFilename)
     {
         super(iniFilename);
     }

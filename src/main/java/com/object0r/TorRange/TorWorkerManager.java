@@ -123,7 +123,10 @@ public abstract class TorWorkerManager extends WorkerManager
             Ini prefs = new Ini(new File(filename));
 
             doneRanges = new DB(session, "doneRanges");
-            torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
+            if (prefs.get("TorWorkerManager", "torRangeStart") !=null)
+            {
+                torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
+            }
         }
         catch (Exception e)
         {
@@ -140,7 +143,11 @@ public abstract class TorWorkerManager extends WorkerManager
 
             try
             {
-                threadCount = Integer.parseInt(prefs.get("TorWorkerManager", "threads"));
+                String threadCountString = prefs.get("TorWorkerManager", "threads");
+                if (threadCountString != null)
+                {
+                    threadCount =Integer.parseInt(threadCountString) ;
+                }
             }
             catch (Exception e)
             {
@@ -166,7 +173,11 @@ public abstract class TorWorkerManager extends WorkerManager
                 {
                     useTor = prefs.get("TorWorkerManager", "useTor");
                 }
-                if (useTor.equals("false"))
+                if (useTor == null)
+                {
+
+                }
+                else if (useTor.equals("false"))
                 {
                     this.useProxy = false;
                 }

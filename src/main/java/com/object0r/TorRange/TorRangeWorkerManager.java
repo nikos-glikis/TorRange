@@ -46,7 +46,10 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
             try
             {
                 Ini prefs = new Ini(new File(iniFilename));
-                saveEvery = Integer.parseInt(prefs.get("TorWorkerManager", "saveEvery"));
+                if (prefs.get("TorWorkerManager", "saveEvery") !=null)
+                {
+                    saveEvery = Integer.parseInt(prefs.get("TorWorkerManager", "saveEvery"));
+                }
                 doneRanges = new DB(session, "doneRanges");
 
                 readRanges("input/" + prefs.get("TorWorkerManager", "rangesfile"));

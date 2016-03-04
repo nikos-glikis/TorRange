@@ -1,0 +1,5 @@
+Kill all tor processes -
+    windows
+        taskkill /F /IM iexplore.exe
+    Linux
+        killall tor

@@ -11,10 +11,10 @@ import java.util.Vector;
 abstract public class WorkerManager extends Thread implements IWorkerManager
 {
     Vector<ProxyWorker> workers = new Vector<ProxyWorker>();
-
     abstract public int exitInSeconds();
-
     protected boolean exiting= false;
+    //Automatic Report Interval in seconds
+    long reportEverySeconds = Long.MAX_VALUE;
 
     abstract public void prepareForExit();
 
@@ -80,7 +80,7 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                 {
                     while (true)
                     {
-                        Thread.sleep(60000);
+                        Thread.sleep(reportEverySeconds);
                         printReport();
                     }
                 } catch (Exception e) {

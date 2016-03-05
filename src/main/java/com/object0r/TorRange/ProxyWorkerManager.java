@@ -141,25 +141,39 @@ public abstract class ProxyWorkerManager extends WorkerManager
             session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
 
-            try
-            {
+            try {
                 String threadCountString = prefs.get("ProxyWorkerManager", "threads");
-                if (threadCountString != null)
-                {
-                    threadCount =Integer.parseInt(threadCountString) ;
+                if (threadCountString != null) {
+                    threadCount = Integer.parseInt(threadCountString);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            System.out.println("Starting "+threadCount + " threads");
+            System.out.println("Starting " + threadCount + " threads");
 
             try {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
             } catch (Exception e) {
 
+            }
+
+            if (prefs.get("ProxyWorkerManager", "reportEvery") !=null)
+            {
+                try {
+                    reportEverySeconds = Long.parseLong(prefs.get("ProxyWorkerManager", "reportEvery"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (reportEverySeconds == Long.MAX_VALUE)
+            {
+                System.out.println("Automatic reporting is not active.");
+            }
+            else
+            {
+                System.out.println("Automatic reporting every "+reportEverySeconds+".");
             }
 
             try

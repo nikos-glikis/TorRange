@@ -1,5 +1,7 @@
 package com.object0r.TorRange;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
@@ -59,23 +61,27 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                 try {
 
                     while (true) {
-                        Thread.sleep(10000);
 
-                        ConsoleColors.printCyan("Active Thread Count: " + TorWorkerManager.getActiveThreadCount());
+                        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+                        read.read();
+                        //Thread.sleep(10000);
+                        printReport();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
-                        double percentage;
-                        if (getTotalJobsCount() == 0)
-                        {
-                            percentage = 0;
-                        }
-                        else
-                        {
-                            percentage = ((getDoneCount()+0.0)*100)/ getTotalJobsCount();
-                        }
-
-                        DecimalFormat df = new DecimalFormat("#.00");
-
-                        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
+        new Thread()
+        {
+            public void run() {
+                try
+                {
+                    while (true)
+                    {
+                        Thread.sleep(60000);
+                        printReport();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -83,4 +89,30 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
             }
         }.start();
     }
+
+    public void printReport()
+    {
+        printGeneralReport();
+    }
+
+    private void printGeneralReport()
+    {
+        ConsoleColors.printCyan("Active Thread Count: " + ProxyWorkerManager.getActiveThreadCount());
+
+        double percentage;
+        if (getTotalJobsCount() == 0)
+        {
+            percentage = 0;
+        }
+        else
+        {
+            percentage = ((getDoneCount()+0.0)*100)/ getTotalJobsCount();
+        }
+
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
+    }
+
+
 }

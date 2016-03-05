@@ -16,7 +16,7 @@ public class Main {
 
         try
         {
-            TorWorkerManager torRangeSimpleExampleManager = new TorRangeSimpleExampleManagerTor(args[0]);
+            ProxyWorkerManager torRangeSimpleExampleManager = new TorRangeSimpleExampleManagerProxy(args[0]);
 
             System.out.println("Starting "+torRangeSimpleExampleManager.getThreadCount()+" Threads");
             for (int i = 0 ; i < torRangeSimpleExampleManager.getThreadCount(); i++)

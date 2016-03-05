@@ -152,6 +152,10 @@ Steps to create a new software.
 
 3) Create all abstract methods. Read the comments for more info of what each method does.
 
+Progress Report
+===============
+
+At any point press enter to see the progress report. To make your own report, override the public void printReport() method in WorkerManager()
 
 Install Jar in local maven repo
 ===============================

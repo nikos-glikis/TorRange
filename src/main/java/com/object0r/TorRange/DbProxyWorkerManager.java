@@ -8,7 +8,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-abstract public class DbTorWorkerManager extends TorRangeWorkerManager
+abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 {
 
     static Connection dbConnection;
@@ -23,7 +23,7 @@ abstract public class DbTorWorkerManager extends TorRangeWorkerManager
 
     static public DbRangeResult dbRangeResult;
 
-    public DbTorWorkerManager(String iniFilename)
+    public DbProxyWorkerManager(String iniFilename)
     {
         super(iniFilename);
     }

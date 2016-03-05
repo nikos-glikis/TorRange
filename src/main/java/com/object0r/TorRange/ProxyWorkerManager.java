@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public abstract class TorWorkerManager extends WorkerManager
+public abstract class ProxyWorkerManager extends WorkerManager
 {
     private static final String LOG_FILE =  "log.txt";
     String prefix;
@@ -43,7 +43,7 @@ public abstract class TorWorkerManager extends WorkerManager
         workers.add(worker);
     }
 
-    public TorWorkerManager(String iniFilename)
+    public ProxyWorkerManager(String iniFilename)
     {
         if (iniFilename != null)
         {
@@ -123,9 +123,9 @@ public abstract class TorWorkerManager extends WorkerManager
             Ini prefs = new Ini(new File(filename));
 
             doneRanges = new DB(session, "doneRanges");
-            if (prefs.get("TorWorkerManager", "torRangeStart") !=null)
+            if (prefs.get("ProxyWorkerManager", "torRangeStart") !=null)
             {
-                torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
+                torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
             }
         }
         catch (Exception e)
@@ -143,7 +143,7 @@ public abstract class TorWorkerManager extends WorkerManager
 
             try
             {
-                String threadCountString = prefs.get("TorWorkerManager", "threads");
+                String threadCountString = prefs.get("ProxyWorkerManager", "threads");
                 if (threadCountString != null)
                 {
                     threadCount =Integer.parseInt(threadCountString) ;
@@ -157,21 +157,21 @@ public abstract class TorWorkerManager extends WorkerManager
             System.out.println("Starting "+threadCount + " threads");
 
             try {
-                torRangeStart = Integer.parseInt(prefs.get("TorWorkerManager", "torRangeStart"));
+                torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
             } catch (Exception e) {
 
             }
 
             try
             {
-                String useTor = prefs.get("TorWorkerManager", "useProxy");
+                String useTor = prefs.get("ProxyWorkerManager", "useProxy");
                 if (useTor != null)
                 {
 
                 }
                 else
                 {
-                    useTor = prefs.get("TorWorkerManager", "useTor");
+                    useTor = prefs.get("ProxyWorkerManager", "useTor");
                 }
                 if (useTor == null)
                 {
@@ -192,7 +192,7 @@ public abstract class TorWorkerManager extends WorkerManager
 
             try
             {
-                exitSeconds = Integer.parseInt(prefs.get("TorWorkerManager", "exitSeconds"));
+                exitSeconds = Integer.parseInt(prefs.get("ProxyWorkerManager", "exitSeconds"));
             }
             catch (Exception e)
             {

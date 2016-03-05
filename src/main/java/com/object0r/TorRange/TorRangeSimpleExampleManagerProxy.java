@@ -4,9 +4,9 @@ import org.ini4j.Ini;
 
 import java.io.File;
 
-public class TorRangeSimpleExampleManagerTor extends TorRangeWorkerManager
+public class TorRangeSimpleExampleManagerProxy extends ProxyRangeWorkerManager
 {
-    public TorRangeSimpleExampleManagerTor(String iniFilename)
+    public TorRangeSimpleExampleManagerProxy(String iniFilename)
     {
         super(iniFilename);
     }

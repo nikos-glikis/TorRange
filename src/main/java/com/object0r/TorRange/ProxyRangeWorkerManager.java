@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-public abstract class TorRangeWorkerManager extends TorWorkerManager
+public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
 
     private static final String LOG_FILE =  "log.txt";
@@ -29,7 +29,7 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
     protected DB doneRanges;
     private int saveEvery = 300;
 
-    public TorRangeWorkerManager(String iniFilename)
+    public ProxyRangeWorkerManager(String iniFilename)
     {
         super(iniFilename);
         if (iniFilename != null)
@@ -46,16 +46,16 @@ public abstract class TorRangeWorkerManager extends TorWorkerManager
             try
             {
                 Ini prefs = new Ini(new File(iniFilename));
-                if (prefs.get("TorWorkerManager", "saveEvery") !=null)
+                if (prefs.get("ProxyWorkerManager", "saveEvery") !=null)
                 {
-                    saveEvery = Integer.parseInt(prefs.get("TorWorkerManager", "saveEvery"));
+                    saveEvery = Integer.parseInt(prefs.get("ProxyWorkerManager", "saveEvery"));
                 }
                 doneRanges = new DB(session, "doneRanges");
 
-                readRanges("input/" + prefs.get("TorWorkerManager", "rangesfile"));
+                readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
                 prefix ="";
                 try {
-                    prefix = prefs.get("TorWorkerManager", "prefix");
+                    prefix = prefs.get("ProxyWorkerManager", "prefix");
                     if (prefix == null)
                     {
                         prefix = "";

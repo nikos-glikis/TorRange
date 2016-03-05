@@ -5,7 +5,7 @@ import java.sql.Connection;
 
 abstract public class ProxymityWorker  extends ProxyWorker
 {
-    public ProxymityWorker(TorWorkerManager manager, int id, Connection dbConnection, String database)
+    public ProxymityWorker(ProxyWorkerManager manager, int id, Connection dbConnection, String database)
     {
         super(manager, id);
         this.proxyConnection = new ProxymityConnection(dbConnection, database);

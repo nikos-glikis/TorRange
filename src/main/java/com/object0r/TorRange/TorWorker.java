@@ -9,12 +9,12 @@ abstract public class TorWorker extends ProxyWorker
 
     int timeToSleepAfterKillTor = 30;
 
-    TorWorkerManager manager;
+    ProxyWorkerManager manager;
 
-    public TorWorker(TorWorkerManager manager, final int id)
+    public TorWorker(ProxyWorkerManager manager, final int id)
     {
         super(manager, id);
-        this.manager = (TorWorkerManager)manager;
+        this.manager = (ProxyWorkerManager)manager;
         proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
         if (manager.useTor())
         {

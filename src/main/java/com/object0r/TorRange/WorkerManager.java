@@ -95,7 +95,7 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
         printGeneralReport();
     }
 
-    private void printGeneralReport()
+    public void printGeneralReport()
     {
         ConsoleColors.printCyan("Active Thread Count: " + ProxyWorkerManager.getActiveThreadCount());
 

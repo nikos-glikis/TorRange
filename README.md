@@ -155,7 +155,7 @@ Steps to create a new software.
 Progress Report
 ===============
 
-At any point press enter to see the progress report. To make your own report, override the public void printReport() method in WorkerManager()
+At any point press enter to see the progress report. To make your own report, override the public void printReport() method in WorkerManager(). Old report is available at printGeneralReport.
 
 Install Jar in local maven repo
 ===============================

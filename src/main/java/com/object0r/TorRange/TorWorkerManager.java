@@ -69,7 +69,7 @@ public abstract class TorWorkerManager extends WorkerManager
                     "        mkdir -p /tmp/tor/$socksport\n" +
                     "        controlport=$((i + [[controlPortStart]]))\n" +
                     "        socksport=$((i + [[controlPortEnd]]))\n" +
-                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 3000  --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
+                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 300000  --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
                     "        sleep 0.3\n" +
                     "    done\n" +
                     "    sleep 5\n" +

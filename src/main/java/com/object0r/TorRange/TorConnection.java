@@ -50,12 +50,12 @@ public class TorConnection extends ProxyConnection
             String command=null;
             if (OsHelper.isLinux())
             {
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
             }
             else if (OsHelper.isWindows())
             {
                 directory = "tmp\\tor\\"+getSocksPort();
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 0   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
                 //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/
@@ -211,6 +211,12 @@ public class TorConnection extends ProxyConnection
             //e.printStackTrace();
 
         }
+    }
+
+    @Override
+    public void changeIpHttps()
+    {
+        changeIp();;
     }
 
     @Override

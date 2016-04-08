@@ -174,3 +174,22 @@ In pom.xml
             <artifactId>TorRange</artifactId>
             <version>1.0.3</version>
         </dependency>
+        
+        
+Applications:
+=============
+
+1) Database
+
+- TorRange can consume a database (effitiently). 
+- Details described above
+
+2) Wordlist:
+
+See package com.object0r.TorRange. 
+Requires:
+    
+    [wordlist]
+    passwordfile=/root/wordlists/rockyou.txt
+
+in the .ini file along with the other TorRange requests.

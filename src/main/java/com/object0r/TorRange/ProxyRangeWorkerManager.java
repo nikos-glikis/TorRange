@@ -54,6 +54,10 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 try
                 {
                     //Backwards compatibility is a bitch.
+                    if (prefs.get("ProxyWorkerManager", "rangesfile") == null)
+                    {
+                        this.ranges = getUserRanges();
+                    }
                     readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
                 }
                 catch (Exception e)

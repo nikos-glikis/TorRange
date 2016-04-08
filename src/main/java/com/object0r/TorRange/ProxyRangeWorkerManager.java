@@ -67,6 +67,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 {
                     this.ranges = getUserRanges();
                 }
+                for (EntriesRange range : ranges) {
+                    totalEntriesCount +=range.getSize();
+                }
                 prefix ="";
                 try {
                     prefix = prefs.get("ProxyWorkerManager", "prefix");
@@ -245,9 +248,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 System.out.println("Added Entry range: "+ entriesRange);
             }
 
-            for (EntriesRange range : ranges) {
-                totalEntriesCount +=range.getSize();
-            }
+
 
         } catch (Exception e) {
             System.out.println(e.toString());

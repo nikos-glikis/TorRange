@@ -143,13 +143,21 @@ public class TorConnection extends ProxyConnection
         {
             if (OsHelper.isWindows())
             {
-                Socket echoSocket = new Socket("localhost", controlPort);
-                PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
-                out.println("authenticate \""+password+"\"");
-                out.println("signal shutdown");
-                out.println("quit");
-                out.close();
+                try
+                {
+                    Socket echoSocket = new Socket("localhost", controlPort);
+                    PrintWriter out = new PrintWriter(echoSocket.getOutputStream(), true);
+                    BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+                    out.println("authenticate \""+password+"\"");
+                    out.println("signal shutdown");
+                    out.println("quit");
+                    out.close();
+                }
+                catch (Exception e)
+                {
+                   System.out.println("Tor Close Error: "+e.toString());
+                }
+
                 /*Scanner sc = new Scanner(in);
                 while (sc.hasNext())
                 {

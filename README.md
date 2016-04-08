@@ -4,6 +4,9 @@ Threaded Range Processor, with TOR Integration
 Introduction
 -------------
 
+WARNING - 
+Documentation is a little bit behind, as I didn't intented to release this. I will update as soon as I have some time.
+
 This repository contains a library that can read one or more Ranges, and process each number in that process. It also contains an application of that library, that downloads and the ip of each thread for each number in the range.
 
 Each thread is connected to a tor, which it has control over. When needed the ip of the Thread can be changed, and a readUrl method is provided that downloads some url, using TOR.

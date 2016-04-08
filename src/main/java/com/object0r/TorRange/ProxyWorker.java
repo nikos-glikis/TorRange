@@ -22,6 +22,11 @@ abstract public class ProxyWorker extends  Thread
         this.id = id;
     }
 
+    public Proxy getProxy()
+    {
+        return proxy;
+    }
+
     public void changeIp()
     {
         proxyConnection.changeIp();

@@ -27,8 +27,7 @@ abstract public class TorWorker extends ProxyWorker
                     while (true)
                     {
 
-                        SocketAddress addr = new
-                                InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
+                        SocketAddress addr = new InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
 
                         //Try to connect.
                         //Stops here until connection is established.

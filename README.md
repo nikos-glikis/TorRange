@@ -20,7 +20,7 @@ This has been tested only for root user.
 Configuration
 -------------
 
-Create a .ini file similar to netherlands.ini
+Create a .ini file similar to example.ini
 
     [WorkerManager]
     #default is 50
@@ -151,6 +151,8 @@ Steps to create a new software.
 2) Create a worker class that extends TorWorker. Create a constructor similar to that of TorRangeSimpleExampleWorker. 
 
 3) Create all abstract methods. Read the comments for more info of what each method does.
+
+4) Overwrite ProxyRangeWorkerManager.getUserRanges(); to give your ranges. If you have rangesfile=somefile.txt in the ini, the ranges from this file are loaded.
 
 Progress Report
 ===============

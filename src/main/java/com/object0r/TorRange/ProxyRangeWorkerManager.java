@@ -51,8 +51,15 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     saveEvery = Integer.parseInt(prefs.get("ProxyWorkerManager", "saveEvery"));
                 }
                 doneRanges = new DB(session, "doneRanges");
-
-                readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
+                try
+                {
+                    //Backwards compatibility is a bitch.
+                    readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
+                }
+                catch (Exception e)
+                {
+                    this.ranges = getUserRanges();
+                }
                 prefix ="";
                 try {
                     prefix = prefs.get("ProxyWorkerManager", "prefix");
@@ -77,6 +84,11 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             e.printStackTrace();
             System.exit(0);
         }
+    }
+
+    public Vector<EntriesRange> getUserRanges()
+    {
+        return new Vector<EntriesRange>();
     }
 
     public abstract void readOptions(String filename);
@@ -186,7 +198,13 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
     }
 
-    protected synchronized void readRanges(String filename)
+
+    /**
+     *
+     * @param filename
+     */
+    @Deprecated
+    protected synchronized void readRanges(String filename) throws Exception
     {
         try {
 
@@ -225,8 +243,10 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(0);
+            System.out.println(e.toString());
+            throw e;
+            //e.printStackTrace();
+            //System.exit(0);
         }
     }
 

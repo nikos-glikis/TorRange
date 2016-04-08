@@ -58,7 +58,10 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     {
                         this.ranges = getUserRanges();
                     }
-                    readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
+                    else
+                    {
+                        readRanges("input/" + prefs.get("ProxyWorkerManager", "rangesfile"));
+                    }
                 }
                 catch (Exception e)
                 {

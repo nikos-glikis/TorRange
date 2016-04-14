@@ -67,10 +67,9 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
     @Override
     public void readOptions(String filename)
     {
-        try {
-
-            Ini prefs = new Ini(new File(filename));
-            passwordFile= (prefs.get("wordlist", "passwordfile"));
+        try
+        {
+            passwordFile= this.getIniValue("wordlist", "passwordfile");
 
         } catch (Exception e) {
             e.printStackTrace();

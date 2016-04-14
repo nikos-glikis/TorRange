@@ -15,7 +15,7 @@ import java.util.Scanner;
 
 public class WordlistConsumerWorker extends TorWorker
 {
-    int threadCounter = 0;
+    public int threadCounter = 0;
     WordlistConsumerWorkerManager manager;
     public WordlistConsumerWorker(ProxyWorkerManager manager, final int id)
     {
@@ -55,7 +55,7 @@ public class WordlistConsumerWorker extends TorWorker
         }
     }
 
-    private void logWinner(String page, String entry)
+    public void logWinner(String page, String entry)
     {
         try
         {

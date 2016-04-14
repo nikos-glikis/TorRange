@@ -23,7 +23,7 @@ This has been tested only for root user.
 Configuration
 -------------
 
-Create a .ini file similar to example.ini
+Create a .ini file similar to inis/example.ini
 
     [WorkerManager]
     #default is 50
@@ -96,7 +96,7 @@ and DbMain:
             if (args.length == 0) {
                 System.out.println("No session ini in arguments.");
                 System.out.println("Usage: ");
-                System.out.println("java -cp java -cp out/production/TorRange-ripper/:lib/* com.circles.rippers.TorRange.Main example.ini");
+                System.out.println("java -cp java -cp out/production/TorRange-ripper/:lib/* com.circles.rippers.TorRange.Main inis/example.ini");
     
                 System.exit(0);
             }

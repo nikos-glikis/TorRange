@@ -23,6 +23,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     private int threadCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
+    protected String iniFilename = "";
 
     long currentEntry;
 
@@ -115,12 +116,58 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public abstract void readOptions(String filename);
 
+    /**
+     * Returns a value from the ini with parameters.
+     * @param section - Section in the ini.
+     * @param variable - Variable.
+     *
+     *  for example to get
+     *  [ConnectionManager]
+     *  remoteHost=192.168.1.200
+     * run readOptions("ConnectionManager,"remoteHost");
+     * @return null|String
+     */
+    public String getIniValue (String section, String variable)
+    {
+        return getIniValue(section, variable, null);
+    }
+
+    /**
+     * Returns a value from the ini with parameters.
+     * @param section - Section in the ini.
+     * @param variable - Variable.
+     *
+     *  for example to get
+     *  [ConnectionManager]
+     *  remoteHost=192.168.1.200
+     * run readOptions("ConnectionManager,"remoteHost");
+     * @return null|String
+     */
+    public String getIniValue (String section, String variable, String defaultValue)
+    {
+        String value = null;
+        try
+        {
+            Ini prefs = new Ini(new File(iniFilename));
+            if (prefs.get(section, variable)!=null)
+            {
+                value =prefs.get(section, variable);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return value;
+    }
+
     public void readGeneralOptions(String filename)
     {
         try
         {
             session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
+            this.iniFilename = filename;
 
             doneRanges = new DB(session, "doneRanges");
             if (prefs.get("ProxyWorkerManager", "torRangeStart") !=null)

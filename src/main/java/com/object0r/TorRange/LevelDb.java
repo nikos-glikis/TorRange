@@ -52,7 +52,7 @@ public class LevelDb implements AbstractLevelDb
                     String value = asString(iterator.peekNext().getValue());
                     pr.println(key + " - "+value);
                     totalCount++;
-                    long thisOne = Long.parseLong(key.replace("+31","").replace("null",""));
+                   /* long thisOne = Long.parseLong(key.replace("+31","").replace("null",""));
                     if (thisOne > max) {
                         max = thisOne;
                     }
@@ -60,13 +60,13 @@ public class LevelDb implements AbstractLevelDb
                     //TODO remove me
                     if (value.contains("\"name\":\"Name Available\"")) {
                         this.delete(key);
-                    };
+                    };*/
                 }
             } finally {
                 pr.close();
                 System.out.println("Total: " + totalCount);
-                System.out.println("Bad: "+badCount);
-                System.out.println("Max: "+max);
+                /*System.out.println("Bad: "+badCount);
+                System.out.println("Max: "+max);*/
                 // Make sure you close the iterator to avoid resource leaks.
                 iterator.close();
             }

@@ -12,6 +12,8 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import static java.util.UUID.randomUUID;
+
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
 
@@ -333,4 +335,37 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         return exitSeconds;
     }
+
+    public synchronized void  logWinner(String page, String entry)
+    {
+        logWinner(page,entry,"Success: ");
+    }
+    public synchronized void  logWinner(String page, String entry, String logMessage)
+    {
+        try
+        {
+            String folder = "sessions/"+session+"/success_output";
+            if (!new File(folder).exists())
+            {
+                new File(folder).mkdirs();
+            }
+            String entrySafe = entry.replaceAll("\\W+", "");
+            entrySafe = entrySafe+"_"+randomUUID()+".htm";
+            File f = File.createTempFile("result_",entrySafe,new File(folder));
+            PrintWriter pr = new PrintWriter(f);
+            pr.println(page);
+            pr.close();
+
+            pr = new PrintWriter(new FileOutputStream("log.txt",true));
+            pr.println(logMessage+entry);
+            pr.print("Result page saved in: "+f.getAbsolutePath());
+            pr.close();
+            //String file = folder +"/"++".htm";
+        }
+        catch (Exception e)
+        {
+
+        }
+    }
+
 }

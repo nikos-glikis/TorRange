@@ -117,31 +117,5 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         return entriesRanges;
     }
 
-    public synchronized void  logWinner(String page, String entry)
-    {
-        try
-        {
-            String folder = "sessions/"+session+"/success_output";
-            if (!new File(folder).exists())
-            {
-                new File(folder).mkdirs();
-            }
-            String entrySafe = entry.replaceAll("\\W+", "");
-            entrySafe = entrySafe+"_"+randomUUID()+".htm";
-            File f = File.createTempFile("result_",entrySafe,new File(folder));
-            PrintWriter pr = new PrintWriter(f);
-            pr.println(page);
-            pr.close();
 
-            pr = new PrintWriter(new FileOutputStream("log.txt",true));
-            pr.println("Password found: "+entry);
-            pr.print("Result page saved in: "+f.getAbsolutePath());
-            pr.close();
-            //String file = folder +"/"++".htm";
-        }
-        catch (Exception e)
-        {
-
-        }
-    }
 }

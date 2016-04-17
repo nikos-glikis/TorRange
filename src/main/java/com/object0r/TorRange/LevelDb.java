@@ -18,9 +18,23 @@ import static org.fusesource.leveldbjni.JniDBFactory.asString;
 import static org.fusesource.leveldbjni.JniDBFactory.bytes;
 import static org.fusesource.leveldbjni.JniDBFactory.factory;
 
-public class LevelDb implements AbstractLevelDb
+public class LevelDb extends com.object0r.toortools.db.LevelDb
 {
-        DB db;
+    public LevelDb(String filename)
+    {
+        super(filename);
+    }
+
+    public LevelDb(String filename, boolean destroy)
+    {
+        super(filename, destroy);
+    }
+
+    public LevelDb(String directory, String filename, boolean destroy)
+    {
+        super(directory, filename, destroy);
+    }
+       /* DB db;
         String DATABASES_PATH = "dbs";
         String filename;
         public LevelDb(String filename)
@@ -52,7 +66,7 @@ public class LevelDb implements AbstractLevelDb
                     String value = asString(iterator.peekNext().getValue());
                     pr.println(key + " - "+value);
                     totalCount++;
-                   /* long thisOne = Long.parseLong(key.replace("+31","").replace("null",""));
+                   *//* long thisOne = Long.parseLong(key.replace("+31","").replace("null",""));
                     if (thisOne > max) {
                         max = thisOne;
                     }
@@ -60,13 +74,13 @@ public class LevelDb implements AbstractLevelDb
                     //TODO remove me
                     if (value.contains("\"name\":\"Name Available\"")) {
                         this.delete(key);
-                    };*/
+                    };*//*
                 }
             } finally {
                 pr.close();
                 System.out.println("Total: " + totalCount);
-                /*System.out.println("Bad: "+badCount);
-                System.out.println("Max: "+max);*/
+                *//*System.out.println("Bad: "+badCount);
+                System.out.println("Max: "+max);*//*
                 // Make sure you close the iterator to avoid resource leaks.
                 iterator.close();
             }
@@ -103,13 +117,13 @@ public class LevelDb implements AbstractLevelDb
                     this.db = factory.open(new File(DATABASES_PATH+"/"+filename), options);
 
                     // Use the db in here....
-                    /*System.out.println("db test");
+                    *//*System.out.println("db test");
                     db.put(bytes("Tampanew"), bytes("rocks sadsad!! new"));
                     String value = asString(db.get(bytes("Tampa")));
                     System.out.println(value);
                     value = asString(db.get(bytes("Tampanew")));
                     System.out.println(value);
-                    System.exit(0);*/
+                    System.exit(0);*//*
 
                 } finally {
                     // Make sure you close the db to shutdown the
@@ -246,5 +260,5 @@ public class LevelDb implements AbstractLevelDb
         {
             e.printStackTrace();
         }
-    }
+    }*/
 }

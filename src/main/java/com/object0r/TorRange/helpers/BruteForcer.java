@@ -6,12 +6,33 @@ import java.util.Date;
 public class BruteForcer
 {
     public static String password = "AZZZZS";
-    public static char[] charset;
+    public char[] charset;
 
-    private static char[] currentGuess = new char[1];
+    private char[] currentGuess = new char[1];
 
-    static int minLength = 1;
-    static int maxLength = Integer.MAX_VALUE;
+    int minLength = 1;
+    int maxLength = Integer.MAX_VALUE;
+
+    boolean hasMore = true;
+
+    public boolean hasMore()
+    {
+        return this.hasMore;
+    }
+
+    public String getNext()
+    {
+        increment();
+        if (this.toString().length() > maxLength)
+        {
+            hasMore = false;
+            return "";
+        }
+        else
+        {
+            return this.toString();
+        }
+    }
 
     public static void main(String args[])
     {
@@ -71,19 +92,6 @@ public class BruteForcer
     {
         currentGuess = start.toCharArray();
         //TODO check if start agrees with charset (characters and length)
-    }
-
-    public String getNext()
-    {
-        increment();
-        if (this.toString().length() > maxLength)
-        {
-            return "";
-        }
-        else
-        {
-            return this.toString();
-        }
     }
 
     public void increment()

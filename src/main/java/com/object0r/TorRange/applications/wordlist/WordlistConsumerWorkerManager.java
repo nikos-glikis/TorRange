@@ -116,6 +116,4 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         }
         return entriesRanges;
     }
-
-
 }

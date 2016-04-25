@@ -5,13 +5,13 @@ import java.util.Date;
 
 public class BruteForcer
 {
-    public static String password = "AZZZZS";
-    public static char[] charset;
+    public static  String password = "AZZZZS";
+    public  char[] charset;
 
-    private static char[] currentGuess = new char[1];
+    private  char[] currentGuess = new char[1];
 
-    static int minLength = 1;
-    static int maxLength = Integer.MAX_VALUE;
+    int minLength = 1;
+    int maxLength = Integer.MAX_VALUE;
 
     public static void main(String args[])
     {
@@ -46,9 +46,22 @@ public class BruteForcer
         this(stringCharset, 1, Integer.MAX_VALUE);
     }
 
+    public void reset()
+    {
+        String start = "";
+        for (int i = 0; i < minLength; i++)
+        {
+            start = start + charset[0];
+        }
+
+        this.setStart(start);
+    }
+
     public BruteForcer(String stringCharset, int minLength, int maxLength) throws Exception
     {
         this.charset = stringCharset.toCharArray();
+        this.minLength = minLength;
+        this.maxLength = maxLength;
         if (minLength < 1)
         {
             throw new Exception("BruteForcer, minLength has an invalid value");
@@ -57,14 +70,7 @@ public class BruteForcer
         {
             throw new Exception("BruteForcer, minLength has greater value than maxLength");
         }
-        String start = "";
-        for (int i = 0; i < minLength; i++)
-        {
-            start = start + charset[0];
-        }
-        this.minLength = minLength;
-        this.maxLength = maxLength;
-        this.setStart(start);
+        reset();
     }
 
     public void setStart(String start)
@@ -116,4 +122,5 @@ public class BruteForcer
     {
         return String.valueOf(currentGuess);
     }
+
 }

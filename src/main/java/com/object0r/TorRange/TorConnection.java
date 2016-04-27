@@ -55,7 +55,7 @@ public class TorConnection extends ProxyConnection
             else if (OsHelper.isWindows())
             {
                 directory = "tmp\\tor\\"+getSocksPort();
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"/cookie";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"\\cookie";
                 //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/
@@ -78,9 +78,7 @@ public class TorConnection extends ProxyConnection
             Process pr = rt.exec(command);
             pr.waitFor();
             System.out.println("Error code from tor is: "+pr.exitValue());*/
-
-
-
+            System.out.println(command);
             new CommandRunner(command, true);
         }
         catch (Exception e)

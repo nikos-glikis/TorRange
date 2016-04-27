@@ -50,12 +50,22 @@ public class TorConnection extends ProxyConnection
             String command=null;
             if (OsHelper.isLinux())
             {
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 1 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid --CookieAuthFile "+directory+"/cookie";
+                String pidFile = directory+"/my.pid";
+                if (new File(pidFile).exists())
+                {
+                    //kill old tor.
+                    new CommandRunner("kill -9 "+Utilities.readFile(pidFile), true);
+                }
+                com.object0r.toortools.os.OsHelper.deleteFolderContentsRecursive(new File(directory));
+                //command = "tor --RunAsDaemon 0   --CookieAuthentication 1 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid --CookieAuthFile "+directory+"/cookie";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0 --HashedControlPassword 16:8FF418AAE0F66E6D6094E252BF9540003F86AB3EE61DE219901B345EA7 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid --CookieAuthFile "+directory+"/cookie";
             }
             else if (OsHelper.isWindows())
             {
                 directory = "tmp\\tor\\"+getSocksPort();
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"\\cookie";
+                com.object0r.toortools.os.OsHelper.deleteFolderContentsRecursive(new File(directory));
+                //command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"\\cookie";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --HashedControlPassword 16:8FF418AAE0F66E6D6094E252BF9540003F86AB3EE61DE219901B345EA7 --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"\\cookie";
                 //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/

@@ -1,10 +1,7 @@
 package com.object0r.TorRange;
 import org.ini4j.Ini;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -154,6 +151,18 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (currentEntry != 0) {
             System.out.println("Saving Current Number: " + currentEntry);
             state.put(LATEST_ENTRY, currentEntry);
+            PrintWriter pr = null;
+            try
+            {
+                pr = new PrintWriter("sessions/"+session+"/latest.txt");
+                pr.println(currentEntry);
+                pr.close();
+            }
+            catch (FileNotFoundException e)
+            {
+                e.printStackTrace();
+            }
+
         }
     }
 

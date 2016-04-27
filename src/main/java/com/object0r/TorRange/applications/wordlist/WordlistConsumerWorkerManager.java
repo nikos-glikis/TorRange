@@ -24,6 +24,8 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
 
     }
     Scanner passwordListScanner = null;
+    static int globalCounter = 0;
+
     public synchronized String getNextEntry()
     {
         String returnString = "";
@@ -60,7 +62,10 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
             }
             System.exit(0);
         }
-
+        if (globalCounter++ % saveEvery == 0)
+        {
+            saveCurrentEntry(returnString);
+        }
         return returnString;
     }
 
@@ -114,6 +119,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         {
             e.printStackTrace();
         }
+
         return entriesRanges;
     }
 }

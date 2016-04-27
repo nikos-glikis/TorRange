@@ -1,5 +1,8 @@
 package com.object0r.TorRange.helpers;
 
+import com.object0r.toortools.Utilities;
+import org.apache.commons.lang.ArrayUtils;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -54,7 +57,14 @@ public class BruteForcer
             start = start + charset[0];
         }
 
-        this.setStart(start);
+        try
+        {
+            this.setStart(start);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public BruteForcer(String stringCharset, int minLength, int maxLength) throws Exception
@@ -73,10 +83,24 @@ public class BruteForcer
         reset();
     }
 
-    public void setStart(String start)
+    public void setStart(String start) throws Exception
     {
+        if (start.length()< this.minLength)
+        {
+            throw new Exception("Start string length is less than minLength");
+        }
+        if (start.length()> this.maxLength)
+        {
+            throw new Exception("Start string length is more than maxLength");
+        }
+        for (int i = 0; i<start.length(); i++)
+        {
+            if (!ArrayUtils.contains(charset,start.charAt(i)))
+            {
+                throw new Exception("Invalid characted detected in start string");
+            }
+        }
         currentGuess = start.toCharArray();
-        //TODO check if start agrees with charset (characters and length)
     }
 
     public String getNext()

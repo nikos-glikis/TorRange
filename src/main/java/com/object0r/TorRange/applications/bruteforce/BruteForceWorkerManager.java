@@ -91,6 +91,12 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
                 }
 
                 BruteForcer bruteForcer = new BruteForcer(characters, Integer.parseInt(minLength), Integer.parseInt(maxLength));
+
+                String start = this.getIniValue("bruteforce","start"+i);
+                if (start!=null)
+                {
+                    bruteForcer.setStart(start);
+                }
                 bruteForcers.add(i-1,bruteForcer);
             }
 

@@ -16,6 +16,7 @@ public class BruteForceWorker extends TorWorker
     }
     public void process(String entry)
     {
-        //System.out.println("Entry: "+entry);
+        System.out.println("Entry: "+entry);
+        System.exit(0);
     }
 }

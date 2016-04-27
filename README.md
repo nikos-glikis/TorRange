@@ -184,7 +184,7 @@ Applications:
 
 1) Database
 
-- TorRange can consume a database (effitiently). 
+- TorRange can consume a database (efficiently). 
 - Details described above
 
 2) Wordlist:

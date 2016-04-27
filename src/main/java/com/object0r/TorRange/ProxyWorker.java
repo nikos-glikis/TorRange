@@ -98,6 +98,10 @@ abstract public class ProxyWorker extends  Thread
         {
             if (tries > maxRetries)
             {
+                if (proxy!=null)
+                {
+                    changeIp();
+                }
                 return readUrl(url, proxy, readTimeoutSeconds, connectTimeoutSeconds, tries+1, maxRetries);
             }
             else

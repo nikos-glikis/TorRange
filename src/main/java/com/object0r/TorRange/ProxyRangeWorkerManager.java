@@ -1,4 +1,5 @@
 package com.object0r.TorRange;
+
 import org.ini4j.Ini;
 
 import java.io.*;
@@ -11,7 +12,7 @@ import static java.util.UUID.randomUUID;
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
 
-    private static final String LOG_FILE =  "log.txt";
+    private static final String LOG_FILE = "log.txt";
     String prefix;
 
     protected DB state;
@@ -23,7 +24,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     EntriesRange currentRange;
     protected long totalEntriesCount;
     protected DB doneRanges;
-    private int saveEvery = 300;
+    public int saveEvery = 300;
 
     public ProxyRangeWorkerManager(String iniFilename)
     {
@@ -42,7 +43,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             try
             {
                 Ini prefs = new Ini(new File(iniFilename));
-                if (prefs.get("ProxyWorkerManager", "saveEvery") !=null)
+                if (prefs.get("ProxyWorkerManager", "saveEvery") != null)
                 {
                     saveEvery = Integer.parseInt(prefs.get("ProxyWorkerManager", "saveEvery"));
                 }
@@ -63,18 +64,22 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 {
                     this.ranges = getUserRanges();
                 }
-                for (EntriesRange range : ranges) {
-                    totalEntriesCount +=range.getSize();
+                for (EntriesRange range : ranges)
+                {
+                    totalEntriesCount += range.getSize();
                 }
-                System.out.println("totalEntriesCount : "+totalEntriesCount);
-                prefix ="";
-                try {
+                System.out.println("totalEntriesCount : " + totalEntriesCount);
+                prefix = "";
+                try
+                {
                     prefix = prefs.get("ProxyWorkerManager", "prefix");
                     if (prefix == null)
                     {
                         prefix = "";
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
 
@@ -84,7 +89,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 e.printStackTrace();
             }
-            System.out.println("Save Every value is: "+saveEvery);
+            System.out.println("Save Every value is: " + saveEvery);
         }
         catch (Exception e)
         {
@@ -102,30 +107,35 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     /**
      * Returns how many phones are already processed.
+     *
      * @return
      */
     public long getDoneCount()
     {
-        if (currentRange == null || ranges == null ) {
+        if (currentRange == null || ranges == null)
+        {
             return 0;
         }
 
-        long doneCount=0;
+        long doneCount = 0;
 
-        for (EntriesRange range : ranges) {
-            if (isRangeDone(range)) {
+        for (EntriesRange range : ranges)
+        {
+            if (isRangeDone(range))
+            {
                 //System.out.println("Range is done: "+range);
                 doneCount += range.getSize();
             }
         }
 
-        doneCount+= (currentEntry - currentRange.getStart() );
+        doneCount += (currentEntry - currentRange.getStart());
 
         return doneCount;
     }
 
     /**
      * Returns how many phones are already processed.
+     *
      * @return
      */
     public long getTotalJobsCount()
@@ -137,7 +147,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     boolean isRangeDone(EntriesRange range)
     {
         String done = doneRanges.get(range.toString());
-        return ! (done==null);
+        return !(done == null);
     }
 
     void addRangeToDone(EntriesRange range)
@@ -145,29 +155,32 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         doneRanges.put(range.toString(), "true");
     }
 
-
-    void saveCurrentEntry()
+    public void saveCurrentEntry()
     {
-        if (currentEntry != 0) {
-            System.out.println("Saving Current Number: " + currentEntry);
-            state.put(LATEST_ENTRY, currentEntry);
-            PrintWriter pr = null;
-            try
-            {
-                pr = new PrintWriter("sessions/"+session+"/latest.txt");
-                pr.println(currentEntry);
-                pr.close();
-            }
-            catch (FileNotFoundException e)
-            {
-                e.printStackTrace();
-            }
+        saveCurrentEntry(currentEntry+"");
+    }
 
+    public void saveCurrentEntry(String currentEntry)
+    {
+
+        System.out.println("Saving Current Number: " + currentEntry);
+        state.put(LATEST_ENTRY, currentEntry);
+        PrintWriter pr = null;
+        try
+        {
+            pr = new PrintWriter("sessions/" + session + "/latest.txt");
+            pr.println(currentEntry);
+            pr.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
         }
     }
 
     /**
      * Override this when needed.
+     *
      * @return
      */
     public String getNextEntry()
@@ -182,59 +195,72 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     public synchronized String torRangeNextEntry()
     {
-        if (exiting) {
+        if (exiting)
+        {
             sleepForALogTime();
         }
-        if (currentRange == null) {
+        if (currentRange == null)
+        {
             updateCurrentRange();
             saveCurrentEntry();
         }
 
-        if (currentEntry ==0) {
+        if (currentEntry == 0)
+        {
             currentEntry = getCurrentEntry();
         }
 
-        if (currentEntry <= currentRange.getEnd()) {
+        if (currentEntry <= currentRange.getEnd())
+        {
 
-        } else {
+        }
+        else
+        {
             addRangeToDone(currentRange);
             updateCurrentRange();
             currentEntry = currentRange.getStart();
             saveCurrentEntry();
         }
-        if (currentEntry % saveEvery ==0) {
+        if (currentEntry % saveEvery == 0)
+        {
             saveCurrentEntry();
         }
-        return  prefix +""+(currentEntry++);
+        return prefix + "" + (currentEntry++);
 
     }
 
-    private void sleepForALogTime() {
-        try {
+    private void sleepForALogTime()
+    {
+        try
+        {
             Thread.sleep(20000000);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
 
     /**
-     *
      * @param filename
      */
     @Deprecated
     protected synchronized void readRanges(String filename) throws Exception
     {
-        try {
+        try
+        {
 
             Scanner sc = new Scanner(new FileInputStream(filename));
-            while (sc.hasNext()) {
-                String line = sc.nextLine().trim().replace(" ","");
-                if (line.charAt(0)=='#') {
+            while (sc.hasNext())
+            {
+                String line = sc.nextLine().trim().replace(" ", "");
+                if (line.charAt(0) == '#')
+                {
                     continue;
                 }
 
-                StringTokenizer st = new StringTokenizer(line,"-");
+                StringTokenizer st = new StringTokenizer(line, "-");
                 String startString = st.nextToken();
                 String endString = st.nextToken();
 
@@ -245,21 +271,24 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 long start = Long.parseLong(startString);
                 long end = Long.parseLong(endString);
 
-                if (start> end) {
+                if (start > end)
+                {
                     throw new Exception("start is bigger than end in phone range.");
                 }
 
                 EntriesRange entriesRange = new EntriesRange(start, end);
-                if (ranges == null) {
+                if (ranges == null)
+                {
                     ranges = new Vector<EntriesRange>();
                 }
                 ranges.add(entriesRange);
-                System.out.println("Added Entry range: "+ entriesRange);
+                System.out.println("Added Entry range: " + entriesRange);
             }
 
 
-
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             System.out.println(e.toString());
             throw e;
             //e.printStackTrace();
@@ -271,40 +300,56 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         System.out.println("CurrentPhoneRange does not exist, new start.");
         boolean found = false;
-        for (EntriesRange range: ranges) {
-            if (!isRangeDone(range)) {
+        for (EntriesRange range : ranges)
+        {
+            if (!isRangeDone(range))
+            {
                 currentRange = range;
-                System.out.println("Updating range, new range is: "+range);
+                System.out.println("Updating range, new range is: " + range);
                 found = true;
                 break;
             }
         }
-        if (!found) {
+        if (!found)
+        {
             System.out.println("Seems that all ranges have ended. Will stop in a few seconds.");
-            try {
+            try
+            {
                 Thread.sleep(20000);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
             //System.exit(0);
         }
     }
 
-    long getCurrentEntry() {
-        try {
-            String latestPhoneString  = state.get(LATEST_ENTRY);
+    long getCurrentEntry()
+    {
+        try
+        {
+            String latestPhoneString = state.get(LATEST_ENTRY);
             long phone;
-            try {
+            try
+            {
                 phone = Long.parseLong(latestPhoneString) - 50;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 return currentRange.getStart();
             }
-            if (phone >= currentRange.getStart() && phone <= currentRange.getEnd()) {
+            if (phone >= currentRange.getStart() && phone <= currentRange.getEnd())
+            {
                 return phone;
-            } else {
-                throw new Exception("Current entry error, returning range start. "+phone);
             }
-        } catch (Exception e) {
+            else
+            {
+                throw new Exception("Current entry error, returning range start. " + phone);
+            }
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             return currentRange.getStart();
         }
@@ -342,29 +387,30 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         return exitSeconds;
     }
 
-    public synchronized void  logWinner(String page, String entry)
+    public synchronized void logWinner(String page, String entry)
     {
-        logWinner(page,entry,"Success: ");
+        logWinner(page, entry, "Success: ");
     }
-    public synchronized void  logWinner(String page, String entry, String logMessage)
+
+    public synchronized void logWinner(String page, String entry, String logMessage)
     {
         try
         {
-            String folder = "sessions/"+session+"/success_output";
+            String folder = "sessions/" + session + "/success_output";
             if (!new File(folder).exists())
             {
                 new File(folder).mkdirs();
             }
             String entrySafe = entry.replaceAll("\\W+", "");
-            entrySafe = entrySafe+"_"+randomUUID()+".htm";
-            File f = File.createTempFile("result_",entrySafe,new File(folder));
+            entrySafe = entrySafe + "_" + randomUUID() + ".htm";
+            File f = File.createTempFile("result_", entrySafe, new File(folder));
             PrintWriter pr = new PrintWriter(f);
             pr.println(page);
             pr.close();
 
-            pr = new PrintWriter(new FileOutputStream("log.txt",true));
-            pr.println(logMessage+entry);
-            pr.print("Result page saved in: "+f.getAbsolutePath());
+            pr = new PrintWriter(new FileOutputStream("log.txt", true));
+            pr.println(logMessage + entry);
+            pr.print("Result page saved in: " + f.getAbsolutePath());
             pr.close();
             //String file = folder +"/"++".htm";
         }

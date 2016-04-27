@@ -21,7 +21,7 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
     {
 
     }
-    static int globalCounter = 0;
+    static long globalCounter = 0;
     public synchronized String getNextEntry()
     {
         String returnString = "";
@@ -48,6 +48,10 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
                 }
             }
             globalCounter++;
+            if (globalCounter % this.saveEvery ==0)
+            {
+                saveCurrentEntry(getCurrentJoinedString());
+            }
             return getCurrentJoinedString();
         }
         catch (Exception e)

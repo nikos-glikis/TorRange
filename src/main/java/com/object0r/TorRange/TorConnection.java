@@ -50,12 +50,12 @@ public class TorConnection extends ProxyConnection
             String command=null;
             if (OsHelper.isLinux())
             {
-                command = "tor --RunAsDaemon 0 --HashedControlPassword \"16:0BC854DFD1FD693A6071F17A7231C83A52B771658285CE588B0D16C021\"  --CookieAuthentication 0 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 1 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
             }
             else if (OsHelper.isWindows())
             {
                 directory = "tmp\\tor\\"+getSocksPort();
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --HashedControlPassword \"16:0BC854DFD1FD693A6071F17A7231C83A52B771658285CE588B0D16C021\"  --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
                 //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/
@@ -118,12 +118,12 @@ public class TorConnection extends ProxyConnection
             {
                 //Write restart script.
                 PrintWriter pr = new PrintWriter(new FileOutputStream(tmpDir+controlPort));
-                pr.println("(echo authenticate \"'"+password+"\"'; echo signal newnym; echo quit) | nc localhost "+controlPort);
+                pr.println("(echo authenticate '\""+password+"\"'; echo signal newnym; echo quit) | nc localhost "+controlPort);
                 pr.close();
 
                 //Write shutdown script.
                 pr = new PrintWriter(new FileOutputStream(tmpDir+controlPort+".exit"));
-                pr.println("(echo authenticate \"'"+password+"\"'; echo SIGNAL SHUTDOWN) | nc localhost "+controlPort);
+                pr.println("(echo authenticate '\""+password+"\"'; echo SIGNAL SHUTDOWN) | nc localhost "+controlPort);
                 pr.close();
 
             }

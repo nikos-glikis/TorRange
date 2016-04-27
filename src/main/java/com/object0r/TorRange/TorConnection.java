@@ -14,7 +14,7 @@ public class TorConnection extends ProxyConnection
     private String password;
     static int DEFAULT_SOCKS_PORT = 10000;
     static int DEFAULT_CONTROL_PORT = 20000;
-    static String DEFAULT_PASSWORD = "password1";
+    static String DEFAULT_PASSWORD = "password123";
     static String tmpDir;
 
     public boolean connect()

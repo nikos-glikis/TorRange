@@ -76,19 +76,6 @@ public class TorConnection extends ProxyConnection
                 System.exit(0);
             }
 
-            //System.out.println(command);
-            /*if (isFirstConnect)
-            {
-                isFirstConnect = false;
-                Thread.sleep(firstConnectSleepSeconds*1000);
-            }*/
-            //TODO check if tor is in path.
-
-            /*Runtime rt = Runtime.getRuntime();
-            Process pr = rt.exec(command);
-            pr.waitFor();
-            System.out.println("Error code from tor is: "+pr.exitValue());*/
-            System.out.println(command);
             new CommandRunner(command, true);
         }
         catch (Exception e)

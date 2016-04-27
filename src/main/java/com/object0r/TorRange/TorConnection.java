@@ -14,7 +14,7 @@ public class TorConnection extends ProxyConnection
     private String password;
     static int DEFAULT_SOCKS_PORT = 10000;
     static int DEFAULT_CONTROL_PORT = 20000;
-    static String DEFAULT_PASSWORD = "mypass123!";
+    static String DEFAULT_PASSWORD = "password1";
     static String tmpDir;
 
     public boolean connect()
@@ -50,12 +50,12 @@ public class TorConnection extends ProxyConnection
             String command=null;
             if (OsHelper.isLinux())
             {
-                command = "tor --RunAsDaemon 0 --HashedControlPassword \"16:3677D089AD3F17BB60A494FF8719D16905E0C0E52CAB65D48AF481E6A4\"  --CookieAuthentication 0 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
+                command = "tor --RunAsDaemon 0 --HashedControlPassword \"16:0BC854DFD1FD693A6071F17A7231C83A52B771658285CE588B0D16C021\"  --CookieAuthentication 0 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid";
             }
             else if (OsHelper.isWindows())
             {
                 directory = "tmp\\tor\\"+getSocksPort();
-                command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --HashedControlPassword \"16:3677D089AD3F17BB60A494FF8719D16905E0C0E52CAB65D48AF481E6A4\"  --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
+                command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --HashedControlPassword \"16:0BC854DFD1FD693A6071F17A7231C83A52B771658285CE588B0D16C021\"  --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+"";
                 //System.out.println(command);
                 /*System.out.println("Windows are not yet supported.");
                 System.exit(0);*/

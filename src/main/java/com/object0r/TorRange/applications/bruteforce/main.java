@@ -1,4 +1,7 @@
-package com.object0r.TorRange.applications.wordlist;
+package com.object0r.TorRange.applications.bruteforce;
+
+import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorker;
+import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorkerManager;
 
 public class main
 {
@@ -25,12 +28,12 @@ public class main
 
             try
             {
-                WordlistConsumerWorkerManager WordlistConsumberWorkerManager = new WordlistConsumerWorkerManager(args[0]);
+                BruteForceWorkerManager bruteForcerWorkerManager = new BruteForceWorkerManager(args[0]);
 
-                System.out.println("Starting "+WordlistConsumberWorkerManager.getThreadCount()+" Threads");
-                for (int i = 0 ; i < WordlistConsumberWorkerManager.getThreadCount(); i++)
+                System.out.println("Starting "+bruteForcerWorkerManager.getThreadCount()+" Threads");
+                for (int i = 0 ; i < bruteForcerWorkerManager.getThreadCount(); i++)
                 {
-                    new WordlistConsumerWorker( WordlistConsumberWorkerManager, i).start();
+                    new BruteForceWorker( bruteForcerWorkerManager, i).start();
                     Thread.sleep(2000);
                 }
 

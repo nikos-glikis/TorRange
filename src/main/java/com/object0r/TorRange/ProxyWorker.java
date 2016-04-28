@@ -1,9 +1,11 @@
 package com.object0r.TorRange;
 
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 
 abstract public class ProxyWorker extends  Thread
@@ -30,7 +32,88 @@ abstract public class ProxyWorker extends  Thread
     public void changeIp()
     {
         proxyConnection.changeIp();
+        try
+        {
+            Thread.sleep(3000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        verifyTor();
         initProxy();
+    }
+
+    public void verifyTor()
+    {
+        Thread t = new Thread()
+        {
+            public void run()
+            {
+                isActive = false;
+                ((TorConnection) proxyConnection).connect();
+                while (true)
+                {
+                    try
+                    {
+
+                        try
+                        {
+                            SocketAddress addr = new InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
+                            //Try to connect.
+                            //Stops here until connection is established.
+                            Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+                            URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
+                            Scanner sc = new Scanner(uc.getInputStream());
+                            while (sc.hasNext())
+                            {
+                                sc.nextLine();
+                            }
+                            break;
+                        }
+                        catch (Exception e)
+                        {
+                            //e.printStackTrace();
+                            System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
+                            try
+                            {
+                                Thread.sleep(5000);
+                            }
+                            catch (Exception ee)
+                            {
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println(e.toString());
+                    }
+                    System.out.println("Tor (" + id + ") is up and running.");
+                    isActive = true;
+                }
+
+            }
+        } ;
+        t.start();
+        try
+        {
+            t.join();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        /*while(!isActive) {
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }*/
     }
 
     public void initProxy()
@@ -60,30 +143,55 @@ abstract public class ProxyWorker extends  Thread
 
     public String readUrl(String url, Proxy proxy) throws Exception
     {
-        URL website = new URL(url);
+        return readUrl(url, proxy, 20,20,0,0);
+    }
 
-        URLConnection connection = null;
-        if (proxy != null)
+    public String readUrl(String url, Proxy proxy, int readTimeoutSeconds, int connectTimeoutSeconds, int tries, int maxRetries) throws Exception
+    {
+        try
         {
-            connection = website.openConnection(proxy);
+            URL website = new URL(url);
+
+            URLConnection connection = null;
+            if (proxy != null)
+            {
+                connection = website.openConnection(proxy);
+            }
+            else
+            {
+                connection = website.openConnection();
+            }
+            connection.setReadTimeout(readTimeoutSeconds*1000);
+            connection.setConnectTimeout(connectTimeoutSeconds*1000);
+
+            connection.setRequestProperty("User-Agent", getUserAgent());
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+            StringBuilder response = new StringBuilder();
+            String inputLine;
+
+            while ((inputLine = in.readLine()) != null)
+                response.append(inputLine);
+            in.close();
+
+            return response.toString();
         }
-        else
+        catch (SocketTimeoutException e)
         {
-            connection = website.openConnection();
+            if (tries > maxRetries)
+            {
+                if (proxy!=null)
+                {
+                    changeIp();
+                }
+                return readUrl(url, proxy, readTimeoutSeconds, connectTimeoutSeconds, tries+1, maxRetries);
+            }
+            else
+            {
+                throw e;
+            }
         }
-
-        connection.setRequestProperty("User-Agent", getUserAgent());
-
-        BufferedReader in = new BufferedReader( new InputStreamReader(connection.getInputStream()));
-
-        StringBuilder response = new StringBuilder();
-        String inputLine;
-
-        while ((inputLine = in.readLine()) != null)
-            response.append(inputLine);
-        in.close();
-
-        return response.toString();
     }
 
     public ProxyInfo getProxyInfo()
@@ -104,7 +212,7 @@ abstract public class ProxyWorker extends  Thread
 
     public String readUrlWithProxy(String url)  throws Exception
     {
-        return readUrl(url, proxy);
+        return readUrl(url, proxy, 20,20,0,0);
     }
 
     public void run()
@@ -126,16 +234,14 @@ abstract public class ProxyWorker extends  Thread
                 initProxy();
             }
 
-
             while (true)
             {
-
-                String nextToProcess = manager.getNextEntry();
                 if (!isActive)
                 {
                     Thread.sleep(5000);
                     continue;
                 }
+                String nextToProcess = manager.getNextEntry();
                 process(nextToProcess);
                 if (manager.exiting)
                 {

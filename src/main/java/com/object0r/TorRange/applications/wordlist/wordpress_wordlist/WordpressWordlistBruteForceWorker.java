@@ -1,8 +1,7 @@
-package com.object0r.TorRange.applications.wordlist.wordpress_brute_force;
+package com.object0r.TorRange.applications.wordlist.wordpress_wordlist;
 
 import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorker;
-import com.object0r.TorRange.helpers.TorRangeHttpHelper;
 import com.object0r.toortools.http.HTTP;
 import com.object0r.toortools.http.HttpRequestInformation;
 import com.object0r.toortools.http.HttpResult;

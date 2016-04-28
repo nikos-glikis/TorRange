@@ -1,38 +1,20 @@
 package com.object0r.TorRange.helpers;
 
+import com.object0r.toortools.Utilities;
+import org.apache.commons.lang.ArrayUtils;
+
 import java.util.Arrays;
 import java.util.Date;
 
 public class BruteForcer
 {
-    public static String password = "AZZZZS";
-    public char[] charset;
+    public static  String password = "AZZZZS";
+    public  char[] charset;
 
-    private char[] currentGuess = new char[1];
+    private  char[] currentGuess = new char[1];
 
     int minLength = 1;
     int maxLength = Integer.MAX_VALUE;
-
-    boolean hasMore = true;
-
-    public boolean hasMore()
-    {
-        return this.hasMore;
-    }
-
-    public String getNext()
-    {
-        increment();
-        if (this.toString().length() > maxLength)
-        {
-            hasMore = false;
-            return "";
-        }
-        else
-        {
-            return this.toString();
-        }
-    }
 
     public static void main(String args[])
     {
@@ -67,9 +49,29 @@ public class BruteForcer
         this(stringCharset, 1, Integer.MAX_VALUE);
     }
 
+    public void reset()
+    {
+        String start = "";
+        for (int i = 0; i < minLength; i++)
+        {
+            start = start + charset[0];
+        }
+
+        try
+        {
+            this.setStart(start);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public BruteForcer(String stringCharset, int minLength, int maxLength) throws Exception
     {
         this.charset = stringCharset.toCharArray();
+        this.minLength = minLength;
+        this.maxLength = maxLength;
         if (minLength < 1)
         {
             throw new Exception("BruteForcer, minLength has an invalid value");
@@ -78,20 +80,40 @@ public class BruteForcer
         {
             throw new Exception("BruteForcer, minLength has greater value than maxLength");
         }
-        String start = "";
-        for (int i = 0; i < minLength; i++)
-        {
-            start = start + charset[0];
-        }
-        this.minLength = minLength;
-        this.maxLength = maxLength;
-        this.setStart(start);
+        reset();
     }
 
-    public void setStart(String start)
+    public void setStart(String start) throws Exception
     {
+        if (start.length()< this.minLength)
+        {
+            throw new Exception("Start string length is less than minLength");
+        }
+        if (start.length()> this.maxLength)
+        {
+            throw new Exception("Start string length is more than maxLength");
+        }
+        for (int i = 0; i<start.length(); i++)
+        {
+            if (!ArrayUtils.contains(charset,start.charAt(i)))
+            {
+                throw new Exception("Invalid characted detected in start string");
+            }
+        }
         currentGuess = start.toCharArray();
-        //TODO check if start agrees with charset (characters and length)
+    }
+
+    public String getNext()
+    {
+        increment();
+        if (this.toString().length() > maxLength)
+        {
+            return "";
+        }
+        else
+        {
+            return this.toString();
+        }
     }
 
     public void increment()
@@ -124,4 +146,5 @@ public class BruteForcer
     {
         return String.valueOf(currentGuess);
     }
+
 }

@@ -1,6 +1,5 @@
-package com.object0r.TorRange.applications.wordlist.wordpress_brute_force;
+package com.object0r.TorRange.applications.wordlist.wordpress_wordlist;
 
-import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorker;
 import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorkerManager;
 
 public class main

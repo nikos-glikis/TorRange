@@ -16,6 +16,7 @@ abstract public class TorWorker extends ProxyWorker
         super(manager, id);
         this.manager = (ProxyWorkerManager)manager;
         proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
+
         if (manager.useTor())
         {
             verifyTor();

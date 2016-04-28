@@ -19,7 +19,7 @@ abstract public class TorWorker extends ProxyWorker
 
         if (manager.useTor())
         {
-            verifyTor();
+            verifyTor(true);
         }
     }
 

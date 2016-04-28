@@ -1,6 +1,6 @@
 package com.object0r.TorRange;
 
-
+import com.object0r.toortools.Utilities;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -176,7 +176,7 @@ public class TorConnection extends ProxyConnection
     {
         try
         {
-            String ip = Utilities.getIp();
+            String ip = Utilities.getIp(proxy);
             System.out.println("old ip: "+ip);
             if (OsHelper.isWindows())
             {
@@ -203,8 +203,7 @@ public class TorConnection extends ProxyConnection
             }
 
             Thread.sleep(10000);
-            String newIp = Utilities.getIp();
-            ip = Utilities.getIp();
+            String newIp = Utilities.getIp(proxy);
             System.out.println("new ip: "+newIp);
 
         }

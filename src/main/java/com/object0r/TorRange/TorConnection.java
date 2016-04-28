@@ -198,8 +198,8 @@ public class TorConnection extends ProxyConnection
 
                 String command = "sh "+tmpDir+controlPort ;
                 OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
-                System.out.println("Restart Script output: "+out.getStandardOutput());
-                System.out.println("Restart Script error output: "+out.getErrorOutput());
+               /* System.out.println("Restart Script output: "+out.getStandardOutput());
+                System.out.println("Restart Script error output: "+out.getErrorOutput());*/
             }
 
             Thread.sleep(10000);

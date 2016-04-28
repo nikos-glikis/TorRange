@@ -176,8 +176,11 @@ public class TorConnection extends ProxyConnection
     {
         try
         {
-            String ip = Utilities.getIp(proxy);
-            System.out.println("old ip: "+ip);
+            if (proxy!=null)
+            {
+                String ip = Utilities.getIp(getProxy());
+                System.out.println("old ip: "+ip);
+            }
             if (OsHelper.isWindows())
             {
                 Socket echoSocket = new Socket("localhost", controlPort);
@@ -203,7 +206,7 @@ public class TorConnection extends ProxyConnection
             }
 
             Thread.sleep(10000);
-            String newIp = Utilities.getIp(proxy);
+            String newIp = Utilities.getIp(getProxy());
             System.out.println("new ip: "+newIp);
 
         }

@@ -177,7 +177,7 @@ public class TorConnection extends ProxyConnection
         try
         {
             String ip = Utilities.getIp();
-            //System.out.println("old ip: "+ip);
+            System.out.println("old ip: "+ip);
             if (OsHelper.isWindows())
             {
                 Socket echoSocket = new Socket("localhost", controlPort);
@@ -198,11 +198,13 @@ public class TorConnection extends ProxyConnection
 
                 String command = "sh "+tmpDir+controlPort ;
                 OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
+                System.out.println("Restart Script output: "+out);
             }
 
             Thread.sleep(10000);
             String newIp = Utilities.getIp();
-            //System.out.println("new ip: "+newIp);
+            ip = Utilities.getIp();
+            System.out.println("new ip: "+newIp);
         }
         catch (Exception e)
         {

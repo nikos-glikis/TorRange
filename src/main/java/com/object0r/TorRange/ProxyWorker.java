@@ -208,7 +208,6 @@ abstract public class ProxyWorker extends  Thread
                 initProxy();
             }
 
-
             while (true)
             {
                 if (!isActive)

@@ -93,9 +93,7 @@ abstract public class ProxyWorker extends  Thread
                     {
                         System.out.println(e.toString());
                     }
-
                 }
-
             }
         } ;
         t.start();
@@ -107,17 +105,6 @@ abstract public class ProxyWorker extends  Thread
         {
             e.printStackTrace();
         }
-
-        /*while(!isActive) {
-            try
-            {
-                Thread.sleep(3000);
-            }
-            catch (InterruptedException e)
-            {
-                e.printStackTrace();
-            }
-        }*/
     }
 
     public void initProxy()

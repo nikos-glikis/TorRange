@@ -68,7 +68,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 {
                     totalEntriesCount += range.getSize();
                 }
-                System.out.println("totalEntriesCount : " + totalEntriesCount);
+                System.out.println("totalEntriesCount: " + totalEntriesCount);
                 prefix = "";
                 try
                 {

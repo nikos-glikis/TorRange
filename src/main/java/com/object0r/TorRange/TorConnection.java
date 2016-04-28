@@ -59,7 +59,7 @@ public class TorConnection extends ProxyConnection
             {
                 try
                 {
-                    com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile)));
+                    com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile).trim()));
                 }
                 catch (Exception e)
                 {
@@ -228,8 +228,7 @@ public class TorConnection extends ProxyConnection
             proxy = getProxy();
             Thread.sleep(10000);
             String newIp = Utilities.getIp(getProxy());
-            System.out.println("new ip: " + newIp);
-
+            //System.out.println("new ip: " + newIp);
         }
         catch (Exception e)
         {

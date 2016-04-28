@@ -211,13 +211,12 @@ abstract public class ProxyWorker extends  Thread
 
             while (true)
             {
-
-                String nextToProcess = manager.getNextEntry();
                 if (!isActive)
                 {
                     Thread.sleep(5000);
                     continue;
                 }
+                String nextToProcess = manager.getNextEntry();
                 process(nextToProcess);
                 if (manager.exiting)
                 {

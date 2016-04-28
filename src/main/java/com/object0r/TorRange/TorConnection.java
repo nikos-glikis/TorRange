@@ -57,7 +57,14 @@ public class TorConnection extends ProxyConnection
 
             if (new File(pidFile).exists())
             {
-                 com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile)));
+                try
+                {
+                    com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile)));
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
 
             if (OsHelper.isLinux())

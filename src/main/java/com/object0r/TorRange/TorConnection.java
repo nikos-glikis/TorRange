@@ -203,8 +203,6 @@ public class TorConnection extends ProxyConnection
             Thread.sleep(10000);
             String newIp = Utilities.getIp();
             //System.out.println("new ip: "+newIp);
-
-
         }
         catch (Exception e)
         {

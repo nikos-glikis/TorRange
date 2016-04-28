@@ -65,7 +65,6 @@ public class TorConnection extends ProxyConnection
             String command = null;
             if (OsHelper.isLinux())
             {
-                String pidFile = directory + "/my.pid";
                 if (new File(pidFile).exists())
                 {
                     //kill old tor.

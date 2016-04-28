@@ -46,7 +46,7 @@ abstract public class ProxyWorker extends  Thread
 
     public void verifyTor()
     {
-        new Thread()
+        Thread t = new Thread()
         {
             public void run()
             {
@@ -93,8 +93,18 @@ abstract public class ProxyWorker extends  Thread
                 }
 
             }
-        }.start();
-        while(!isActive) {
+        } ;
+        t.start();
+        try
+        {
+            t.join();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+
+        /*while(!isActive) {
             try
             {
                 Thread.sleep(3000);
@@ -103,7 +113,7 @@ abstract public class ProxyWorker extends  Thread
             {
                 e.printStackTrace();
             }
-        }
+        }*/
     }
 
     public void initProxy()

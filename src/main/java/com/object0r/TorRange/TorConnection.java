@@ -54,13 +54,15 @@ public class TorConnection extends ProxyConnection
                 }
             }
             String command = null;
+
+            if (new File(pidFile).exists())
+            {
+                 com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile)));
+            }
+
             if (OsHelper.isLinux())
             {
-                if (new File(pidFile).exists())
-                {
-                    //kill old tor.
-                    new CommandRunner("kill -9 " + Utilities.readFile(pidFile), true);
-                }
+
                 com.object0r.toortools.os.OsHelper.deleteFolderContentsRecursive(new File(directory));
                 //command = "tor --RunAsDaemon 0   --CookieAuthentication 1 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid --CookieAuthFile "+directory+"/cookie";
 
@@ -184,7 +186,6 @@ public class TorConnection extends ProxyConnection
         {
             try
             {
-
                 System.out.println("Pid is: " + getTorPid());
                 System.out.println(com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()));
                 if (!com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()))

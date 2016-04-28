@@ -40,11 +40,8 @@ public class TorConnection extends ProxyConnection
             if (!new File(path).exists())
             {
                 new File(path).mkdirs();
-                //System.out.println("Does not exist");
 
             }
-
-
             File f = new File(directory);
 
             if (!f.exists())
@@ -190,6 +187,11 @@ public class TorConnection extends ProxyConnection
 
                 System.out.println("Pid is: " + getTorPid());
                 System.out.println(com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()));
+                if (!com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()))
+                {
+                    System.out.println("Tor is not running. Reconnecting ...");
+                    connect();
+                }
             }
             catch (Exception e)
             {

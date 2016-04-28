@@ -40,18 +40,21 @@ abstract public class ProxyWorker extends  Thread
         {
             e.printStackTrace();
         }
-        verifyTor();
+        verifyTor(false);
         initProxy();
     }
 
-    public void verifyTor()
+    public void verifyTor(final boolean killOld)
     {
         Thread t = new Thread()
         {
             public void run()
             {
                 isActive = false;
-                ((TorConnection) proxyConnection).connect();
+                if (killOld)
+                {
+                    ((TorConnection) proxyConnection).connect();
+                }
                 while (true)
                 {
                     try

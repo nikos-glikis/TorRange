@@ -72,6 +72,8 @@ abstract public class ProxyWorker extends  Thread
                             {
                                 sc.nextLine();
                             }
+                            System.out.println("Tor (" + id + ") is up and running.");
+                            isActive = true;
                             break;
                         }
                         catch (Exception e)
@@ -91,8 +93,7 @@ abstract public class ProxyWorker extends  Thread
                     {
                         System.out.println(e.toString());
                     }
-                    System.out.println("Tor (" + id + ") is up and running.");
-                    isActive = true;
+
                 }
 
             }

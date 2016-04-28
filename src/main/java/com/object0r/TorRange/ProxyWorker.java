@@ -39,6 +39,7 @@ abstract public class ProxyWorker extends  Thread
         {
             e.printStackTrace();
         }
+        verifyTor();
         initProxy();
     }
 

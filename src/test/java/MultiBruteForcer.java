@@ -9,7 +9,7 @@ public class MultiBruteForcer
     }
     public static void main(String args[])
     {
-        BruteForcer bruteForcer;
+       /* BruteForcer bruteForcer;
         try
         {
             bruteForcer = new BruteForcer("ABCDE",3,3);
@@ -25,6 +25,6 @@ public class MultiBruteForcer
         catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }*/
     }
 }

@@ -8,11 +8,15 @@ abstract public class ProxyConnection
     Proxy proxy;
     ProxyInfo proxyInfo;
 
-    /** This must generate a new proxy and proxyInfo **/
+    /**
+     * This must generate a new proxy and proxyInfo
+     **/
     abstract public void changeIp();
 
 
-    /** This must generate a new proxy and proxyInfo, that support https **/
+    /**
+     * This must generate a new proxy and proxyInfo, that support https
+     **/
     abstract public void changeIpHttps() throws Exception;
 
     public Proxy getProxy()
@@ -24,6 +28,4 @@ abstract public class ProxyConnection
     {
         return proxyInfo;
     }
-
-
 }

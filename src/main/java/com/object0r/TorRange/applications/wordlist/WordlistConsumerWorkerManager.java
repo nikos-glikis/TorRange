@@ -95,10 +95,10 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
     public synchronized Vector<EntriesRange> getUserRanges()
     {
         Vector <EntriesRange>entriesRanges = new Vector<EntriesRange>();
-        System.out.println("Password file is: " +passwordFile);
+        System.out.println("Wordlist is: " +passwordFile);
         if (!new File(passwordFile).exists())
         {
-            System.out.println("Given password file does not exist: "+passwordFile);
+            System.out.println("Given wordlist file does not exist: "+passwordFile);
             System.exit(0);
         }
         try
@@ -109,7 +109,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
             {
                 lines++;
             }
-            System.out.println("Password file has " +lines+ " passwords.");
+            System.out.println("Wordlist file has " +lines+ " passwords.");
             reader.close();
             EntriesRange entriesRange = new EntriesRange(1,lines+1);
             entriesRanges.add(entriesRange);

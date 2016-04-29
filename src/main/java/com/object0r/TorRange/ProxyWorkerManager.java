@@ -147,7 +147,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     {
         for (ProxyWorker worker : workers)
         {
-            worker.setActive(true);
+            worker.setActive(false);
         }
     }
 

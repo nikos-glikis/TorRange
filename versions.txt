@@ -1,3 +1,4 @@
 v1.0.4
 
     - Manager starts all threads.
+    - Idle Worker monitoring and restart of idle  threads.

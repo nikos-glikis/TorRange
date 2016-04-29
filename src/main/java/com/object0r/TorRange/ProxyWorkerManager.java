@@ -88,6 +88,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     private ProxyWorker getNewWorker(int i) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
+        //Constructor AND class should be public.
         return workerClass.getConstructor(ProxyWorkerManager.class, int.class).newInstance(this, i);
     }
 

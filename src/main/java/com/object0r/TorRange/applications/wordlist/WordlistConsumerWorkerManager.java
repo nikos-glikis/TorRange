@@ -129,7 +129,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
             {
                 lines++;
             }
-            System.out.println("Wordlist file has " + lines + " passwords.");
+            System.out.println("Wordlist file has " + lines + " words (lines).");
             reader.close();
             EntriesRange entriesRange = new EntriesRange(1, lines + 1);
             entriesRanges.add(entriesRange);

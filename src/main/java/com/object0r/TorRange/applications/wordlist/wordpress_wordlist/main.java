@@ -27,16 +27,8 @@ public class main
 
             try
             {
-                WordlistConsumerWorkerManager nextEpisodeCrackerWorkerManager = new WordlistConsumerWorkerManager(args[0]);
-
-                System.out.println("Starting "+nextEpisodeCrackerWorkerManager.getThreadCount()+" Threads");
-                for (int i = 0 ; i < nextEpisodeCrackerWorkerManager.getThreadCount(); i++)
-                {
-                    new WordpressWordlistBruteForceWorker( nextEpisodeCrackerWorkerManager, i).start();
-                    Thread.sleep(2000);
-                }
-
-                //ProxymityConnection proxymityConnection = new ProxymityConnection();
+                WordlistConsumerWorkerManager wordpressCrackerWorkerManager = new WordlistConsumerWorkerManager(args[0], WordpressWordlistBruteForceWorker.class);
+                wordpressCrackerWorkerManager.startWorkers();
             }
             catch (Exception e)
             {

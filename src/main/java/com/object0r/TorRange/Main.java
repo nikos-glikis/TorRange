@@ -16,16 +16,8 @@ public class Main {
 
         try
         {
-            ProxyWorkerManager torRangeSimpleExampleManager = new TorRangeSimpleExampleManagerProxy(args[0]);
-
-            System.out.println("Starting "+torRangeSimpleExampleManager.getThreadCount()+" Threads");
-            for (int i = 0 ; i < torRangeSimpleExampleManager.getThreadCount(); i++)
-            {
-                new TorRangeSimpleExampleWorker( torRangeSimpleExampleManager, i).start();
-                Thread.sleep(2000);
-            }
-
-            //ProxymityConnection proxymityConnection = new ProxymityConnection();
+            ProxyWorkerManager torRangeSimpleExampleManager = new TorRangeSimpleExampleManagerProxy(args[0], TorRangeSimpleExampleWorker.class);
+            torRangeSimpleExampleManager.startWorkers();
         }
         catch (Exception e)
         {

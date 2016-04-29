@@ -3,24 +3,21 @@ package com.object0r.TorRange;
 import org.ini4j.Ini;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
-import java.text.DecimalFormat;
-import java.util.Scanner;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.lang.reflect.InvocationTargetException;
 
 public abstract class ProxyWorkerManager extends WorkerManager
 {
     private static final String LOG_FILE =  "log.txt";
-    String prefix;
+
+    Class<ProxyWorker> workerClass;
     protected String session;
     protected DB state;
     int exitSeconds = 5;
 
     static private int activeThreadCount;
-    private int threadCount = 50;
+    private int workerCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
     protected String iniFilename = "";
@@ -41,18 +38,50 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void registerWorker(ProxyWorker worker)
     {
-        //worker.setActive(false);
+        worker.setActive(false);
         workers.add(worker);
     }
 
-    public ProxyWorkerManager(String iniFilename)
+    public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
+        this.workerClass = workerClass;
+
         if (iniFilename != null)
         {
             basicReadGeneralOptions(iniFilename);
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
         }
+
+        try
+        {
+            for (int i = 0; i<workerCount; i++)
+            {
+                try
+                {
+                    ProxyWorker worker = (ProxyWorker)workerClass.getConstructor(ProxyWorkerManager.class, int.class).newInstance(this, i);
+                    registerWorker(worker);
+                    worker.start();
+                }
+                catch (InvocationTargetException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (NoSuchMethodException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (InstantiationException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IllegalAccessException e)
+        {
+            e.printStackTrace();
+        }
+
         //createTorScript();
     }
 
@@ -80,42 +109,6 @@ public abstract class ProxyWorkerManager extends WorkerManager
         }
     }
 
-
-
-    /* Creates start_tor_instances.sh script */
-    protected void createTorScript()
-    {
-        try
-        {
-            //String template = Utilities.readFile("start_tor_instances_template.sh");
-            String template = "#!/usr/bin/env bash\n" +
-                    "#rm -rf /tmp/tor\n" +
-                    "while :\n" +
-                    "do\n" +
-                    "    for i in {0..[[threadCount]]}\n" +
-                    "    do\n" +
-                    "        mkdir -p /tmp/tor/$socksport\n" +
-                    "        controlport=$((i + [[controlPortStart]]))\n" +
-                    "        socksport=$((i + [[controlPortEnd]]))\n" +
-                    "        tor --RunAsDaemon 0 --CookieAuthentication 0 --NewCircuitPeriod 300000  --ControlPort $controlport --SocksPort $socksport --DataDirectory  /tmp/tor/$socksport --PidFile /tmp/tor/$socksport/my.pid &\n" +
-                    "        sleep 0.3\n" +
-                    "    done\n" +
-                    "    sleep 5\n" +
-                    "done";
-            String finalScript = template.replace("[[threadCount]]", new Integer(threadCount+5).toString() );
-            finalScript = finalScript.replace("[[controlPortStart]]" , new Integer(torRangeStart+10000).toString());
-            finalScript = finalScript.replace("[[controlPortEnd]]" , new Integer(torRangeStart+20000).toString());
-            PrintWriter pr = new PrintWriter("start_tor_instances.sh");
-            pr.println(finalScript);
-            pr.close();
-            //System.exit(0);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * This function is called when Ctrl+C is called or when the user tries to close the process.
      * Close resources, commit changes, close threads etc.
@@ -137,8 +130,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return activeThreadCount;
     }
 
-    public int getThreadCount() {
-        return threadCount;
+    public int getWorkerCount() {
+        return workerCount;
     }
 
     public abstract void readOptions(String filename);
@@ -218,13 +211,13 @@ public abstract class ProxyWorkerManager extends WorkerManager
             try {
                 String threadCountString = prefs.get("ProxyWorkerManager", "threads");
                 if (threadCountString != null) {
-                    threadCount = Integer.parseInt(threadCountString);
+                    workerCount = Integer.parseInt(threadCountString);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            System.out.println("Starting " + threadCount + " threads");
+            System.out.println("Starting " + workerCount + " threads");
 
             try {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));

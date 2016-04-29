@@ -6,9 +6,9 @@ import java.io.File;
 
 public class TorRangeSimpleExampleManagerProxy extends ProxyRangeWorkerManager
 {
-    public TorRangeSimpleExampleManagerProxy(String iniFilename)
+    public TorRangeSimpleExampleManagerProxy(String iniFilename, Class workerClass)
     {
-        super(iniFilename);
+        super(iniFilename, workerClass);
     }
 
     @Override

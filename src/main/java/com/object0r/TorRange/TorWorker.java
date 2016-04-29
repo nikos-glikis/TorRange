@@ -23,8 +23,6 @@ abstract public class TorWorker extends ProxyWorker
         }
     }
 
-
-
     @Override
     public synchronized void shutDown()
     {

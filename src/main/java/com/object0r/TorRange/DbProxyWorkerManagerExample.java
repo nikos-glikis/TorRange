@@ -3,9 +3,9 @@ package com.object0r.TorRange;
 public class DbProxyWorkerManagerExample extends DbProxyWorkerManager
 {
 
-    public DbProxyWorkerManagerExample(String iniFilename)
+    public DbProxyWorkerManagerExample(String iniFilename, Class workerClass)
     {
-        super(iniFilename);
+        super(iniFilename, workerClass);
     }
 
     @Override

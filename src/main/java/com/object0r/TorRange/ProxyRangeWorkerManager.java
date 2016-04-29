@@ -24,9 +24,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     protected DB doneRanges;
     public int saveEvery = 300;
 
-    public ProxyRangeWorkerManager(String iniFilename)
+    public ProxyRangeWorkerManager(String iniFilename, Class workerClass)
     {
-        super(iniFilename);
+        super(iniFilename, workerClass);
         if (iniFilename != null)
         {
             readTorRangeOptions(iniFilename);

@@ -165,12 +165,28 @@ At any point press enter to see the progress report. To make your own report, ov
 Install Jar in local maven repo
 ===============================
 
-mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion={version} -Dpackaging=jar -Dfile=target/TorRange-{version}-jar-with-dependencies.jar
-mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.3 -Dpackaging=jar -Dfile=target/TorRange-1.0.3-jar-with-dependencies.jar
+v1.0.3
+
+    git checkout tags/v1.0.3
+    mvn clean compile assembly:single
+    mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.3 -Dpackaging=jar -Dfile=target/TorRange-1.0.3-jar-with-dependencies.jar
+
+v1.0.4
+    
+    git checkout master
+    mvn clean compile assembly:single
+    mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.4 -Dpackaging=jar -Dfile=target/TorRange-1.0.4-jar-with-dependencies.jar
 
 On above adjust the version.
 
-In pom.xml
+In pom.xml - replace {version} with version for examle, 1.0.3
+
+        <dependency>
+            <groupId>com.object0r</groupId>
+            <artifactId>TorRange</artifactId>
+            <version>{version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.object0r</groupId>
@@ -196,3 +212,5 @@ Requires:
     passwordfile=/root/wordlists/rockyou.txt
 
 in the .ini file along with the other TorRange requests.
+
+3) Brute Force

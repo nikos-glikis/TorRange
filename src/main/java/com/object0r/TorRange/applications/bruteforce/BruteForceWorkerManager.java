@@ -11,9 +11,9 @@ import java.util.Vector;
 public class BruteForceWorkerManager extends ProxyRangeWorkerManager
 {
     Vector<BruteForcer> bruteForcers ;
-    public BruteForceWorkerManager(String iniFilename)
+    public BruteForceWorkerManager(String iniFilename, Class workerClass)
     {
-        super(iniFilename);
+        super(iniFilename, workerClass);
     }
 
     @Override

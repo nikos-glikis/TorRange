@@ -23,9 +23,9 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 
     static public DbRangeResult dbRangeResult;
 
-    public DbProxyWorkerManager(String iniFilename)
+    public DbProxyWorkerManager(String iniFilename, Class workerClass)
     {
-        super(iniFilename);
+        super(iniFilename, workerClass);
     }
 
     public int getNextIdInt()

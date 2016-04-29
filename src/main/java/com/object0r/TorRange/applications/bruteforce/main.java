@@ -1,8 +1,5 @@
 package com.object0r.TorRange.applications.bruteforce;
 
-import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorker;
-import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorkerManager;
-
 public class main
 {
     public static void main(String args[])
@@ -28,16 +25,8 @@ public class main
 
             try
             {
-                BruteForceWorkerManager bruteForcerWorkerManager = new BruteForceWorkerManager(args[0]);
-
-                System.out.println("Starting "+bruteForcerWorkerManager.getThreadCount()+" Threads");
-                for (int i = 0 ; i < bruteForcerWorkerManager.getThreadCount(); i++)
-                {
-                    new BruteForceWorker( bruteForcerWorkerManager, i).start();
-                    Thread.sleep(2000);
-                }
-
-                //ProxymityConnection proxymityConnection = new ProxymityConnection();
+                BruteForceWorkerManager bruteForcerWorkerManager = new BruteForceWorkerManager(args[0], BruteForceWorker.class);
+                bruteForcerWorkerManager.startWorkers();
             }
             catch (Exception e)
             {

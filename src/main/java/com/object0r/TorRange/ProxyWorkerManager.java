@@ -18,7 +18,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     protected String session;
     protected DB state;
     int exitSeconds = 5;
-    private static final String LATEST_ENTRY = "LATEST_PHONE";
+
     static private int activeThreadCount;
     private int threadCount = 50;
     static private int torRangeStart = 0;
@@ -41,6 +41,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void registerWorker(ProxyWorker worker)
     {
+        //worker.setActive(false);
         workers.add(worker);
     }
 
@@ -52,8 +53,34 @@ public abstract class ProxyWorkerManager extends WorkerManager
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
         }
-        createTorScript();
+        //createTorScript();
     }
+
+    public void startWorkers()
+    {
+        for(ProxyWorker worker :workers )
+        {
+            worker.setActive(true);
+            try
+            {
+                Thread.sleep(100);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void stopWorkers()
+    {
+        for(ProxyWorker worker :workers )
+        {
+            worker.setActive(true);
+        }
+    }
+
+
 
     /* Creates start_tor_instances.sh script */
     protected void createTorScript()

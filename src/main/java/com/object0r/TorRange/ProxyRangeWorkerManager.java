@@ -11,14 +11,12 @@ import static java.util.UUID.randomUUID;
 
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
-
     private static final String LOG_FILE = "log.txt";
     String prefix;
 
     protected DB state;
     int exitSeconds;
-    private static final String LATEST_ENTRY = "LATEST_PHONE";
-
+    private static final String LATEST_ENTRY = "LATEST_ENTRY";
 
     Vector<EntriesRange> ranges = new Vector<EntriesRange>();
     EntriesRange currentRange;
@@ -33,7 +31,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             readTorRangeOptions(iniFilename);
         }
-        createTorScript();
+        //createTorScript();
     }
 
     void readTorRangeOptions(String iniFilename)
@@ -54,6 +52,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     if (prefs.get("ProxyWorkerManager", "rangesfile") == null)
                     {
                         this.ranges = getUserRanges();
+                        updateCurrentRange();
                     }
                     else
                     {
@@ -63,6 +62,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 catch (Exception e)
                 {
                     this.ranges = getUserRanges();
+                    updateCurrentRange();
                 }
                 for (EntriesRange range : ranges)
                 {
@@ -157,12 +157,11 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     public void saveCurrentEntry()
     {
-        saveCurrentEntry(currentEntry+"");
+        saveCurrentEntry(currentEntry + "");
     }
 
     public void saveCurrentEntry(String currentEntry)
     {
-
         System.out.println("Saving Current Number: " + currentEntry);
         state.put(LATEST_ENTRY, currentEntry);
         PrintWriter pr = null;
@@ -221,7 +220,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             currentEntry = currentRange.getStart();
             saveCurrentEntry();
         }
-        if (currentEntry % saveEvery == 0)
+        if (currentEntry % (saveEvery) == (this.saveEvery - 1))
         {
             saveCurrentEntry();
         }
@@ -241,10 +240,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
     }
 
-
-    /**
-     * @param filename
-     */
     @Deprecated
     protected synchronized void readRanges(String filename) throws Exception
     {
@@ -330,22 +325,22 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         try
         {
             String latestPhoneString = state.get(LATEST_ENTRY);
-            long phone;
+            long entry;
             try
             {
-                phone = Long.parseLong(latestPhoneString) - 50;
+                entry = Long.parseLong(latestPhoneString) - 50;
             }
             catch (Exception e)
             {
                 return currentRange.getStart();
             }
-            if (phone >= currentRange.getStart() && phone <= currentRange.getEnd())
+            if (entry >= currentRange.getStart() && entry <= currentRange.getEnd())
             {
-                return phone;
+                return entry;
             }
             else
             {
-                throw new Exception("Current entry error, returning range start. " + phone);
+                throw new Exception("Current entry error, returning range start. " + entry);
             }
         }
         catch (Exception e)

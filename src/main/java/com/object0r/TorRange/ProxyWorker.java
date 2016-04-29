@@ -8,12 +8,17 @@ import java.net.*;
 import java.util.Scanner;
 import java.util.zip.GZIPInputStream;
 
-abstract public class ProxyWorker extends  Thread
+abstract public class ProxyWorker extends Thread
 {
     protected Proxy proxy;
     protected ProxyWorkerManager manager;
     protected ProxyConnection proxyConnection;
+
+    //weather or not the worker is active
     protected boolean isActive = true;
+
+    //if the worker is ready to start processing things
+    protected boolean isReady = true;
 
     protected int id;
 
@@ -50,7 +55,7 @@ abstract public class ProxyWorker extends  Thread
         {
             public void run()
             {
-                isActive = false;
+                isReady = false;
                 if (killOld)
                 {
                     ((TorConnection) proxyConnection).connect();
@@ -73,7 +78,7 @@ abstract public class ProxyWorker extends  Thread
                                 sc.nextLine();
                             }
                             System.out.println("Tor (" + id + ") is up and running.");
-                            isActive = true;
+                            isReady = true;
                             break;
                         }
                         catch (Exception e)
@@ -95,7 +100,7 @@ abstract public class ProxyWorker extends  Thread
                     }
                 }
             }
-        } ;
+        };
         t.start();
         try
         {
@@ -112,8 +117,7 @@ abstract public class ProxyWorker extends  Thread
         if (manager.useProxy)
         {
             proxy = proxyConnection.getProxy();
-        }
-        else
+        } else
         {
             //SocketAddress addr = new InetSocketAddress("127.0.0.1", proxyConnection.getSocksPort());
             proxy = Proxy.NO_PROXY;
@@ -125,8 +129,7 @@ abstract public class ProxyWorker extends  Thread
         if (manager.useProxy)
         {
             return readUrl(url, proxy);
-        }
-        else
+        } else
         {
             return readUrl(url, null);
         }
@@ -134,7 +137,7 @@ abstract public class ProxyWorker extends  Thread
 
     public String readUrl(String url, Proxy proxy) throws Exception
     {
-        return readUrl(url, proxy, 20,20,0,0);
+        return readUrl(url, proxy, 20, 20, 0, 0);
     }
 
     public String readUrl(String url, Proxy proxy, int readTimeoutSeconds, int connectTimeoutSeconds, int tries, int maxRetries) throws Exception
@@ -147,13 +150,12 @@ abstract public class ProxyWorker extends  Thread
             if (proxy != null)
             {
                 connection = website.openConnection(proxy);
-            }
-            else
+            } else
             {
                 connection = website.openConnection();
             }
-            connection.setReadTimeout(readTimeoutSeconds*1000);
-            connection.setConnectTimeout(connectTimeoutSeconds*1000);
+            connection.setReadTimeout(readTimeoutSeconds * 1000);
+            connection.setConnectTimeout(connectTimeoutSeconds * 1000);
 
             connection.setRequestProperty("User-Agent", getUserAgent());
 
@@ -172,13 +174,12 @@ abstract public class ProxyWorker extends  Thread
         {
             if (tries > maxRetries)
             {
-                if (proxy!=null)
+                if (proxy != null)
                 {
                     changeIp();
                 }
-                return readUrl(url, proxy, readTimeoutSeconds, connectTimeoutSeconds, tries+1, maxRetries);
-            }
-            else
+                return readUrl(url, proxy, readTimeoutSeconds, connectTimeoutSeconds, tries + 1, maxRetries);
+            } else
             {
                 throw e;
             }
@@ -194,6 +195,7 @@ abstract public class ProxyWorker extends  Thread
 
     /**
      * Overwrite this if needed.
+     *
      * @return
      */
     public String getUserAgent()
@@ -201,16 +203,17 @@ abstract public class ProxyWorker extends  Thread
         return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0";
     }
 
-    public String readUrlWithProxy(String url)  throws Exception
+    public String readUrlWithProxy(String url) throws Exception
     {
-        return readUrl(url, proxy, 20,20,0,0);
+        return readUrl(url, proxy, 20, 20, 0, 0);
     }
 
     public void run()
     {
         try
         {
-            if (manager == null) {
+            if (manager == null)
+            {
                 System.out.println("Manager is null");
                 System.exit(0);
             }
@@ -227,7 +230,7 @@ abstract public class ProxyWorker extends  Thread
 
             while (true)
             {
-                if (!isActive)
+                if (!isActive || !isReady)
                 {
                     Thread.sleep(5000);
                     continue;
@@ -257,7 +260,7 @@ abstract public class ProxyWorker extends  Thread
         try
         {
             URL oracle = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection )oracle.openConnection(proxy);
+            HttpURLConnection connection = (HttpURLConnection) oracle.openConnection(proxy);
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
 
@@ -269,8 +272,7 @@ abstract public class ProxyWorker extends  Thread
                 //GZIPInputStream  gzip = new GZIPInputStream (new ByteArrayInputStream (tBytes));
                 GZIPInputStream gzis = new GZIPInputStream(connection.getInputStream());
                 is = gzis;
-            }
-            else
+            } else
             {
                 is = connection.getInputStream();
             }
@@ -311,24 +313,47 @@ abstract public class ProxyWorker extends  Thread
 
     void sleepSeconds(int seconds)
     {
-        try {
-            Thread.sleep(seconds*1000);
-        } catch (Exception e) {
+        try
+        {
+            Thread.sleep(seconds * 1000);
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
     public abstract void shutDown();
 
-    public synchronized  void _shutDown()
+    public synchronized void _shutDown()
     {
         isActive = false;
         shutDown();
 
     }
 
+    public boolean isActive()
+    {
+        return isActive;
+    }
+
+    public void setActive(boolean active)
+    {
+        isActive = active;
+    }
+
     public void simpleLog(String message)
     {
         this.manager.simpleLog(message);
+    }
+
+    public boolean isReady()
+    {
+        return isReady;
+    }
+
+    public void setReady(boolean ready)
+    {
+        isReady = ready;
     }
 }

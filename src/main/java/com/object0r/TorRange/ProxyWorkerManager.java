@@ -63,12 +63,17 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     worker.start();
                     workers.add(worker);
                     allWorkers.add(worker);
+                    Thread.sleep(100);
                 }
                 catch (InvocationTargetException e)
                 {
                     e.printStackTrace();
                 }
                 catch (NoSuchMethodException e)
+                {
+                    e.printStackTrace();
+                }
+                catch (InterruptedException e)
                 {
                     e.printStackTrace();
                 }

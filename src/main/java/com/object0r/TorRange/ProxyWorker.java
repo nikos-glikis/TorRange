@@ -16,17 +16,21 @@ abstract public class ProxyWorker extends Thread
 
     //weather or not the worker is active
     protected boolean isActive = true;
-
-    //if the worker is ready to start processing things
+    //if the worker is ready to start processing things (for example false if waiting for tor to connect)
     protected boolean isReady = true;
+    private boolean isTurnedOff = false;
 
-    protected int id;
+    /**
+     * Used to check from manager if thread is running. Only for manager checks. Does not mean anything.
+     */
+    private boolean isIdle = false;
 
-    public ProxyWorker(ProxyWorkerManager manager, int id)
+    protected int workerId;
+
+    public ProxyWorker(ProxyWorkerManager manager, int workerId)
     {
         this.manager = manager;
-        manager.registerWorker(this);
-        this.id = id;
+        this.workerId = workerId;
     }
 
     public Proxy getProxy()
@@ -64,7 +68,6 @@ abstract public class ProxyWorker extends Thread
                 {
                     try
                     {
-
                         try
                         {
                             SocketAddress addr = new InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
@@ -77,7 +80,7 @@ abstract public class ProxyWorker extends Thread
                             {
                                 sc.nextLine();
                             }
-                            System.out.println("Tor (" + id + ") is up and running.");
+                            System.out.println("Tor (" + workerId + ") is up and running.");
                             isReady = true;
                             break;
                         }
@@ -117,7 +120,8 @@ abstract public class ProxyWorker extends Thread
         if (manager.useProxy)
         {
             proxy = proxyConnection.getProxy();
-        } else
+        }
+        else
         {
             //SocketAddress addr = new InetSocketAddress("127.0.0.1", proxyConnection.getSocksPort());
             proxy = Proxy.NO_PROXY;
@@ -129,7 +133,8 @@ abstract public class ProxyWorker extends Thread
         if (manager.useProxy)
         {
             return readUrl(url, proxy);
-        } else
+        }
+        else
         {
             return readUrl(url, null);
         }
@@ -150,7 +155,8 @@ abstract public class ProxyWorker extends Thread
             if (proxy != null)
             {
                 connection = website.openConnection(proxy);
-            } else
+            }
+            else
             {
                 connection = website.openConnection();
             }
@@ -179,7 +185,8 @@ abstract public class ProxyWorker extends Thread
                     changeIp();
                 }
                 return readUrl(url, proxy, readTimeoutSeconds, connectTimeoutSeconds, tries + 1, maxRetries);
-            } else
+            }
+            else
             {
                 throw e;
             }
@@ -217,7 +224,7 @@ abstract public class ProxyWorker extends Thread
                 System.out.println("Manager is null");
                 System.exit(0);
             }
-            manager.increaseThreadCount();
+
             if (manager.useProxy)
             {
                 changeIp();
@@ -228,7 +235,7 @@ abstract public class ProxyWorker extends Thread
                 initProxy();
             }
 
-            while (true)
+            while (!isTurnedOff)
             {
                 if (!isActive || !isReady)
                 {
@@ -242,6 +249,8 @@ abstract public class ProxyWorker extends Thread
                     Thread.sleep(60000000);
                 }
             }
+            interrupt();
+
         }
         catch (Exception e)
         {
@@ -272,7 +281,8 @@ abstract public class ProxyWorker extends Thread
                 //GZIPInputStream  gzip = new GZIPInputStream (new ByteArrayInputStream (tBytes));
                 GZIPInputStream gzis = new GZIPInputStream(connection.getInputStream());
                 is = gzis;
-            } else
+            }
+            else
             {
                 is = connection.getInputStream();
             }
@@ -328,8 +338,10 @@ abstract public class ProxyWorker extends Thread
     public synchronized void _shutDown()
     {
         isActive = false;
+        isTurnedOff = true;
+        isReady = false;
         shutDown();
-
+        interrupt();
     }
 
     public boolean isActive()
@@ -355,5 +367,20 @@ abstract public class ProxyWorker extends Thread
     public void setReady(boolean ready)
     {
         isReady = ready;
+    }
+
+    public boolean isIdle()
+    {
+        return isIdle;
+    }
+
+    public void setIdle(boolean idle)
+    {
+        isIdle = idle;
+    }
+
+    public int getWorkerId()
+    {
+        return workerId;
     }
 }

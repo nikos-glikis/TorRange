@@ -22,7 +22,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     EntriesRange currentRange;
     protected long totalEntriesCount;
     protected DB doneRanges;
-    public int saveEvery = 300;
+
 
     public ProxyRangeWorkerManager(String iniFilename, Class workerClass)
     {
@@ -33,6 +33,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
         //createTorScript();
     }
+
 
     void readTorRangeOptions(String iniFilename)
     {
@@ -89,7 +90,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 e.printStackTrace();
             }
-            System.out.println("Save Every value is: " + saveEvery);
+            System.out.println("Save Every value is: " + getSaveEvery());
         }
         catch (Exception e)
         {
@@ -155,27 +156,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         doneRanges.put(range.toString(), "true");
     }
 
-    public void saveCurrentEntry()
-    {
-        saveCurrentEntry(currentEntry + "");
-    }
 
-    public void saveCurrentEntry(String currentEntry)
-    {
-        System.out.println("Saving Current Number: " + currentEntry);
-        state.put(LATEST_ENTRY, currentEntry);
-        PrintWriter pr = null;
-        try
-        {
-            pr = new PrintWriter("sessions/" + session + "/latest.txt");
-            pr.println(currentEntry);
-            pr.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Override this when needed.
@@ -220,7 +201,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             currentEntry = currentRange.getStart();
             saveCurrentEntry();
         }
-        if (currentEntry % (saveEvery) == (this.saveEvery - 1))
+        if (currentEntry % (getSaveEvery()) == (this.getSaveEvery() - 1))
         {
             saveCurrentEntry();
         }
@@ -293,7 +274,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     private void updateCurrentRange()
     {
-        System.out.println("CurrentPhoneRange does not exist, new start.");
+        System.out.println("CurrentRange does not exist, new start.");
         boolean found = false;
         for (EntriesRange range : ranges)
         {

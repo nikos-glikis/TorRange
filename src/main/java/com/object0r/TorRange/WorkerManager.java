@@ -11,8 +11,11 @@ import java.util.Vector;
 abstract public class WorkerManager extends Thread implements IWorkerManager
 {
     Vector<ProxyWorker> workers = new Vector<ProxyWorker>();
+    Vector<ProxyWorker> allWorkers = new Vector<ProxyWorker>();
+
     abstract public int exitInSeconds();
-    protected boolean exiting= false;
+
+    protected boolean exiting = false;
     //Automatic Report Interval in seconds
     long reportEverySeconds = Long.MAX_VALUE;
 
@@ -20,22 +23,25 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
     public WorkerManager()
     {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            public void run() {
+        Runtime.getRuntime().addShutdownHook(new Thread()
+        {
+            public void run()
+            {
                 try
                 {
                     System.out.println("\nExiting in " + exitInSeconds() + " seconds.");
                     exiting = true;
-                    for (final ProxyWorker worker: workers)
+                    for (final ProxyWorker worker : workers)
                     {
-                        new Thread() {
+                        new Thread()
+                        {
                             public void run()
                             {
                                 try
                                 {
                                     worker._shutDown();
                                 }
-                                catch (Exception e )
+                                catch (Exception e)
                                 {
 
                                 }
@@ -57,17 +63,21 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
         new Thread()
         {
-            public void run() {
-                try {
+            public void run()
+            {
+                try
+                {
 
-                    while (true) {
-
+                    while (true)
+                    {
                         BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
                         read.read();
                         //Thread.sleep(10000);
                         printReport();
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -75,7 +85,8 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
         new Thread()
         {
-            public void run() {
+            public void run()
+            {
                 try
                 {
                     while (true)
@@ -83,7 +94,9 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                         Thread.sleep(reportEverySeconds);
                         printReport();
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -95,24 +108,5 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
         printGeneralReport();
     }
 
-    public void printGeneralReport()
-    {
-        ConsoleColors.printCyan("Active Thread Count: " + ProxyWorkerManager.getActiveThreadCount());
-
-        double percentage;
-        if (getTotalJobsCount() == 0)
-        {
-            percentage = 0;
-        }
-        else
-        {
-            percentage = ((getDoneCount()+0.0)*100)/ getTotalJobsCount();
-        }
-
-        DecimalFormat df = new DecimalFormat("#.00");
-
-        ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
-    }
-
-
+    abstract void printGeneralReport();
 }

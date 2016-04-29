@@ -2,15 +2,17 @@ package com.object0r.TorRange.applications.bruteforce;
 
 
 import com.object0r.TorRange.ProxyRangeWorkerManager;
+import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.helpers.BruteForcer;
 
 import java.io.FileInputStream;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class BruteForceWorkerManager extends ProxyRangeWorkerManager
+public class BruteForceWorkerManager extends ProxyWorkerManager
 {
-    Vector<BruteForcer> bruteForcers ;
+    Vector<BruteForcer> bruteForcers;
+
     public BruteForceWorkerManager(String iniFilename, Class workerClass)
     {
         super(iniFilename, workerClass);
@@ -21,13 +23,15 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
     {
 
     }
+
     static long globalCounter = 0;
+
     public synchronized String getNextEntry()
     {
         String returnString = "";
         try
         {
-            for (int i = bruteForcers.size()-1;  i >=0; i--)
+            for (int i = bruteForcers.size() - 1; i >= 0; i--)
             {
                 BruteForcer bruteForcer = bruteForcers.get(i);
                 if (!bruteForcer.getNext().equals(""))
@@ -37,18 +41,18 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
                 else
                 {
                     bruteForcer.reset();
-                    if (i==0)
+                    if (i == 0)
                     {
                         System.out.println("Brute brute force keywords has ended. Dying in 120 secods");
                         prepareForExit();
-                        System.out.println("Global Counter: "+globalCounter);
+                        System.out.println("Global Counter: " + globalCounter);
                         Thread.sleep(120000);
                         System.exit(0);
                     }
                 }
             }
             globalCounter++;
-            if (globalCounter % (this.saveEvery) ==(this.saveEvery-1))
+            if (globalCounter % (this.getSaveEvery()) == (this.getSaveEvery()- 1))
             {
                 saveCurrentEntry(getCurrentJoinedString());
             }
@@ -69,39 +73,39 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
         {
             bruteForcers = new Vector<BruteForcer>();
             boolean foundAtLeastOne = false;
-            for (int i = 1; i<100; i++)
+            for (int i = 1; i < 100; i++)
             {
 
-                String characters = this.getIniValue("bruteforce","characters"+i);
+                String characters = this.getIniValue("bruteforce", "characters" + i);
                 if (characters == null)
                 {
                     break;
                 }
                 foundAtLeastOne = true;
-                String minLength = this.getIniValue("bruteforce","minimumlength"+i);
+                String minLength = this.getIniValue("bruteforce", "minimumlength" + i);
                 if (minLength == null)
                 {
                     minLength = "1";
                 }
-                String maxLength = this.getIniValue("bruteforce","maximumlength"+i);
-                if (maxLength  == null)
+                String maxLength = this.getIniValue("bruteforce", "maximumlength" + i);
+                if (maxLength == null)
                 {
                     maxLength = "100";
                 }
 
-                if (Integer.parseInt(minLength)> Integer.parseInt(maxLength))
+                if (Integer.parseInt(minLength) > Integer.parseInt(maxLength))
                 {
                     throw new Exception("Error, MinLength more than MaxLength");
                 }
 
                 BruteForcer bruteForcer = new BruteForcer(characters, Integer.parseInt(minLength), Integer.parseInt(maxLength));
 
-                String start = this.getIniValue("bruteforce","start"+i);
-                if (start!=null)
+                String start = this.getIniValue("bruteforce", "start" + i);
+                if (start != null)
                 {
                     bruteForcer.setStart(start);
                 }
-                bruteForcers.add(i-1,bruteForcer);
+                bruteForcers.add(i - 1, bruteForcer);
             }
 
             if (!foundAtLeastOne)
@@ -125,8 +129,20 @@ public class BruteForceWorkerManager extends ProxyRangeWorkerManager
         String currentJoinedString = "";
         for (BruteForcer bruteforce : bruteForcers)
         {
-            currentJoinedString = currentJoinedString+bruteforce.toString();
+            currentJoinedString = currentJoinedString + bruteforce.toString();
         }
         return currentJoinedString;
+    }
+
+    @Override
+    public long getDoneCount()
+    {
+        return 0;
+    }
+
+    @Override
+    public long getTotalJobsCount()
+    {
+        return 0;
     }
 }

@@ -7,8 +7,8 @@ public class main
         //run this with wordlistconsumer as input
         /**
          * Requires:
-             [wordlist]
-             passwordfile=C:\\wordlists\\rockyou.txt
+         [wordlist]
+         passwordfile=C:\\wordlists\\rockyou.txt
 
          In ini.
          */

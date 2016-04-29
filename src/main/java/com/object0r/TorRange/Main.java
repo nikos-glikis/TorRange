@@ -1,7 +1,8 @@
 package com.object0r.TorRange;
 
 
-public class Main {
+public class Main
+{
 
     public static void main(String[] args)
     {

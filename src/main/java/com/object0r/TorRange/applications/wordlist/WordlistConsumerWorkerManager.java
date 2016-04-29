@@ -63,7 +63,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
             }
             System.exit(0);
         }
-        if (globalCounter++ % saveEvery == saveEvery-1)
+        if (globalCounter++ % saveEvery == saveEvery - 1)
         {
             saveCurrentEntryWordlist(returnString);
         }

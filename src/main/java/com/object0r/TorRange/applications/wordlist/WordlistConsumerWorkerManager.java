@@ -2,18 +2,15 @@ package com.object0r.TorRange.applications.wordlist;
 
 import com.object0r.TorRange.EntriesRange;
 import com.object0r.TorRange.ProxyRangeWorkerManager;
-import org.ini4j.Ini;
 
 import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
 
-import static java.util.UUID.randomUUID;
-
 public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
 {
-    private final String LATEST_ENTRY_WORDLIST = "lates_entry_wordlist";
-    private String passwordFile;
+    private final String LATEST_ENTRY_WORDLIST = "latest_entry_wordlist";
+    private String wordlistFile;
 
     public WordlistConsumerWorkerManager(String iniFilename)
     {
@@ -26,7 +23,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
 
     }
 
-    Scanner passwordListScanner = null;
+    Scanner wordListScanner = null;
     static int globalCounter = 0;
 
     public synchronized String getNextEntry()
@@ -35,21 +32,21 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         try
         {
             int entry = Integer.parseInt(torRangeNextEntry());
-            if (passwordListScanner == null)
+            if (wordListScanner == null)
             {
-                passwordListScanner = new Scanner(new FileInputStream(passwordFile));
+                wordListScanner = new Scanner(new FileInputStream(wordlistFile));
                 if (entry - 50 < 0)
                 {
                     entry = 50;
                 }
                 for (int i = 0; i < entry - 50; i++)
                 {
-                    passwordListScanner.nextLine();
+                    wordListScanner.nextLine();
                 }
             }
-            if (passwordListScanner.hasNext())
+            if (wordListScanner.hasNext())
             {
-                returnString = passwordListScanner.nextLine();
+                returnString = wordListScanner.nextLine();
             }
         }
         catch (Exception e)
@@ -95,7 +92,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
     {
         try
         {
-            passwordFile = this.getIniValue("wordlist", "passwordfile");
+            wordlistFile = this.getIniValue("wordlist", "passwordfile");
 
         }
         catch (Exception e)
@@ -105,28 +102,28 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         }
     }
 
-    public String getPasswordFile()
+    public String getWordlistFile()
     {
-        return passwordFile;
+        return wordlistFile;
     }
 
-    public void setPasswordFile(String passwordFile)
+    public void setWordlistFile(String wordlistFile)
     {
-        this.passwordFile = passwordFile;
+        this.wordlistFile = wordlistFile;
     }
 
     public synchronized Vector<EntriesRange> getUserRanges()
     {
         Vector<EntriesRange> entriesRanges = new Vector<EntriesRange>();
-        System.out.println("Wordlist is: " + passwordFile);
-        if (!new File(passwordFile).exists())
+        System.out.println("Wordlist is: " + wordlistFile);
+        if (!new File(wordlistFile).exists())
         {
-            System.out.println("Given wordlist file does not exist: " + passwordFile);
+            System.out.println("Given wordlist file does not exist: " + wordlistFile);
             System.exit(0);
         }
         try
         {
-            BufferedReader reader = new BufferedReader(new FileReader(passwordFile));
+            BufferedReader reader = new BufferedReader(new FileReader(wordlistFile));
             int lines = 0;
             while (reader.readLine() != null)
             {

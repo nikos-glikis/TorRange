@@ -105,14 +105,6 @@ abstract public class ProxyWorker extends Thread
             }
         };
         t.start();
-        try
-        {
-            t.join();
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
     }
 
     public void initProxy()

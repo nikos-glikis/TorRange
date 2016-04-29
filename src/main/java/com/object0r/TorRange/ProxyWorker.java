@@ -248,6 +248,7 @@ abstract public class ProxyWorker extends  Thread
 
     public ReadUrlResult resilientReadUrl(String url)
     {
+
         //TODO research what happens in https redirect, and www
         //System.out.print(".");
         String contents = null;
@@ -257,7 +258,8 @@ abstract public class ProxyWorker extends  Thread
         {
             URL oracle = new URL(url);
             HttpURLConnection connection = (HttpURLConnection )oracle.openConnection(proxy);
-
+            connection.setReadTimeout(15000);
+            connection.setConnectTimeout(15000);
 
             InputStream is;
             if (connection.getHeaderField("Content-Encoding") != null && connection.getHeaderField("Content-Encoding").equals("gzip"))

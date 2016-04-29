@@ -410,7 +410,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
             pr = new PrintWriter(new FileOutputStream("log.txt", true));
             pr.println(logMessage + entry);
-            pr.print("Result page saved in: " + f.getAbsolutePath());
+            pr.println("Result page saved in: " + f.getAbsolutePath());
+            pr.println();
             pr.close();
             //String file = folder +"/"++".htm";
         }

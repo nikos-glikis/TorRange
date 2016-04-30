@@ -14,7 +14,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     private static final String LOG_FILE = "log.txt";
     String prefix;
 
-    protected DB state;
     int exitSeconds;
     private static final String LATEST_ENTRY = "LATEST_ENTRY";
 

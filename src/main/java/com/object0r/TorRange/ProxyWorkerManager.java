@@ -68,7 +68,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     worker.start();
                     workers.add(worker);
                     allWorkers.add(worker);
-                    Thread.sleep(100);
+                    Thread.sleep(200);
                 }
                 catch (InvocationTargetException e)
                 {
@@ -137,6 +137,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                             {
                                 workers.get(i)._shutDown();
                                 ProxyWorker newWorker = getNewWorker(workers.get(i).getWorkerId());
+                                newWorker.start();
                                 allWorkers.add(newWorker);
                                 workers.set(i, newWorker);
                             }

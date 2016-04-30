@@ -195,10 +195,14 @@ public class TorConnection extends ProxyConnection
             {
                /* System.out.println("Pid is: " + getTorPid());
                 System.out.println(com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()));*/
-                if (!com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()))
+                long torPid = getTorPid();
+                if (torPid != -1)
                 {
-                    System.out.println("Tor is not running. Reconnecting ...");
-                    connect();
+                    if (!com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()))
+                    {
+                        System.out.println("Tor is not running. Reconnecting ...");
+                        connect();
+                    }
                 }
             }
             catch (Exception e)

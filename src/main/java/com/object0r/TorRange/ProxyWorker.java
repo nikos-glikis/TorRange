@@ -53,6 +53,52 @@ abstract public class ProxyWorker extends Thread
         initProxy();
     }
 
+    public void run()
+    {
+        try
+        {
+            if (manager == null)
+            {
+                System.out.println("Manager is null");
+                System.exit(0);
+            }
+
+            if (manager.useProxy)
+            {
+                changeIp();
+            }
+
+            if (proxy == null)
+            {
+                initProxy();
+            }
+
+            while (!isTurnedOff)
+            {
+                if (!isActive || !isReady)
+                {
+                    Thread.sleep(5000);
+                    continue;
+                }
+
+                String nextToProcess = manager.getNextEntry();
+                setIdle(false);
+                process(nextToProcess);
+                setIdle(false);
+                if (manager.exiting)
+                {
+                    Thread.sleep(60000000);
+                }
+            }
+            interrupt();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void verifyTor(final boolean killOld)
     {
         Thread t = new Thread()
@@ -207,48 +253,6 @@ abstract public class ProxyWorker extends Thread
         return readUrl(url, proxy, 20, 20, 0, 0);
     }
 
-    public void run()
-    {
-        try
-        {
-            if (manager == null)
-            {
-                System.out.println("Manager is null");
-                System.exit(0);
-            }
-
-            if (manager.useProxy)
-            {
-                changeIp();
-            }
-
-            if (proxy == null)
-            {
-                initProxy();
-            }
-
-            while (!isTurnedOff)
-            {
-                if (!isActive || !isReady)
-                {
-                    Thread.sleep(5000);
-                    continue;
-                }
-                String nextToProcess = manager.getNextEntry();
-                process(nextToProcess);
-                if (manager.exiting)
-                {
-                    Thread.sleep(60000000);
-                }
-            }
-            interrupt();
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     public ReadUrlResult resilientReadUrl(String url)
     {

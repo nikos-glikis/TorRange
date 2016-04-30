@@ -23,7 +23,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
     protected String iniFilename = "";
-    long secondsBetweenIdleChecks = 120;
+    long secondsBetweenIdleChecks = 180;
 
     public int saveEvery = 300;
 
@@ -109,7 +109,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     //Check every 15 minutes.
                     try
                     {
-                        Thread.sleep(900*1000);
+                        Thread.sleep(100*1000);
                     }
                     catch (InterruptedException e)
                     {

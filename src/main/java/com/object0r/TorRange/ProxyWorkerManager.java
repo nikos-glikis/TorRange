@@ -30,6 +30,9 @@ public abstract class ProxyWorkerManager extends WorkerManager
     //How often to check for idle workers.
     long minutesBetweenIdleThreadChecks = 10;
 
+
+    long msSleepBetweenWorkersStart = 200;
+
     public int saveEvery = 300;
 
     long currentEntry;
@@ -68,7 +71,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     worker.start();
                     workers.add(worker);
                     allWorkers.add(worker);
-                    Thread.sleep(200);
+                    Thread.sleep(msSleepBetweenWorkersStart);
                 }
                 catch (InvocationTargetException e)
                 {
@@ -140,6 +143,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                                 newWorker.start();
                                 allWorkers.add(newWorker);
                                 workers.set(i, newWorker);
+                                Thread.sleep(msSleepBetweenWorkersStart);
                             }
                         }
                     }

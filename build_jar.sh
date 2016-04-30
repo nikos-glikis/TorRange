@@ -1,1 +1,1 @@
-mvn clean compile assembly:singlemvn clean compile assembly:single
+mvn clean compile assembly:single

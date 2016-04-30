@@ -103,8 +103,18 @@ public abstract class ProxyWorkerManager extends WorkerManager
         {
             public void run()
             {
+
                 while (true)
                 {
+                    //Check every 15 minutes.
+                    try
+                    {
+                        Thread.sleep(900*1000);
+                    }
+                    catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
                     try
                     {
                         for (int i = 0; i < workers.size(); i++)

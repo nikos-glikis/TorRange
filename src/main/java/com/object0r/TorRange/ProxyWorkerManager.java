@@ -23,7 +23,12 @@ public abstract class ProxyWorkerManager extends WorkerManager
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
     protected String iniFilename = "";
+
+    //Sleep period between marking as idle, and rechecking if it is idle.
     long secondsBetweenIdleChecks = 180;
+
+    //How often to check for idle workers.
+    long minutesBetweenIdleThreadChecks = 10;
 
     public int saveEvery = 300;
 
@@ -97,6 +102,10 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return workerClass.getConstructor(ProxyWorkerManager.class, int.class).newInstance(this, i);
     }
 
+    /**
+     * This stops all idle workers and replaces them with new.
+     * //TODO reprocess frozen entries.
+     */
     private void startIdleWorkersCheck()
     {
         new Thread()
@@ -106,10 +115,10 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
                 while (true)
                 {
-                    //Check every 15 minutes.
+                    //Check every 10 minutes.
                     try
                     {
-                        Thread.sleep(100*1000);
+                        Thread.sleep(minutesBetweenIdleThreadChecks*60*1000);
                     }
                     catch (InterruptedException e)
                     {

@@ -84,7 +84,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     e.printStackTrace();
                 }
 
-                state = new DB(session, "state");
+                //state = new DB(session, "state");
             }
             catch (Exception e)
             {

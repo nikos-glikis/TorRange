@@ -5,9 +5,6 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.Vector;
 
-/**
- * Created by User on 28/2/2016.
- */
 abstract public class WorkerManager extends Thread implements IWorkerManager
 {
     Vector<ProxyWorker> workers = new Vector<ProxyWorker>();

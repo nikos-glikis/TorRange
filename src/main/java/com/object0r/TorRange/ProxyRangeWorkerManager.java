@@ -144,7 +144,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         return totalEntriesCount;
     }
 
-
     boolean isRangeDone(EntriesRange range)
     {
         String done = doneRanges.get(range.toString());
@@ -155,8 +154,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         doneRanges.put(range.toString(), "true");
     }
-
-
 
     /**
      * Override this when needed.
@@ -226,7 +223,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         try
         {
-
             Scanner sc = new Scanner(new FileInputStream(filename));
             while (sc.hasNext())
             {
@@ -393,7 +389,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
         catch (Exception e)
         {
-
+            e.printStackTrace();
         }
     }
 

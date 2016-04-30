@@ -442,6 +442,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         DecimalFormat df = new DecimalFormat("#.00");
 
         ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
+        ConsoleColors.printCyan("allWorkers count: "+allWorkers.size());
     }
 
     public void saveCurrentEntry()

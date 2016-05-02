@@ -191,7 +191,7 @@ In pom.xml - replace {version} with version for examle, 1.0.3
         <dependency>
             <groupId>com.object0r</groupId>
             <artifactId>TorRange</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
         
         

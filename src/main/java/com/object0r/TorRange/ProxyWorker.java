@@ -1,6 +1,10 @@
 package com.object0r.TorRange;
 
 
+import com.object0r.TorRange.connections.ProxyConnection;
+import com.object0r.TorRange.connections.TorConnection;
+import com.object0r.TorRange.datatypes.ProxyInfo;
+import com.object0r.TorRange.datatypes.ReadUrlResult;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;

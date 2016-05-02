@@ -1,5 +1,7 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.connections;
 
+
+import com.object0r.TorRange.datatypes.ProxyInfo;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;

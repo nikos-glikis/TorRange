@@ -1,8 +1,7 @@
 package com.object0r.TorRange.applications.wordlist;
 
-import com.object0r.TorRange.EntriesRange;
+import com.object0r.TorRange.datatypes.EntriesRange;
 import com.object0r.TorRange.ProxyRangeWorkerManager;
-import com.object0r.TorRange.ProxyWorker;
 
 import java.io.*;
 import java.util.Scanner;

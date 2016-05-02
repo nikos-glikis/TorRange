@@ -1,8 +1,7 @@
 package com.object0r.TorRange;
 
 
-import java.net.*;
-import java.util.Scanner;
+import com.object0r.TorRange.connections.TorConnection;
 
 abstract public class TorWorker extends ProxyWorker
 {

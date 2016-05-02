@@ -1,4 +1,4 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.helpers;
 
 @Deprecated
 public class Utilities extends com.object0r.toortools.Utilities

@@ -1,5 +1,9 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.connections;
 
+import com.object0r.TorRange.helpers.CommandRunner;
+import com.object0r.TorRange.datatypes.OsCommandOutput;
+import com.object0r.TorRange.db.OsHelper;
+import com.object0r.TorRange.datatypes.ProxyInfo;
 import com.object0r.toortools.Utilities;
 
 import java.io.*;

@@ -1,4 +1,4 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.db;
 
 import org.apache.commons.io.FileUtils;
 import org.iq80.leveldb.DB;

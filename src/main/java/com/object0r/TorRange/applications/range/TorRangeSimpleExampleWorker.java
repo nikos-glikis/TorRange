@@ -1,4 +1,7 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.applications.range;
+
+import com.object0r.TorRange.ProxyWorkerManager;
+import com.object0r.TorRange.TorWorker;
 
 public class TorRangeSimpleExampleWorker extends TorWorker
 {

@@ -1,5 +1,7 @@
 package com.object0r.TorRange;
 
+import com.object0r.TorRange.datatypes.EntriesRange;
+import com.object0r.TorRange.db.DB;
 import org.ini4j.Ini;
 
 import java.io.*;

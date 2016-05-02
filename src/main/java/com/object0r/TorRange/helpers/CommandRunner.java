@@ -1,4 +1,4 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.helpers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

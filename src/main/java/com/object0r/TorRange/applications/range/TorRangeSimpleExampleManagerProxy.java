@@ -1,5 +1,6 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.applications.range;
 
+import com.object0r.TorRange.ProxyRangeWorkerManager;
 import org.ini4j.Ini;
 
 import java.io.File;

@@ -1,4 +1,6 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.db;
+
+import com.object0r.TorRange.datatypes.OsCommandOutput;
 
 public class OsHelper
 {

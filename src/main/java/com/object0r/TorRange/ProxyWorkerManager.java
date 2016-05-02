@@ -1,5 +1,7 @@
 package com.object0r.TorRange;
 
+import com.object0r.TorRange.db.DB;
+import com.object0r.TorRange.helpers.ConsoleColors;
 import org.ini4j.Ini;
 
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.db;
 
 import java.util.ArrayList;
 import java.util.HashMap;

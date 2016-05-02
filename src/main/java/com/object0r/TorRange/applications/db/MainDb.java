@@ -1,5 +1,8 @@
-package com.object0r.TorRange;
+package com.object0r.TorRange.applications.db;
 
+
+import com.object0r.TorRange.ProxyWorkerManager;
+import com.object0r.TorRange.applications.range.TorRangeSimpleExampleWorker;
 
 public class MainDb
 {

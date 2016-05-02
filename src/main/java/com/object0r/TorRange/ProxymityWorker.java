@@ -1,6 +1,8 @@
 package com.object0r.TorRange;
 
 
+import com.object0r.TorRange.connections.ProxymityConnection;
+
 import java.sql.Connection;
 
 abstract public class ProxymityWorker  extends ProxyWorker

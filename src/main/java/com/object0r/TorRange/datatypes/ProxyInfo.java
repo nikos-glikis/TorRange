@@ -1,8 +1,8 @@
 package com.object0r.TorRange.datatypes;
 
-public class ProxyInfo
+public class ProxyInfo extends  com.object0r.toortools.datatypes.ProxyInfo
 {
-    final static public String PROXY_TYPES_SOCKS4 = "socks4";
+   /* final static public String PROXY_TYPES_SOCKS4 = "socks4";
     final static public String PROXY_TYPES_SOCKS5 = "socks5";
     final static public String PROXY_TYPES_HTTP = "http";
     final static public String PROXY_TYPES_HTTPS = "https";
@@ -64,5 +64,5 @@ public class ProxyInfo
     public String toString()
     {
         return host + ":"+port+"/"+type;
-    }
+    }*/
 }

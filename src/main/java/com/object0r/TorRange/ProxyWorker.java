@@ -5,6 +5,7 @@ import com.object0r.TorRange.connections.ProxyConnection;
 import com.object0r.TorRange.connections.TorConnection;
 import com.object0r.TorRange.datatypes.ProxyInfo;
 import com.object0r.TorRange.datatypes.ReadUrlResult;
+import com.object0r.toortools.http.HttpRequestInformation;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -382,5 +383,16 @@ abstract public class ProxyWorker extends Thread
     public int getWorkerId()
     {
         return workerId;
+    }
+
+    /**
+     * Returns a new com.object0r.toortools.http.HttpRequestInformation object armed with the proxy.
+     * @return
+     */
+    public HttpRequestInformation getNewHttpRequestInformation()
+    {
+        HttpRequestInformation httpRequestInformation = new HttpRequestInformation();
+        httpRequestInformation.setProxy(getProxy());
+        return httpRequestInformation;
     }
 }

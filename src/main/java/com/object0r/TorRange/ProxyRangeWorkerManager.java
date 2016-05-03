@@ -307,9 +307,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             try
             {
                 entry = Long.parseLong(latestPhoneString) - 50;
-                if (entry < 0)
+                if (entry < 1)
                 {
-                    entry = 0;
+                    entry = 1;
                 }
             }
             catch (Exception e)

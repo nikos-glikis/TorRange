@@ -117,41 +117,36 @@ abstract public class ProxyWorker extends Thread
                 }
                 while (true)
                 {
+
                     try
                     {
-                        try
+                        SocketAddress addr = new InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
+                        //Try to connect.
+                        //Stops here until connection is established.
+                        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+                        URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
+                        Scanner sc = new Scanner(uc.getInputStream());
+                        while (sc.hasNext())
                         {
-                            SocketAddress addr = new InetSocketAddress("localhost", ((TorConnection) proxyConnection).getSocksPort());
-                            //Try to connect.
-                            //Stops here until connection is established.
-                            Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
-                            URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
-                            Scanner sc = new Scanner(uc.getInputStream());
-                            while (sc.hasNext())
-                            {
-                                sc.nextLine();
-                            }
-                            System.out.println("Tor (" + workerId + ") is up and running.");
-                            isReady = true;
-                            break;
+                            sc.nextLine();
                         }
-                        catch (Exception e)
-                        {
-                            //e.printStackTrace();
-                            System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
-                            try
-                            {
-                                Thread.sleep(5000);
-                            }
-                            catch (Exception ee)
-                            {
-                            }
-                        }
+                        System.out.println("Tor (" + workerId + ") is up and running.");
+                        isReady = true;
+                        break;
                     }
                     catch (Exception e)
                     {
-                        System.out.println(e.toString());
+                        //e.printStackTrace();
+                        System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
+                        try
+                        {
+                            Thread.sleep(5000);
+                        }
+                        catch (Exception ee)
+                        {
+                        }
                     }
+
                 }
             }
         };
@@ -387,6 +382,7 @@ abstract public class ProxyWorker extends Thread
 
     /**
      * Returns a new com.object0r.toortools.http.HttpRequestInformation object armed with the proxy.
+     *
      * @return
      */
     public HttpRequestInformation getNewHttpRequestInformation()

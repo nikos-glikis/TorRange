@@ -152,7 +152,7 @@ public class TorConnection extends ProxyConnection
             {
                 e.printStackTrace();
             }
-
+            new CommandRunner("ulimit -n 999999", true);
         }
 
         //connect();

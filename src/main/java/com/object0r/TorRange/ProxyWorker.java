@@ -146,6 +146,7 @@ abstract public class ProxyWorker extends Thread
                         }
                         catch (Exception ee)
                         {
+                            ee.printStackTrace();
                         }
                     }
 
@@ -277,8 +278,7 @@ abstract public class ProxyWorker extends Thread
                 //System.out.println("Gzip ole");
                 byte[] buffer = new byte[1024];
                 //GZIPInputStream  gzip = new GZIPInputStream (new ByteArrayInputStream (tBytes));
-                GZIPInputStream gzis = new GZIPInputStream(connection.getInputStream());
-                is = gzis;
+                is = new GZIPInputStream(connection.getInputStream());
             }
             else
             {
@@ -385,7 +385,7 @@ abstract public class ProxyWorker extends Thread
     /**
      * Returns a new com.object0r.toortools.http.HttpRequestInformation object armed with the proxy.
      *
-     * @return
+     * @return returns HttpRequestInformation with proxy already set.
      */
     public HttpRequestInformation getNewHttpRequestInformation()
     {

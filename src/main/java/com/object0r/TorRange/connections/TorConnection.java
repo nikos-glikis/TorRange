@@ -1,8 +1,8 @@
 package com.object0r.TorRange.connections;
 
 import com.object0r.TorRange.helpers.CommandRunner;
-import com.object0r.TorRange.datatypes.OsCommandOutput;
-import com.object0r.TorRange.db.OsHelper;
+
+import com.object0r.toortools.os.OsHelper;
 import com.object0r.TorRange.datatypes.ProxyInfo;
 import com.object0r.toortools.Utilities;
 
@@ -175,6 +175,7 @@ public class TorConnection extends ProxyConnection
                     out.println("authenticate \"" + password + "\"");
                     out.println("signal shutdown");
                     out.println("quit");
+
                     out.close();
                 }
                 catch (Exception e)
@@ -187,6 +188,11 @@ public class TorConnection extends ProxyConnection
 
                 String command = "sh " + tmpDir + controlPort + ".exit";
                 OsHelper.runCommand(command);
+            }
+            try {
+                OsHelper.killProcessByPid(Long.parseLong(Utilities.readFile(pidFile).trim()));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         catch (Exception e)
@@ -236,7 +242,7 @@ public class TorConnection extends ProxyConnection
             {
 
                 String command = "sh " + tmpDir + controlPort;
-                OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
+                OsHelper.runCommandAndGetOutput(command);
             }
             proxy = getProxy();
             Thread.sleep(10000);

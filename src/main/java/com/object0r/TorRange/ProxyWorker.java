@@ -139,7 +139,7 @@ abstract public class ProxyWorker extends Thread
                     catch (Exception e)
                     {
                         //e.printStackTrace();
-                        System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
+                        //System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
                         try
                         {
                             Thread.sleep(5000);
@@ -191,7 +191,7 @@ abstract public class ProxyWorker extends Thread
         {
             URL website = new URL(url);
 
-            URLConnection connection = null;
+            URLConnection connection;
             if (proxy != null)
             {
                 connection = website.openConnection(proxy);
@@ -243,11 +243,11 @@ abstract public class ProxyWorker extends Thread
     /**
      * Overwrite this if needed.
      *
-     * @return
+     * @return String current viable user browser
      */
     public String getUserAgent()
     {
-        return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0";
+        return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0";
     }
 
     public String readUrlWithProxy(String url) throws Exception

@@ -18,10 +18,10 @@ public class DbProxyWorkerManagerExample extends DbProxyWorkerManager
     public void readOptions(String filename)
     {
         dbConnectionUrl = "jdbc:mysql://domain.com/dbName";
-        dbIdColumn= "id";
-        dbValuesTable= "table";
-        dbValueColumn= "column";
-        dbConnectionUsername= "root";
-        dbConnectionPassword= "";
+        dbIdColumn = "id";
+        dbValuesTable = "table";
+        dbValueColumn = "column";
+        dbConnectionUsername = "root";
+        dbConnectionPassword = "";
     }
 }

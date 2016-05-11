@@ -5,7 +5,7 @@ import com.object0r.TorRange.connections.ProxymityConnection;
 
 import java.sql.Connection;
 
-abstract public class ProxymityWorker  extends ProxyWorker
+abstract public class ProxymityWorker extends ProxyWorker
 {
     public ProxymityWorker(ProxyWorkerManager manager, int id, Connection dbConnection, String database)
     {

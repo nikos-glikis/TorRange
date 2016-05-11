@@ -125,6 +125,8 @@ abstract public class ProxyWorker extends Thread
                         //Stops here until connection is established.
                         Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
+                        uc.setReadTimeout(20000);
+                        uc.setConnectTimeout(20000);
                         Scanner sc = new Scanner(uc.getInputStream());
                         while (sc.hasNext())
                         {

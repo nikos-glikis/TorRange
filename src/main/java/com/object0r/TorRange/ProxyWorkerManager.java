@@ -123,7 +123,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     //Check every 10 minutes.
                     try
                     {
-                        Thread.sleep(minutesBetweenIdleThreadChecks*60*1000);
+                        Thread.sleep(minutesBetweenIdleThreadChecks * 60 * 1000);
                     }
                     catch (InterruptedException e)
                     {
@@ -190,8 +190,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public int getActiveThreadCount()
     {
-        int totalCount=0;
-        for (ProxyWorker proxyWorker: allWorkers)
+        int totalCount = 0;
+        for (ProxyWorker proxyWorker : allWorkers)
         {
             if (proxyWorker.isActive && proxyWorker.isReady && !proxyWorker.isInterrupted())
             {
@@ -434,7 +434,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void printGeneralReport()
     {
-        ConsoleColors.printCyan("Active Thread Count: " + getActiveThreadCount() );
+        ConsoleColors.printCyan("Active Thread Count: " + getActiveThreadCount());
 
         double percentage;
         if (getTotalJobsCount() == 0)
@@ -449,7 +449,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         DecimalFormat df = new DecimalFormat("#.00");
 
         ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
-        ConsoleColors.printCyan("allWorkers count: "+allWorkers.size());
+        ConsoleColors.printCyan("allWorkers count: " + allWorkers.size());
     }
 
     public void saveCurrentEntry()
@@ -473,6 +473,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
             e.printStackTrace();
         }
     }
+
     public int getSaveEvery()
     {
         return saveEvery;

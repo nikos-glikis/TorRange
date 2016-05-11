@@ -59,17 +59,7 @@ public class TorConnection extends ProxyConnection
             }
             String command = null;
 
-            if (new File(pidFile).exists())
-            {
-                try
-                {
-                    com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile).trim()));
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            killTorProcess();
 
             if (OsHelper.isLinux())
             {
@@ -100,6 +90,22 @@ public class TorConnection extends ProxyConnection
             e.printStackTrace();
         }
         return true;
+    }
+
+    private void killTorProcess()
+    {
+        if (new File(pidFile).exists())
+        {
+            try
+            {
+                com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile).trim()));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public TorConnection()
@@ -189,11 +195,7 @@ public class TorConnection extends ProxyConnection
                 String command = "sh " + tmpDir + controlPort + ".exit";
                 OsHelper.runCommand(command);
             }
-            try {
-                OsHelper.killProcessByPid(Long.parseLong(Utilities.readFile(pidFile).trim()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            killTorProcess();
         }
         catch (Exception e)
         {

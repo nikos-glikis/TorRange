@@ -45,17 +45,20 @@ abstract public class ProxyWorker extends Thread
 
     public void changeIp()
     {
-        proxyConnection.changeIp();
-        try
+        if (manager.useProxy())
         {
-            Thread.sleep(3000);
+            proxyConnection.changeIp();
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            verifyTor(false);
+            initProxy();
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        verifyTor(false);
-        initProxy();
     }
 
     public void run()

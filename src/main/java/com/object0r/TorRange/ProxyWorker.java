@@ -96,7 +96,6 @@ abstract public class ProxyWorker extends Thread
                 }
             }
             interrupt();
-
         }
         catch (Exception e)
         {
@@ -264,8 +263,7 @@ abstract public class ProxyWorker extends Thread
         //System.out.print(".");
         String contents = null;
         ReadUrlResult readUrlResult = new ReadUrlResult();
-        InputStream is = null;
-        BufferedReader in = null;
+
         try
         {
             URL oracle = new URL(url);
@@ -273,7 +271,7 @@ abstract public class ProxyWorker extends Thread
             connection.setReadTimeout(15000);
             connection.setConnectTimeout(15000);
 
-
+            InputStream is;
             if (connection.getHeaderField("Content-Encoding") != null && connection.getHeaderField("Content-Encoding").equals("gzip"))
             {
                 //System.out.println("Gzip ole");
@@ -286,11 +284,13 @@ abstract public class ProxyWorker extends Thread
                 is = connection.getInputStream();
             }
             //BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            in = new BufferedReader(new InputStreamReader(is));
+            BufferedReader in = new BufferedReader(new InputStreamReader(is));
             byte[] bytes = IOUtils.toByteArray(is);
 
             readUrlResult.setBody(bytes);
             readUrlResult.setSuccessful(true);
+            in.close();
+            is.close();
         }
         catch (FileNotFoundException e)
         {
@@ -316,26 +316,6 @@ abstract public class ProxyWorker extends Thread
             //This should never happen.
             e.printStackTrace();
             System.exit(0);
-        }
-        finally
-        {
-            try
-            {
-                in.close();
-            }
-            catch (IOException e)
-            {
-                //e.printStackTrace();
-            }
-
-            try
-            {
-                is.close();
-            }
-            catch (IOException e)
-            {
-                //e.printStackTrace();
-            }
         }
         return readUrlResult;
     }

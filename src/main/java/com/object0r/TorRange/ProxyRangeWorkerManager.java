@@ -1,7 +1,8 @@
 package com.object0r.TorRange;
 
+
 import com.object0r.TorRange.datatypes.EntriesRange;
-import com.object0r.TorRange.db.DB;
+import com.object0r.toortools.DB;
 import org.ini4j.Ini;
 
 import java.io.*;
@@ -14,6 +15,12 @@ import static java.util.UUID.randomUUID;
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
     private static final String LOG_FILE = "log.txt";
+
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
     String prefix;
 
     int exitSeconds;
@@ -110,7 +117,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     /**
      * Returns how many phones are already processed.
      *
-     * @return
+     * @return returns how many entries are done.
      */
     public long getDoneCount()
     {
@@ -188,6 +195,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             currentEntry = getCurrentEntry();
         }
 
+        //noinspection StatementWithEmptyBody
         if (currentEntry <= currentRange.getEnd())
         {
 
@@ -344,6 +352,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             if (!new File(filename).getParentFile().exists())
             {
+                //noinspection ResultOfMethodCallIgnored
                 new File(filename).getParentFile().mkdirs();
             }
 
@@ -376,6 +385,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             String folder = "sessions/" + session + "/success_output";
             if (!new File(folder).exists())
             {
+                //noinspection ResultOfMethodCallIgnored
                 new File(folder).mkdirs();
             }
             String entrySafe = entry.replaceAll("\\W+", "");

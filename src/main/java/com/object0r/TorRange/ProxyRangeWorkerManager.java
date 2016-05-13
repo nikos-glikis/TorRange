@@ -337,7 +337,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             }
             else
             {
-                throw new Exception("Current entry error, returning range start. " + entry);
+                return currentRange.getStart();
+                //throw new Exception("Current entry error, returning range start. " + entry);
             }
         }
         catch (Exception e)

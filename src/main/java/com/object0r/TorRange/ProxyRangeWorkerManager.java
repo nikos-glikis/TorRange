@@ -185,6 +185,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             sleepForALogTime();
         }
+
         if (currentRange == null)
         {
             updateCurrentRange();

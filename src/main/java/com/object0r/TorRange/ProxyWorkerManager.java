@@ -21,19 +21,15 @@ public abstract class ProxyWorkerManager extends WorkerManager
     protected String session;
     protected DB state;
     int exitSeconds = 5;
-
     private int workerCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
+    protected boolean isReady = false;
     protected String iniFilename = "";
-
     //Sleep period between marking as idle, and rechecking if it is idle.
     long secondsBetweenIdleChecks = 180;
-
     //How often to check for idle workers.
     long minutesBetweenIdleThreadChecks = 10;
-
-
     long msSleepBetweenWorkersStart = 200;
 
     public int saveEvery = 300;
@@ -100,6 +96,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         }
 
         startIdleWorkersCheck();
+        isReady = true;
     }
 
     private ProxyWorker getNewWorker(int i) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
@@ -161,6 +158,18 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void startWorkers()
     {
+        while (!isReady)
+        {
+            try
+            {
+                Thread.sleep(2000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
         for (ProxyWorker worker : workers)
         {
             worker.setActive(true);

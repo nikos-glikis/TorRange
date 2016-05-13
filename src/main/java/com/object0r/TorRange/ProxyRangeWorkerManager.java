@@ -2,6 +2,7 @@ package com.object0r.TorRange;
 
 
 import com.object0r.TorRange.datatypes.EntriesRange;
+import com.object0r.toortools.ConsoleColors;
 import com.object0r.toortools.DB;
 import org.ini4j.Ini;
 
@@ -193,7 +194,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (currentEntry == 0)
         {
             currentEntry = getCurrentEntry();
-            System.out.println("Current entry is: "+currentEntry);
+            ConsoleColors.printCyan("Current entry is: "+currentEntry);
         }
 
         //noinspection StatementWithEmptyBody

@@ -316,7 +316,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             long entry;
             try
             {
-                entry = Long.parseLong(latestPhoneString) - 50;
+                //entry = Long.parseLong(latestPhoneString) - 50;
+                entry = Long.parseLong(latestPhoneString) - saveEvery*2;
                 if (entry < 1)
                 {
                     entry =1;

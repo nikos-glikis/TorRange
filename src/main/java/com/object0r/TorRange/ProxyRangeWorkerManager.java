@@ -315,12 +315,13 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         try
         {
-            String latestPhoneString = state.get(LATEST_ENTRY);
+            String latestDoneString = state.get(LATEST_ENTRY);
             long entry;
             try
             {
-                //entry = Long.parseLong(latestPhoneString) - 50;
-                entry = Long.parseLong(latestPhoneString) - saveEvery*2;
+                ConsoleColors.printRed("Latest Entry is: "+latestDoneString);
+                //entry = Long.parseLong(latestDoneString) - 50;
+                entry = Long.parseLong(latestDoneString) - saveEvery*2;
                 if (entry < 1)
                 {
                     entry =1;
@@ -328,6 +329,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             }
             catch (Exception e)
             {
+                ConsoleColors.printRed("GetCurrentEntry: "+e.toString());
                 return currentRange.getStart();
             }
             if (

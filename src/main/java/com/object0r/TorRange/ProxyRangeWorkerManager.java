@@ -254,7 +254,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
                 if (start > end)
                 {
-                    throw new Exception("start is bigger than end in phone range.");
+                    System.out.println("Input Error: start is bigger than end in phone range.");
+                    System.exit(0);
                 }
 
                 EntriesRange entriesRange = new EntriesRange(start, end);
@@ -283,6 +284,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         boolean found = false;
         for (EntriesRange range : ranges)
         {
+            System.out.println("Checking range: "+range);
             if (!isRangeDone(range))
             {
                 currentRange = range;
@@ -317,14 +319,19 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 entry = Long.parseLong(latestPhoneString) - 50;
                 if (entry < 1)
                 {
-                    entry = 1;
+                    entry =1;
                 }
             }
             catch (Exception e)
             {
                 return currentRange.getStart();
             }
-            if (entry >= currentRange.getStart() && entry <= currentRange.getEnd())
+            if (
+                    entry >=
+                            currentRange.getStart()
+                            &&
+                            entry <=
+                                    currentRange.getEnd())
             {
                 return entry;
             }

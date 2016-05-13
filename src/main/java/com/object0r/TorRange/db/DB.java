@@ -7,9 +7,13 @@ import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Vector;
 
-public class DB
+/**
+ * @deprecated 
+ */
+public class DB extends com.object0r.toortools.DB
 {
-    Connection dBconnection, dBconnection2 ;
+
+    /*Connection dBconnection, dBconnection2 ;
     public synchronized void put(Object key, Object value)
     {
         try
@@ -171,5 +175,5 @@ public class DB
             e.printStackTrace();
             System.exit(0);
         }
-    }
+    }*/
 }

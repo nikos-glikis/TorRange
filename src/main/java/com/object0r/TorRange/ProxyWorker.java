@@ -95,6 +95,7 @@ abstract public class ProxyWorker extends Thread
                     Thread.sleep(60000000);
                 }
             }
+
             interrupt();
 
         }

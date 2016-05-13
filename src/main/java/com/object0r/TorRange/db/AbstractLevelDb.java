@@ -1,12 +1,13 @@
 package com.object0r.TorRange.db;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import com.object0r.toortools.db.KeyValueDatabaseInterface;
 
-public interface AbstractLevelDb
+/**
+ * @deprecated
+ */
+public interface AbstractLevelDb extends KeyValueDatabaseInterface
 {
-
-    void put(String key, String value);
+ /* void put(String key, String value);
     void delete(String key);
     String getAsString(String key);
     byte[] get(String key);
@@ -14,5 +15,5 @@ public interface AbstractLevelDb
     void copyTo(AbstractLevelDb destination);
     void deleteAll();
     void batchPut(HashMap p);
-    void batchDelete(ArrayList<String> p);
+    void batchDelete(ArrayList<String> p);*/
 }

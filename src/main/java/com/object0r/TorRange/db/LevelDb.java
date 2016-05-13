@@ -18,6 +18,9 @@ import static org.fusesource.leveldbjni.JniDBFactory.asString;
 import static org.fusesource.leveldbjni.JniDBFactory.bytes;
 import static org.fusesource.leveldbjni.JniDBFactory.factory;
 
+/**
+ * @deprecated
+ */
 public class LevelDb extends com.object0r.toortools.db.LevelDb
 {
     public LevelDb(String filename)

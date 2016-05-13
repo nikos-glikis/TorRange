@@ -189,7 +189,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (currentRange == null)
         {
             updateCurrentRange();
-            saveCurrentEntry();
+            //saveCurrentEntry();
         }
 
         if (currentEntry == 0)

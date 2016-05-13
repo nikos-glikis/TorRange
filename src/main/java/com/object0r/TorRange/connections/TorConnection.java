@@ -225,11 +225,11 @@ public class TorConnection extends ProxyConnection
             {
                 e.printStackTrace();
             }
-            if (proxy != null)
+  /*          if (proxy != null)
             {
-                String ip = Utilities.getIp(getProxy());
+                //String ip = Utilities.getIp(getProxy());
                 //System.out.println("old ip: " + ip);
-            }
+            }*/
             if (OsHelper.isWindows())
             {
                 Socket echoSocket = new Socket("localhost", controlPort);

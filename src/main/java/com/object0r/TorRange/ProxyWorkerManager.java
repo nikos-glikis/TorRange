@@ -24,7 +24,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     private int workerCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
-    protected boolean isReady = false;
+    protected boolean isProxyWorkerReady = false;
     protected String iniFilename = "";
     //Sleep period between marking as idle, and rechecking if it is idle.
     long secondsBetweenIdleChecks = 180;
@@ -96,7 +96,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         }
 
         startIdleWorkersCheck();
-        isReady = true;
+        isProxyWorkerReady = true;
     }
 
     private ProxyWorker getNewWorker(int i) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
@@ -158,7 +158,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void startWorkers()
     {
-        while (!isReady)
+        while (!isManagerReady())
         {
             try
             {
@@ -182,6 +182,16 @@ public abstract class ProxyWorkerManager extends WorkerManager
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * You should override this method if you have some time consuming tasks in your manager.
+     * Workers start after this returns true.
+     * @return boolean - If the manager is ready.
+     */
+    protected boolean isManagerReady()
+    {
+        return isProxyWorkerReady;
     }
 
     public void stopWorkers()

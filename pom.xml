@@ -74,11 +74,7 @@
 
 
 
-        <dependency>
-            <groupId>org.fusesource.leveldbjni</groupId>
-            <artifactId>leveldbjni</artifactId>
-            <version>1.8</version>
-        </dependency>
+
 
 
         <dependency>
@@ -92,6 +88,7 @@
             <artifactId>leveldb</artifactId>
             <version>0.7</version>
         </dependency>
+
         <dependency>
             <groupId>org.fusesource.leveldbjni</groupId>
             <artifactId>leveldbjni</artifactId>

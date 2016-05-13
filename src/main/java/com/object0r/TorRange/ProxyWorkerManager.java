@@ -51,14 +51,15 @@ public abstract class ProxyWorkerManager extends WorkerManager
     public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
         this.workerClass = workerClass;
-
+        session = iniFilename.replace(".ini", "");
+        state = new DB(session, "state");
         if (iniFilename != null)
         {
             basicReadGeneralOptions(iniFilename);
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
         }
-        state = new DB(session, "state");
+
         try
         {
             for (int i = 0; i < workerCount; i++)
@@ -279,7 +280,6 @@ public abstract class ProxyWorkerManager extends WorkerManager
     {
         try
         {
-            session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
             this.iniFilename = filename;
 

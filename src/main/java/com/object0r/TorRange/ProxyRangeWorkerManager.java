@@ -283,7 +283,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     private void updateCurrentRange()
     {
-        System.out.println("CurrentRange does not exist, new start.");
         boolean found = false;
         for (EntriesRange range : ranges)
         {
@@ -316,11 +315,12 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         try
         {
             String latestDoneString = state.get(LATEST_ENTRY);
+
             long entry;
             try
             {
                 ConsoleColors.printRed("Latest Entry is: "+latestDoneString);
-                //entry = Long.parseLong(latestDoneString) - 50;
+
                 entry = Long.parseLong(latestDoneString) - saveEvery*2;
                 if (entry < 1)
                 {

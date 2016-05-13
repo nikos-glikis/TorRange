@@ -45,17 +45,20 @@ abstract public class ProxyWorker extends Thread
 
     public void changeIp()
     {
-        proxyConnection.changeIp();
-        try
+        if (manager.useProxy())
         {
-            Thread.sleep(3000);
+            proxyConnection.changeIp();
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            verifyTor(false);
+            initProxy();
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        verifyTor(false);
-        initProxy();
     }
 
     public void run()
@@ -97,7 +100,6 @@ abstract public class ProxyWorker extends Thread
             }
 
             interrupt();
-
         }
         catch (Exception e)
         {
@@ -288,9 +290,11 @@ abstract public class ProxyWorker extends Thread
             //BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
             byte[] bytes = IOUtils.toByteArray(is);
-            in.close();
+
             readUrlResult.setBody(bytes);
             readUrlResult.setSuccessful(true);
+            in.close();
+            is.close();
         }
         catch (FileNotFoundException e)
         {

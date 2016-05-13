@@ -228,7 +228,7 @@ public class TorConnection extends ProxyConnection
             if (proxy != null)
             {
                 String ip = Utilities.getIp(getProxy());
-                System.out.println("old ip: " + ip);
+                //System.out.println("old ip: " + ip);
             }
             if (OsHelper.isWindows())
             {

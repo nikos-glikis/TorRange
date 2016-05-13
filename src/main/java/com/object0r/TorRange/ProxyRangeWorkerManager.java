@@ -193,6 +193,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (currentEntry == 0)
         {
             currentEntry = getCurrentEntry();
+            System.out.println("Current entry is: "+currentEntry);
         }
 
         //noinspection StatementWithEmptyBody

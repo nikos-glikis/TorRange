@@ -159,7 +159,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         return !(done == null);
     }
 
-    void addRangeToDone(EntriesRange range)
+    synchronized void addRangeToDone(EntriesRange range)
     {
         doneRanges.put(range.toString(), "true");
     }

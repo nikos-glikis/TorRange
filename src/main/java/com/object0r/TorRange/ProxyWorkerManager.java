@@ -472,12 +472,12 @@ public abstract class ProxyWorkerManager extends WorkerManager
         ConsoleColors.printCyan("allWorkers count: " + allWorkers.size());
     }
 
-    public void saveCurrentEntry()
+    public synchronized void saveCurrentEntry()
     {
         saveCurrentEntry(currentEntry + "");
     }
 
-    public void saveCurrentEntry(String currentEntry)
+    public synchronized void saveCurrentEntry(String currentEntry)
     {
         System.out.println("Saving Current Number: " + currentEntry);
         state.put(LATEST_ENTRY, currentEntry);

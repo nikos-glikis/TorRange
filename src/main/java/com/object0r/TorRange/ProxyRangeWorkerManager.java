@@ -169,7 +169,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
      *
      * @return
      */
-    public String getNextEntry()
+    public synchronized String getNextEntry()
     {
         return torRangeNextEntry();
     }
@@ -310,7 +310,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
     }
 
-    long getCurrentEntry()
+    synchronized long getCurrentEntry()
     {
         try
         {

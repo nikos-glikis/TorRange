@@ -3,6 +3,7 @@ package com.object0r.TorRange;
 
 import com.object0r.toortools.ConsoleColors;
 import com.object0r.toortools.DB;
+import com.object0r.toortools.os.RecurringProcessHelper;
 import org.ini4j.Ini;
 
 import java.io.File;
@@ -48,8 +49,10 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
-        this.workerClass = workerClass;
+
         session = iniFilename.replace(".ini", "");
+        RecurringProcessHelper.checkAndRun(session);
+        this.workerClass = workerClass;
         state = new DB(session, "state");
         if (iniFilename != null)
         {

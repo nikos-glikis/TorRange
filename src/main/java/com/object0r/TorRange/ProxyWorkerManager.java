@@ -186,6 +186,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     /**
      * You should override this method if you have some time consuming tasks in your manager.
      * Workers start after this returns true.
+     *
      * @return boolean - If the manager is ready.
      */
     protected boolean isManagerReady()

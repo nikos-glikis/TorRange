@@ -195,7 +195,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (currentEntry == 0)
         {
             currentEntry = getCurrentEntry();
-            ConsoleColors.printCyan("Current entry is: "+currentEntry);
+            ConsoleColors.printCyan("Current entry is: " + currentEntry);
         }
 
         //noinspection StatementWithEmptyBody
@@ -286,7 +286,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         boolean found = false;
         for (EntriesRange range : ranges)
         {
-            System.out.println("Checking range: "+range);
+            System.out.println("Checking range: " + range);
             if (!isRangeDone(range))
             {
                 currentRange = range;
@@ -319,17 +319,17 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             long entry;
             try
             {
-                ConsoleColors.printRed("Latest Entry is: "+latestDoneString);
+                ConsoleColors.printRed("Latest Entry is: " + latestDoneString);
 
-                entry = Long.parseLong(latestDoneString) - saveEvery*2;
+                entry = Long.parseLong(latestDoneString) - saveEvery * 2;
                 if (entry < 1)
                 {
-                    entry =1;
+                    entry = 1;
                 }
             }
             catch (Exception e)
             {
-                ConsoleColors.printRed("GetCurrentEntry: "+e.toString());
+                ConsoleColors.printRed("GetCurrentEntry: " + e.toString());
                 return currentRange.getStart();
             }
             if (

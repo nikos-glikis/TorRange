@@ -36,8 +36,6 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     long currentEntry;
 
-    protected DB doneRanges;
-
     public boolean useProxy()
     {
         return useProxy;
@@ -283,7 +281,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
             Ini prefs = new Ini(new File(filename));
             this.iniFilename = filename;
 
-            doneRanges = new DB(session, "doneRanges");
+
             if (prefs.get("ProxyWorkerManager", "torRangeStart") != null)
             {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
@@ -391,11 +389,11 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
             if (this.useProxy)
             {
-                System.out.println("Tor is enabled.");
+                ConsoleColors.printBlue("Tor is enabled.");
             }
             else
             {
-                System.out.println("Tor is disabled");
+                ConsoleColors.printRed("Tor is disabled");
             }
             System.out.println("Sleeping for 5 seconds, just in case this is an error.");
             Thread.sleep(5000);

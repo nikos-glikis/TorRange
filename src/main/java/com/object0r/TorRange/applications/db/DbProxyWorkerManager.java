@@ -46,7 +46,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         {
             try
             {
-                if (dbConnection == null )
+                if (dbConnection == null)
                 {
                     Class.forName(dbConnectionClass);
                     dbConnection = DriverManager.getConnection(dbConnectionUrl, dbConnectionUsername, dbConnectionPassword);
@@ -56,7 +56,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
                 while (value == null)
                 {
                     id = getNextIdInt();
-                    value=dbRangeResult.getValue(id);
+                    value = dbRangeResult.getValue(id);
                 }
                 return value;
 
@@ -80,10 +80,10 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         {
             dbRangeResult = new DbRangeResult();
             dbRangeResult.setStart(id);
-            int end = id+Integer.parseInt(dbFetchSize);
+            int end = id + Integer.parseInt(dbFetchSize);
             dbRangeResult.setEnd(end);
             Statement st = dbConnection.createStatement();
-            String query = "SELECT `"+dbIdColumn+"`,`"+dbValueColumn+"` FROM `"+dbValuesTable+"` WHERE  `"+dbIdColumn+"` BETWEEN "+id+" AND "+(end)+"";
+            String query = "SELECT `" + dbIdColumn + "`,`" + dbValueColumn + "` FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
             System.out.println(query);
             ResultSet rs = st.executeQuery(query);
             while (rs.next())
@@ -135,8 +135,8 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
                 dbConnectionClass = "com.mysql.jdbc.Driver";
             }
 
-            System.out.println("dbConnectionClass:" +dbConnectionClass);
-            System.out.println("dbConnectionUrl:" +dbConnectionUrl);
+            System.out.println("dbConnectionClass:" + dbConnectionClass);
+            System.out.println("dbConnectionUrl:" + dbConnectionUrl);
         }
         catch (Exception e)
         {
@@ -144,4 +144,4 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             System.exit(0);
         }
     }
-    }
+}

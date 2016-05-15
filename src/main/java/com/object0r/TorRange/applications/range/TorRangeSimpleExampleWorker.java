@@ -7,7 +7,7 @@ public class TorRangeSimpleExampleWorker extends TorWorker
 {
     public void process(String entry)
     {
-        System.out.println("Entry: "+entry);
+        System.out.println("Entry: " + entry);
 
         try
         {

@@ -1,7 +1,9 @@
 package com.object0r.TorRange;
 
+
 import com.object0r.TorRange.datatypes.EntriesRange;
-import com.object0r.TorRange.db.DB;
+import com.object0r.toortools.ConsoleColors;
+import com.object0r.toortools.DB;
 import org.ini4j.Ini;
 
 import java.io.*;
@@ -14,6 +16,12 @@ import static java.util.UUID.randomUUID;
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
     private static final String LOG_FILE = "log.txt";
+
+    public String getPrefix()
+    {
+        return prefix;
+    }
+
     String prefix;
 
     int exitSeconds;
@@ -110,7 +118,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     /**
      * Returns how many phones are already processed.
      *
-     * @return
+     * @return returns how many entries are done.
      */
     public long getDoneCount()
     {
@@ -151,7 +159,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         return !(done == null);
     }
 
-    void addRangeToDone(EntriesRange range)
+    synchronized void addRangeToDone(EntriesRange range)
     {
         doneRanges.put(range.toString(), "true");
     }
@@ -161,7 +169,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
      *
      * @return
      */
-    public String getNextEntry()
+    public synchronized String getNextEntry()
     {
         return torRangeNextEntry();
     }
@@ -177,17 +185,20 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             sleepForALogTime();
         }
+
         if (currentRange == null)
         {
             updateCurrentRange();
-            saveCurrentEntry();
+            //saveCurrentEntry();
         }
 
         if (currentEntry == 0)
         {
             currentEntry = getCurrentEntry();
+            ConsoleColors.printCyan("Current entry is: " + currentEntry);
         }
 
+        //noinspection StatementWithEmptyBody
         if (currentEntry <= currentRange.getEnd())
         {
 
@@ -246,7 +257,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
                 if (start > end)
                 {
-                    throw new Exception("start is bigger than end in phone range.");
+                    System.out.println("Input Error: start is bigger than end in phone range.");
+                    System.exit(0);
                 }
 
                 EntriesRange entriesRange = new EntriesRange(start, end);
@@ -271,10 +283,10 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     private void updateCurrentRange()
     {
-        System.out.println("CurrentRange does not exist, new start.");
         boolean found = false;
         for (EntriesRange range : ranges)
         {
+            System.out.println("Checking range: " + range);
             if (!isRangeDone(range))
             {
                 currentRange = range;
@@ -298,15 +310,18 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         }
     }
 
-    long getCurrentEntry()
+    synchronized long getCurrentEntry()
     {
         try
         {
-            String latestPhoneString = state.get(LATEST_ENTRY);
+            String latestDoneString = state.get(LATEST_ENTRY);
+
             long entry;
             try
             {
-                entry = Long.parseLong(latestPhoneString) - 50;
+                ConsoleColors.printRed("Latest Entry is: " + latestDoneString);
+
+                entry = Long.parseLong(latestDoneString) - saveEvery * 2;
                 if (entry < 1)
                 {
                     entry = 1;
@@ -314,15 +329,22 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             }
             catch (Exception e)
             {
+                ConsoleColors.printRed("GetCurrentEntry: " + e.toString());
                 return currentRange.getStart();
             }
-            if (entry >= currentRange.getStart() && entry <= currentRange.getEnd())
+            if (
+                    entry >=
+                            currentRange.getStart()
+                            &&
+                            entry <=
+                                    currentRange.getEnd())
             {
                 return entry;
             }
             else
             {
-                throw new Exception("Current entry error, returning range start. " + entry);
+                return currentRange.getStart();
+                //throw new Exception("Current entry error, returning range start. " + entry);
             }
         }
         catch (Exception e)
@@ -344,6 +366,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             if (!new File(filename).getParentFile().exists())
             {
+                //noinspection ResultOfMethodCallIgnored
                 new File(filename).getParentFile().mkdirs();
             }
 
@@ -376,6 +399,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             String folder = "sessions/" + session + "/success_output";
             if (!new File(folder).exists())
             {
+                //noinspection ResultOfMethodCallIgnored
                 new File(folder).mkdirs();
             }
             String entrySafe = entry.replaceAll("\\W+", "");

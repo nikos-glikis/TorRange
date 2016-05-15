@@ -52,7 +52,7 @@ public class BruteForceWorkerManager extends ProxyWorkerManager
                 }
             }
             globalCounter++;
-            if (globalCounter % (this.getSaveEvery()) == (this.getSaveEvery()- 1))
+            if (globalCounter % (this.getSaveEvery()) == (this.getSaveEvery() - 1))
             {
                 saveCurrentEntry(getCurrentJoinedString());
             }

@@ -45,17 +45,20 @@ abstract public class ProxyWorker extends Thread
 
     public void changeIp()
     {
-        proxyConnection.changeIp();
-        try
+        if (manager.useProxy())
         {
-            Thread.sleep(3000);
+            proxyConnection.changeIp();
+            try
+            {
+                Thread.sleep(3000);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            verifyTor(false);
+            initProxy();
         }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        verifyTor(false);
-        initProxy();
     }
 
     public void run()
@@ -95,8 +98,8 @@ abstract public class ProxyWorker extends Thread
                     Thread.sleep(60000000);
                 }
             }
-            interrupt();
 
+            interrupt();
         }
         catch (Exception e)
         {
@@ -125,6 +128,8 @@ abstract public class ProxyWorker extends Thread
                         //Stops here until connection is established.
                         Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
                         URLConnection uc = new URL("https://www.yahoo.com/").openConnection(proxy);
+                        uc.setReadTimeout(20000);
+                        uc.setConnectTimeout(20000);
                         Scanner sc = new Scanner(uc.getInputStream());
                         while (sc.hasNext())
                         {
@@ -137,13 +142,14 @@ abstract public class ProxyWorker extends Thread
                     catch (Exception e)
                     {
                         //e.printStackTrace();
-                        System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
+                        //System.out.println("Tor connection is not yet established. Trying again in 5 seconds.");
                         try
                         {
                             Thread.sleep(5000);
                         }
                         catch (Exception ee)
                         {
+                            ee.printStackTrace();
                         }
                     }
 
@@ -189,7 +195,7 @@ abstract public class ProxyWorker extends Thread
         {
             URL website = new URL(url);
 
-            URLConnection connection = null;
+            URLConnection connection;
             if (proxy != null)
             {
                 connection = website.openConnection(proxy);
@@ -241,11 +247,11 @@ abstract public class ProxyWorker extends Thread
     /**
      * Overwrite this if needed.
      *
-     * @return
+     * @return String current viable user browser
      */
     public String getUserAgent()
     {
-        return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0";
+        return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0";
     }
 
     public String readUrlWithProxy(String url) throws Exception
@@ -275,8 +281,7 @@ abstract public class ProxyWorker extends Thread
                 //System.out.println("Gzip ole");
                 byte[] buffer = new byte[1024];
                 //GZIPInputStream  gzip = new GZIPInputStream (new ByteArrayInputStream (tBytes));
-                GZIPInputStream gzis = new GZIPInputStream(connection.getInputStream());
-                is = gzis;
+                is = new GZIPInputStream(connection.getInputStream());
             }
             else
             {
@@ -285,9 +290,11 @@ abstract public class ProxyWorker extends Thread
             //BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             BufferedReader in = new BufferedReader(new InputStreamReader(is));
             byte[] bytes = IOUtils.toByteArray(is);
-            in.close();
+
             readUrlResult.setBody(bytes);
             readUrlResult.setSuccessful(true);
+            in.close();
+            is.close();
         }
         catch (FileNotFoundException e)
         {
@@ -383,7 +390,7 @@ abstract public class ProxyWorker extends Thread
     /**
      * Returns a new com.object0r.toortools.http.HttpRequestInformation object armed with the proxy.
      *
-     * @return
+     * @return returns HttpRequestInformation with proxy already set.
      */
     public HttpRequestInformation getNewHttpRequestInformation()
     {

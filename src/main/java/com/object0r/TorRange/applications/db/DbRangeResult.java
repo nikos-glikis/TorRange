@@ -10,7 +10,7 @@ public class DbRangeResult
 {
     public int start;
     public int end;
-    public HashMap<Integer,String> values = new HashMap<Integer, String>();
+    public HashMap<Integer, String> values = new HashMap<Integer, String>();
 
     public void addValue(int index, String value)
     {

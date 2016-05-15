@@ -1,8 +1,11 @@
 package com.object0r.TorRange.helpers;
 
-public class ConsoleColors
+/**
+ * @deprecated
+ */
+public class ConsoleColors extends com.object0r.toortools.ConsoleColors
 {
-    public static final String RESET = "\u001B[0m";
+   /* public static final String RESET = "\u001B[0m";
     public static final String BLACK = "\u001B[30m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
@@ -35,5 +38,5 @@ public class ConsoleColors
     public static void printGreen(String text)
     {
         printColor(text, ConsoleColors.GREEN);
-    }
+    }*/
 }

@@ -1,23 +1,8 @@
 package com.object0r.TorRange.db;
 
-import org.apache.commons.io.FileUtils;
-import org.iq80.leveldb.DB;
-import org.iq80.leveldb.DBIterator;
-import org.iq80.leveldb.Options;
-import org.iq80.leveldb.WriteBatch;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import static org.fusesource.leveldbjni.JniDBFactory.asString;
-import static org.fusesource.leveldbjni.JniDBFactory.bytes;
-import static org.fusesource.leveldbjni.JniDBFactory.factory;
-
+/**
+ * @deprecated
+ */
 public class LevelDb extends com.object0r.toortools.db.LevelDb
 {
     public LevelDb(String filename)

@@ -2,9 +2,12 @@ package com.object0r.TorRange.db;
 
 import com.object0r.TorRange.datatypes.OsCommandOutput;
 
-public class OsHelper
+/**
+ * @deprecated
+ */
+public class OsHelper extends com.object0r.toortools.os.OsHelper
 {
-    static int OS_TYPES_UNKNOWN = 0;
+ /*   static int OS_TYPES_UNKNOWN = 0;
     static int OS_TYPES_WINDOWS = 1;
     static int OS_TYPES_LINUX = 2;
 
@@ -69,7 +72,7 @@ public class OsHelper
             String s = null;
             Process p = Runtime.getRuntime().exec(command);
 
-            /*BufferedReader stdInput = new BufferedReader(new
+            *//*BufferedReader stdInput = new BufferedReader(new
                     InputStreamReader(p.getInputStream()));
 
             BufferedReader stdError = new BufferedReader(new
@@ -89,7 +92,7 @@ public class OsHelper
             while ((s = stdError.readLine()) != null) {
                 errorBuffer.append(s);
             }
-            */
+            *//*
             return new OsCommandOutput("", "");
 
 
@@ -100,5 +103,5 @@ public class OsHelper
             e2.setStackTrace(e.getStackTrace());
             throw e2;
         }
-    }
+    }*/
 }

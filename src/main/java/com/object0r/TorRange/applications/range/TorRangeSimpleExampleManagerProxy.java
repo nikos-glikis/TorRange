@@ -21,12 +21,15 @@ public class TorRangeSimpleExampleManagerProxy extends ProxyRangeWorkerManager
     @Override
     public void readOptions(String filename)
     {
-        try {
+        try
+        {
 
             Ini prefs = new Ini(new File(filename));
             System.out.println(prefs.get("simple-example", "someVariable"));
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             System.exit(0);
         }

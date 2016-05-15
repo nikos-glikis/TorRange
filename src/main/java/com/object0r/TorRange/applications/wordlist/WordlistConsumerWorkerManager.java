@@ -69,7 +69,7 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
         return returnString;
     }
 
-    private void saveCurrentEntryWordlist(String currentEntry)
+    private synchronized void saveCurrentEntryWordlist(String currentEntry)
     {
         System.out.println("Saving Current Word: " + currentEntry);
         state.put(LATEST_ENTRY_WORDLIST, currentEntry);

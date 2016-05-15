@@ -1,8 +1,8 @@
 package com.object0r.TorRange.connections;
 
 import com.object0r.TorRange.helpers.CommandRunner;
-import com.object0r.TorRange.datatypes.OsCommandOutput;
-import com.object0r.TorRange.db.OsHelper;
+
+import com.object0r.toortools.os.OsHelper;
 import com.object0r.TorRange.datatypes.ProxyInfo;
 import com.object0r.toortools.Utilities;
 
@@ -59,17 +59,7 @@ public class TorConnection extends ProxyConnection
             }
             String command = null;
 
-            if (new File(pidFile).exists())
-            {
-                try
-                {
-                    com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile).trim()));
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
+            killTorProcess();
 
             if (OsHelper.isLinux())
             {
@@ -78,14 +68,16 @@ public class TorConnection extends ProxyConnection
                 //command = "tor --RunAsDaemon 0   --CookieAuthentication 1 --NewCircuitPeriod 300000   --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --PidFile "+directory+"/my.pid --CookieAuthFile "+directory+"/cookie";
 
                 command = "tor --RunAsDaemon 0   --CookieAuthentication 0 --HashedControlPassword 16:8FF418AAE0F66E6D6094E252BF9540003F86AB3EE61DE219901B345EA7 --NewCircuitPeriod 300000   --ControlPort " + getControlPort() + " --SocksPort " + getSocksPort() + " --DataDirectory  " + directory + " --PidFile " + pidFile + " --CookieAuthFile " + directory + "/cookie";
-            } else if (OsHelper.isWindows())
+            }
+            else if (OsHelper.isWindows())
             {
 
                 com.object0r.toortools.os.OsHelper.deleteFolderContentsRecursive(new File(directory));
                 //command = "tor --RunAsDaemon 0   --CookieAuthentication 1   --NewCircuitPeriod 300000  --ControlPort "+getControlPort()+" --SocksPort "+getSocksPort()+" --DataDirectory  "+directory+" --CookieAuthFile "+directory+"\\cookie";
                 command = "tor --RunAsDaemon 0   --CookieAuthentication 0  --HashedControlPassword 16:8FF418AAE0F66E6D6094E252BF9540003F86AB3EE61DE219901B345EA7 --NewCircuitPeriod 300000  --ControlPort " + getControlPort() + " --SocksPort " + getSocksPort() + " --DataDirectory  " + directory + "  --PidFile " + pidFile + " --CookieAuthFile " + directory + "\\cookie";
 
-            } else
+            }
+            else
             {
                 System.out.println("Os Not supported");
                 System.exit(0);
@@ -98,6 +90,22 @@ public class TorConnection extends ProxyConnection
             e.printStackTrace();
         }
         return true;
+    }
+
+    private void killTorProcess()
+    {
+        if (new File(pidFile).exists())
+        {
+            try
+            {
+                com.object0r.toortools.os.OsHelper.killProcessByPid(Integer.parseInt(Utilities.readFile(pidFile).trim()));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public TorConnection()
@@ -121,7 +129,8 @@ public class TorConnection extends ProxyConnection
         {
             directory = "tmp\\tor\\" + getSocksPort();
             pidFile = directory + "\\my.pid";
-        } else
+        }
+        else
         {
             directory = "tmp/tor/" + getSocksPort();
             pidFile = directory + "/my.pid";
@@ -152,7 +161,7 @@ public class TorConnection extends ProxyConnection
             {
                 e.printStackTrace();
             }
-
+            //new CommandRunner("ulimit -n 999999", true);
         }
 
         //connect();
@@ -172,18 +181,21 @@ public class TorConnection extends ProxyConnection
                     out.println("authenticate \"" + password + "\"");
                     out.println("signal shutdown");
                     out.println("quit");
+
                     out.close();
                 }
                 catch (Exception e)
                 {
                     System.out.println("Tor Close Error: " + e.toString());
                 }
-            } else
+            }
+            else
             {
 
                 String command = "sh " + tmpDir + controlPort + ".exit";
-                OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
+                OsHelper.runCommand(command);
             }
+            killTorProcess();
         }
         catch (Exception e)
         {
@@ -213,11 +225,11 @@ public class TorConnection extends ProxyConnection
             {
                 e.printStackTrace();
             }
-            if (proxy != null)
+  /*          if (proxy != null)
             {
-                String ip = Utilities.getIp(getProxy());
-                System.out.println("old ip: " + ip);
-            }
+                //String ip = Utilities.getIp(getProxy());
+                //System.out.println("old ip: " + ip);
+            }*/
             if (OsHelper.isWindows())
             {
                 Socket echoSocket = new Socket("localhost", controlPort);
@@ -227,11 +239,12 @@ public class TorConnection extends ProxyConnection
                 out.println("signal newnym");
                 out.println("quit");
                 out.close();
-            } else
+            }
+            else
             {
 
                 String command = "sh " + tmpDir + controlPort;
-                OsCommandOutput out = OsHelper.runCommandAndGetOutput(command);
+                OsHelper.runCommandAndGetOutput(command);
             }
             proxy = getProxy();
             Thread.sleep(10000);

@@ -4,6 +4,9 @@ import com.object0r.TorRange.datatypes.EntriesRange;
 import com.object0r.TorRange.ProxyRangeWorkerManager;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -89,6 +92,11 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
 
     @Override
     public void readOptions(String filename)
+    {
+        readWordlistOptions(filename);
+    }
+
+    protected void readWordlistOptions(String filename)
     {
         try
         {

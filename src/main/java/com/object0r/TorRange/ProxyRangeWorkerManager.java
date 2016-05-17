@@ -16,6 +16,7 @@ import static java.util.UUID.randomUUID;
 public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 {
     private static final String LOG_FILE = "log.txt";
+    private static long PROXY_RANGE_STEP = 1;
 
     public String getPrefix()
     {
@@ -74,6 +75,29 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     this.ranges = getUserRanges();
                     updateCurrentRange();
                 }
+
+                if (prefs.get("ProxyWorkerManager", "step") ==null )
+                {
+                    PROXY_RANGE_STEP = 1;
+                }
+                else
+                {
+                    try
+                    {
+                        PROXY_RANGE_STEP = Integer.parseInt(prefs.get("ProxyWorkerManager", "step"));
+                    }
+                    catch (Exception e)
+                    {
+                        System.out.println("Error converting step value, setting default of 1");
+                        PROXY_RANGE_STEP = 1;
+                    }
+                }
+
+                if (PROXY_RANGE_STEP !=1)
+                {
+                    System.out.println("Step is set to "+PROXY_RANGE_STEP);
+                }
+
                 for (EntriesRange range : ranges)
                 {
                     totalEntriesCount += range.getSize();
@@ -214,7 +238,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             saveCurrentEntry();
         }
-        return prefix + "" + (currentEntry++);
+        currentEntry = currentEntry+PROXY_RANGE_STEP;
+        return prefix + "" + currentEntry;
 
     }
 
@@ -321,7 +346,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 ConsoleColors.printRed("Latest Entry is: " + latestDoneString);
 
-                entry = Long.parseLong(latestDoneString) - saveEvery * 2;
+                entry = Long.parseLong(latestDoneString) - saveEvery * 2 * PROXY_RANGE_STEP;
                 if (entry < 1)
                 {
                     entry = 1;

@@ -273,6 +273,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 ConsoleColors.printBlue("Skipping "+ failSkip);
                 currentEntry = currentEntry + failSkip;
                 lastSuccessfulEntry = currentEntry;
+                saveCurrentEntry();
             }
         }
 
@@ -520,7 +521,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         try
         {
             lastSuccessfulEntry = Long.parseLong(entry.substring(getPrefix().length()));
-            saveCurrentEntry();
         }
         catch (Exception e)
         {

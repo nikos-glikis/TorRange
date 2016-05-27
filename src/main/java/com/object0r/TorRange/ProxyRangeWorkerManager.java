@@ -215,7 +215,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     /**
      * Returns how many phones are already processed.
      *
-     * @return
+     * @return The total count of all reanges.
      */
     public long getTotalJobsCount()
     {
@@ -236,7 +236,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     /**
      * Override this when needed.
      *
-     * @return
+     * @return The next entry to be processed
      */
     public synchronized String getNextEntry()
     {

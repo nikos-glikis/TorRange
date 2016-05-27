@@ -1,5 +1,6 @@
 package com.object0r.TorRange.applications.range;
 
+import com.object0r.TorRange.ProxyRangeWorkerManager;
 import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.TorWorker;
 
@@ -12,6 +13,7 @@ public class TorRangeSimpleExampleWorker extends TorWorker
         try
         {
             System.out.println(readUrl("http://cpanel.com/showip.shtml"));
+            manager.markSuccessful(entry);
             sleep(1000);
             changeIp();
 
@@ -21,9 +23,10 @@ public class TorRangeSimpleExampleWorker extends TorWorker
             e.printStackTrace();
         }
     }
-
+    ProxyRangeWorkerManager manager ;
     public TorRangeSimpleExampleWorker(ProxyWorkerManager manager, int id)
     {
         super(manager, id);
+        this.manager = (ProxyRangeWorkerManager) manager;
     }
 }

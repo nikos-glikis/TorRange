@@ -506,7 +506,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     //AutoSkip
 
 
-    public boolean failSkipEnabled()
+    private boolean failSkipEnabled()
     {
         return failCount > 0 && failSkip > 0;
     }
@@ -515,9 +515,16 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
      * Marks that an entry had a successful result. Used for autoskip.
      * @param entry
      */
-    public void markSuccessful(long entry)
+    public void markSuccessful(String entry)
     {
-        lastSuccessfulEntry = entry;
+        try
+        {
+            lastSuccessfulEntry = Long.parseLong(entry.substring(getPrefix().length()));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

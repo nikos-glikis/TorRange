@@ -37,6 +37,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     long currentEntry;
 
+
+
     public boolean useProxy()
     {
         return useProxy;
@@ -47,6 +49,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return useProxy;
     }
 
+
+
     public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
 
@@ -54,46 +58,32 @@ public abstract class ProxyWorkerManager extends WorkerManager
         RecurringProcessHelper.checkAndRun(session);
         this.workerClass = workerClass;
         state = new DB(session, "state");
-        if (iniFilename != null)
-        {
+        if (iniFilename != null) {
             basicReadGeneralOptions(iniFilename);
             readGeneralOptions(iniFilename);
             readOptions(iniFilename);
         }
 
-        try
-        {
-            for (int i = 0; i < workerCount; i++)
-            {
-                try
-                {
+        try {
+            for (int i = 0; i < workerCount; i++) {
+                try {
                     ProxyWorker worker = getNewWorker(i);
                     worker.setActive(false);
                     worker.start();
                     workers.add(worker);
                     allWorkers.add(worker);
                     Thread.sleep(msSleepBetweenWorkersStart);
-                }
-                catch (InvocationTargetException e)
-                {
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
-                }
-                catch (NoSuchMethodException e)
-                {
+                } catch (NoSuchMethodException e) {
                     e.printStackTrace();
-                }
-                catch (InterruptedException e)
-                {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        catch (InstantiationException e)
-        {
+        } catch (InstantiationException e) {
             e.printStackTrace();
-        }
-        catch (IllegalAccessException e)
-        {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
 
@@ -118,28 +108,20 @@ public abstract class ProxyWorkerManager extends WorkerManager
             public void run()
             {
 
-                while (true)
-                {
+                while (true) {
                     //Check every 10 minutes.
-                    try
-                    {
+                    try {
                         Thread.sleep(minutesBetweenIdleThreadChecks * 60 * 1000);
-                    }
-                    catch (InterruptedException e)
-                    {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    try
-                    {
-                        for (int i = 0; i < workers.size(); i++)
-                        {
+                    try {
+                        for (int i = 0; i < workers.size(); i++) {
                             workers.get(i).setIdle(true);
                         }
                         Thread.sleep(secondsBetweenIdleChecks * 1000);
-                        for (int i = 0; i < workers.size(); i++)
-                        {
-                            if (workers.get(i).isIdle())
-                            {
+                        for (int i = 0; i < workers.size(); i++) {
+                            if (workers.get(i).isIdle()) {
                                 workers.get(i)._shutDown();
                                 ProxyWorker newWorker = getNewWorker(workers.get(i).getWorkerId());
                                 newWorker.start();
@@ -148,9 +130,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                                 Thread.sleep(msSleepBetweenWorkersStart);
                             }
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -160,27 +140,19 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void startWorkers()
     {
-        while (!isManagerReady())
-        {
-            try
-            {
+        while (!isManagerReady()) {
+            try {
                 Thread.sleep(2000);
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
-        for (ProxyWorker worker : workers)
-        {
+        for (ProxyWorker worker : workers) {
             worker.setActive(true);
-            try
-            {
+            try {
                 Thread.sleep(100);
-            }
-            catch (InterruptedException e)
-            {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -199,8 +171,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void stopWorkers()
     {
-        for (ProxyWorker worker : workers)
-        {
+        for (ProxyWorker worker : workers) {
             worker.setActive(false);
         }
     }
@@ -214,10 +185,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
     public int getActiveThreadCount()
     {
         int totalCount = 0;
-        for (ProxyWorker proxyWorker : allWorkers)
-        {
-            if (proxyWorker.isActive && proxyWorker.isReady && !proxyWorker.isInterrupted())
-            {
+        for (ProxyWorker proxyWorker : allWorkers) {
+            if (proxyWorker.isActive && proxyWorker.isReady && !proxyWorker.isInterrupted()) {
                 totalCount++;
             }
         }
@@ -263,36 +232,30 @@ public abstract class ProxyWorkerManager extends WorkerManager
     public String getIniValue(String section, String variable, String defaultValue)
     {
         String value = null;
-        try
-        {
+        try {
             Ini prefs = new Ini(new File(iniFilename));
-            if (prefs.get(section, variable) != null)
-            {
+            if (prefs.get(section, variable) != null) {
                 value = prefs.get(section, variable);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return value;
     }
 
+
+
     public void readGeneralOptions(String filename)
     {
-        try
-        {
+        try {
             Ini prefs = new Ini(new File(filename));
             this.iniFilename = filename;
 
 
-            if (prefs.get("ProxyWorkerManager", "torRangeStart") != null)
-            {
+            if (prefs.get("ProxyWorkerManager", "torRangeStart") != null) {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
         }
@@ -300,110 +263,78 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public void basicReadGeneralOptions(String filename)
     {
-        try
-        {
+        try {
             session = filename.replace(".ini", "");
             Ini prefs = new Ini(new File(filename));
 
-            try
-            {
+            try {
                 String threadCountString = prefs.get("ProxyWorkerManager", "threads");
-                if (threadCountString != null)
-                {
+                if (threadCountString != null) {
                     workerCount = Integer.parseInt(threadCountString);
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             System.out.println("Starting " + workerCount + " threads");
 
-            try
-            {
+            try {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
 
             }
 
-            if (prefs.get("ProxyWorkerManager", "reportEvery") != null)
-            {
-                try
-                {
+            if (prefs.get("ProxyWorkerManager", "reportEvery") != null) {
+                try {
                     reportEverySeconds = Long.parseLong(prefs.get("ProxyWorkerManager", "reportEvery"));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
-            if (reportEverySeconds == Long.MAX_VALUE)
-            {
+            if (reportEverySeconds == Long.MAX_VALUE) {
                 System.out.println("Automatic reporting is not active.");
-            }
-            else
-            {
+            } else {
                 System.out.println("Automatic reporting every " + reportEverySeconds + ".");
             }
 
-            try
-            {
+            try {
                 String useTor = prefs.get("ProxyWorkerManager", "useProxy");
-                if (useTor != null)
-                {
+                if (useTor != null) {
 
-                }
-                else
-                {
+                } else {
                     useTor = prefs.get("ProxyWorkerManager", "useTor");
                 }
-                if (useTor == null)
-                {
+                if (useTor == null) {
 
-                }
-                else if (useTor.equals("false"))
-                {
+                } else if (useTor.equals("false")) {
                     this.useProxy = false;
-                }
-                else
-                {
+                } else {
                     this.useProxy = true;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            try
-            {
+            try {
                 exitSeconds = Integer.parseInt(prefs.get("ProxyWorkerManager", "exitSeconds"));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                /* System.out.println("Exit seconds error.");
                 System.out.println(e);*/
             }
 
             System.out.println("Exit Seconds is: " + exitSeconds);
 
-            if (this.useProxy)
-            {
+            if (this.useProxy) {
                 ConsoleColors.printBlue("Tor is enabled.");
-            }
-            else
-            {
+            } else {
                 ConsoleColors.printRed("Tor is disabled");
+                System.out.println("Sleeping for 5 seconds, just in case this is an error.");
+                Thread.sleep(5000);
             }
-            System.out.println("Sleeping for 5 seconds, just in case this is an error.");
-            Thread.sleep(5000);
-        }
-        catch (Exception e)
-        {
+
+
+        } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Some error happened while reading the session ini. [" + filename + "]");
             System.exit(0);
@@ -425,10 +356,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     synchronized public void simpleLog(String text, String filename)
     {
-        try
-        {
-            if (!new File(filename).getParentFile().exists())
-            {
+        try {
+            if (!new File(filename).getParentFile().exists()) {
                 new File(filename).getParentFile().mkdirs();
             }
 
@@ -436,9 +365,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
             pr = new PrintWriter(new FileOutputStream(filename, true));
             pr.println(text);
             pr.close();
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -459,12 +386,9 @@ public abstract class ProxyWorkerManager extends WorkerManager
         ConsoleColors.printCyan("Active Thread Count: " + getActiveThreadCount());
 
         double percentage;
-        if (getTotalJobsCount() == 0)
-        {
+        if (getTotalJobsCount() == 0) {
             percentage = 0;
-        }
-        else
-        {
+        } else {
             percentage = ((getDoneCount() + 0.0) * 100) / getTotalJobsCount();
         }
 
@@ -484,14 +408,11 @@ public abstract class ProxyWorkerManager extends WorkerManager
         System.out.println("Saving Current Number: " + currentEntry);
         state.put(LATEST_ENTRY, currentEntry);
         PrintWriter pr = null;
-        try
-        {
+        try {
             pr = new PrintWriter("sessions/" + session + "/latest.txt");
             pr.println(currentEntry);
             pr.close();
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }

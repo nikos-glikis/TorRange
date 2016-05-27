@@ -34,6 +34,24 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     protected DB doneRanges;
 
 
+    /**
+     * The last entry where our "request" succeed. Used for dynamic skip.
+     */
+    long lastSuccessfulEntry;
+
+    /**
+     * This is a conf value, if @failCount continues fails happen then we skip by @failSkip
+     * -1 means its not used.
+     */
+    long failCount =-1;
+
+    /**
+     * This is a conf value. When we have failCount continues fails (@currentEntry - @lastSuccessfullEntry > 0) then we increase current entry by @failSkip.
+     * -1 means its not used.
+     */
+    long failSkip = -1;
+
+
     public ProxyRangeWorkerManager(String iniFilename, Class workerClass)
     {
         super(iniFilename, workerClass);
@@ -96,6 +114,33 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 if (PROXY_RANGE_STEP !=1)
                 {
                     System.out.println("Step is set to "+PROXY_RANGE_STEP);
+                }
+
+                //FailCount
+                //
+
+                try {
+                    String failCountString = prefs.get("ProxyWorkerManager", "failCount");
+                    if (failCountString != null) {
+                        failCount= Integer.parseInt(failCountString);
+                        if (failCount > 0) {
+                            System.out.println("FailCount is:" +failCount);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    String failSkipString = prefs.get("ProxyWorkerManager", "failSkip");
+                    if (failSkipString != null) {
+                        failSkip = Integer.parseInt(failSkipString);
+                        if (failSkip > 0) {
+                            System.out.println("FailSkip is:" + failSkip);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 for (EntriesRange range : ranges)
@@ -222,6 +267,15 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             ConsoleColors.printCyan("Current entry is: " + currentEntry);
         }
 
+        if (failSkipEnabled())
+        {
+            if (currentEntry - lastSuccessfulEntry >= failCount) {
+                ConsoleColors.printBlue("Skipping "+ failSkip);
+                currentEntry = currentEntry + failSkip;
+                lastSuccessfulEntry = currentEntry;
+            }
+        }
+
         //noinspection StatementWithEmptyBody
         if (currentEntry <= currentRange.getEnd())
         {
@@ -234,10 +288,12 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             currentEntry = currentRange.getStart();
             saveCurrentEntry();
         }
+
         if (currentEntry % (getSaveEvery()) == (this.getSaveEvery() - 1))
         {
             saveCurrentEntry();
         }
+
         currentEntry = currentEntry+PROXY_RANGE_STEP;
         return prefix + "" + currentEntry;
 
@@ -445,6 +501,23 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             e.printStackTrace();
         }
+    }
+
+    //AutoSkip
+
+
+    public boolean failSkipEnabled()
+    {
+        return failCount > 0 && failSkip > 0;
+    }
+
+    /**
+     * Marks that an entry had a successful result. Used for autoskip.
+     * @param entry
+     */
+    public void markSuccessful(long entry)
+    {
+        lastSuccessfulEntry = entry;
     }
 
 }

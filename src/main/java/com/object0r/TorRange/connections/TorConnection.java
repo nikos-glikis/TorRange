@@ -216,7 +216,7 @@ public class TorConnection extends ProxyConnection
                 {
                     if (!com.object0r.toortools.os.OsHelper.isPidRunning(getTorPid()))
                     {
-                        System.out.println("Tor is not running. Reconnecting ...");
+                        //System.out.println("Tor is not running. Reconnecting ...");
                         connect();
                     }
                 }

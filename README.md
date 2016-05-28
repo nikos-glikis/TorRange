@@ -181,13 +181,25 @@ On above adjust the version.
 
 In pom.xml - replace {version} with version for examle, 1.0.3
 
-        <dependency>
-            <groupId>com.object0r</groupId>
-            <artifactId>TorRange</artifactId>
-            <version>{version}</version>
-        </dependency>
-
-
+Repository:
+   
+    <repositories>
+            <repository>
+                <releases>
+                    <enabled>true</enabled>
+                    <updatePolicy>always</updatePolicy>
+                    <checksumPolicy>ignore</checksumPolicy>
+                </releases>
+                <id>Object0r</id>
+                <name>Object0r</name>
+                <url>http://maven2.object0r.com/</url>
+                <layout>default</layout>
+            </repository>
+        </repositories>
+        
+ 
+ Dependency:
+ 
         <dependency>
             <groupId>com.object0r</groupId>
             <artifactId>TorRange</artifactId>

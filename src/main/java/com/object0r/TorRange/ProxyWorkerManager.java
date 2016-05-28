@@ -205,7 +205,6 @@ public abstract class ProxyWorkerManager extends WorkerManager
      *
      * @param section  - Section in the ini.
      * @param variable - Variable.
-     *                 <p/>
      *                 for example to get
      *                 [ConnectionManager]
      *                 remoteHost=192.168.1.200
@@ -222,7 +221,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
      *
      * @param section  - Section in the ini.
      * @param variable - Variable.
-     *                 <p/>
+     *
      *                 for example to get
      *                 [ConnectionManager]
      *                 remoteHost=192.168.1.200

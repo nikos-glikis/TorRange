@@ -13,6 +13,7 @@ abstract public class TorWorker extends ProxyWorker
     public TorWorker(ProxyWorkerManager manager, final int id)
     {
         super(manager, id);
+
         this.manager = (ProxyWorkerManager)manager;
         proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
 

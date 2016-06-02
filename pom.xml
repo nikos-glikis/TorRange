@@ -98,15 +98,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.object0r</groupId>
+            <groupId>com.object0r.toortools</groupId>
             <artifactId>toortools</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.4</version>
         </dependency>
+
 
     </dependencies>
 

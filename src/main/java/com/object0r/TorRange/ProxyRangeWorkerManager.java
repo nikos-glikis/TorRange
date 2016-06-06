@@ -43,7 +43,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
      * This is a conf value, if @failCount continues fails happen then we skip by @failSkip
      * -1 means its not used.
      */
-    long failCount =-1;
+    long failCount = -1;
 
     /**
      * This is a conf value. When we have failCount continues fails (@currentEntry - @lastSuccessfullEntry > 0) then we increase current entry by @failSkip.
@@ -94,7 +94,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     updateCurrentRange();
                 }
 
-                if (prefs.get("ProxyWorkerManager", "step") ==null )
+                if (prefs.get("ProxyWorkerManager", "step") == null)
                 {
                     PROXY_RANGE_STEP = 1;
                 }
@@ -111,35 +111,45 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     }
                 }
 
-                if (PROXY_RANGE_STEP !=1)
+                if (PROXY_RANGE_STEP != 1)
                 {
-                    System.out.println("Step is set to "+PROXY_RANGE_STEP);
+                    System.out.println("Step is set to " + PROXY_RANGE_STEP);
                 }
 
                 //FailCount
                 //
 
-                try {
+                try
+                {
                     String failCountString = prefs.get("ProxyWorkerManager", "failCount");
-                    if (failCountString != null) {
-                        failCount= Integer.parseInt(failCountString);
-                        if (failCount > 0) {
-                            System.out.println("FailCount is:" +failCount);
+                    if (failCountString != null)
+                    {
+                        failCount = Integer.parseInt(failCountString);
+                        if (failCount > 0)
+                        {
+                            System.out.println("FailCount is:" + failCount);
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
 
-                try {
+                try
+                {
                     String failSkipString = prefs.get("ProxyWorkerManager", "failSkip");
-                    if (failSkipString != null) {
+                    if (failSkipString != null)
+                    {
                         failSkip = Integer.parseInt(failSkipString);
-                        if (failSkip > 0) {
+                        if (failSkip > 0)
+                        {
                             System.out.println("FailSkip is:" + failSkip);
                         }
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
 
@@ -269,8 +279,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
         if (failSkipEnabled())
         {
-            if (currentEntry - lastSuccessfulEntry >= failCount) {
-                ConsoleColors.printBlue("Skipping "+ failSkip);
+            if (currentEntry - lastSuccessfulEntry >= failCount)
+            {
+                ConsoleColors.printBlue("Skipping " + failSkip);
                 currentEntry = currentEntry + failSkip;
                 lastSuccessfulEntry = currentEntry;
                 saveCurrentEntry();
@@ -295,7 +306,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             saveCurrentEntry();
         }
 
-        currentEntry = currentEntry+PROXY_RANGE_STEP;
+        currentEntry = currentEntry + PROXY_RANGE_STEP;
         return prefix + "" + currentEntry;
 
     }
@@ -514,6 +525,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     /**
      * Marks that an entry had a successful result. Used for autoskip.
+     *
      * @param entry
      */
     public void markSuccessful(String entry)

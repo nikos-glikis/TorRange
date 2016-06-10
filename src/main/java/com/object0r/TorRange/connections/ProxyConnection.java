@@ -23,6 +23,10 @@ abstract public class ProxyConnection
 
     public Proxy getProxy()
     {
+        if (proxy == null)
+        {
+            return Proxy.NO_PROXY;
+        }
         return proxy;
     }
 

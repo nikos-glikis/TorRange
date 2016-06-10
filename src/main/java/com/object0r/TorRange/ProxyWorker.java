@@ -15,7 +15,7 @@ import java.util.zip.GZIPInputStream;
 
 abstract public class ProxyWorker extends Thread
 {
-    protected Proxy proxy;
+    protected Proxy proxy = Proxy.NO_PROXY;
     protected ProxyWorkerManager manager;
     protected ProxyConnection proxyConnection;
 
@@ -40,7 +40,7 @@ abstract public class ProxyWorker extends Thread
 
     public Proxy getProxy()
     {
-        return proxy;
+        return proxy = proxyConnection.getProxy();
     }
 
     public void changeIp()

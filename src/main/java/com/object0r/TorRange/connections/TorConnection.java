@@ -270,7 +270,7 @@ public class TorConnection extends ProxyConnection
     public Proxy getProxy()
     {
         SocketAddress addr = new InetSocketAddress("localhost", getSocksPort());
-        Proxy proxy = new Proxy(Proxy.Type.SOCKS, addr);
+        proxy = new Proxy(Proxy.Type.SOCKS, addr);
         return proxy;
     }
 

@@ -164,21 +164,7 @@ At any point press enter to see the progress report. To make your own report, ov
 
 Install Jar in local maven repo
 ===============================
-
-v1.0.3
-
-    git checkout tags/v1.0.3
-    mvn clean compile assembly:single
-    mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.3 -Dpackaging=jar -Dfile=target/TorRange-1.0.3-jar-with-dependencies.jar
-
-v1.0.4
-    
-    git checkout master
-    mvn clean compile assembly:single
-    mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.4 -Dpackaging=jar -Dfile=target/TorRange-1.0.4-jar-with-dependencies.jar
-
-On above adjust the version.
-
+ 
 In pom.xml - replace {version} with version for examle, 1.0.3
 
 Repository:
@@ -217,7 +203,10 @@ Applications:
 
 2) Wordlist:
 
-See package com.object0r.TorRange. 
+See package com.object0r.TorRange.applications.wordlist
+
+You must extend WordlistConsumerWorker and possibly WordlistConsumerWorkerManager (Default is fine)
+
 Requires:
     
     [wordlist]

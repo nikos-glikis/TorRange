@@ -7,7 +7,7 @@ import java.net.Proxy;
 
 abstract public class ProxyConnection
 {
-    Proxy proxy;
+    Proxy proxy = Proxy.NO_PROXY;
     ProxyInfo proxyInfo;
 
     /**

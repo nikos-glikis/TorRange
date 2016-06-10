@@ -25,7 +25,7 @@ Configuration
 
 Create a .ini file similar to inis/example.ini
 
-    [WorkerManager]
+    [ProxyWorkerManager]
     #default is 50
     threads=100
     #default is empty String ""

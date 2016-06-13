@@ -49,6 +49,11 @@ public abstract class ProxyWorkerManager extends WorkerManager
     }
 
 
+    public DB createSessionDb(String name)
+    {
+        return new DB(session, name);
+    }
+
     public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
 

@@ -26,7 +26,6 @@ abstract public class WordlistConsumerWorker extends TorWorker
     }
 
 
-
     public void logWinner(String page, String entry)
     {
         try

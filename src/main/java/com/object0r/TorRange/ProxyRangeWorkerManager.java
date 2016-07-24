@@ -52,9 +52,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     long failSkip = -1;
 
 
-    public ProxyRangeWorkerManager(String iniFilename, Class workerClass)
+    public ProxyRangeWorkerManager(String iniFilename, Class workerClass, Class<? extends ProxyWorkerManager> managerClass)
     {
-        super(iniFilename, workerClass);
+        super(iniFilename, workerClass, managerClass);
         if (iniFilename != null)
         {
             readTorRangeOptions(iniFilename);

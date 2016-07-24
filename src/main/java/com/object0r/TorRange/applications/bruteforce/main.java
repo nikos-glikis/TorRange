@@ -25,7 +25,7 @@ public class main
 
             try
             {
-                BruteForceWorkerManager bruteForcerWorkerManager = new BruteForceWorkerManager(args[0], BruteForceWorker.class);
+                BruteForceWorkerManager bruteForcerWorkerManager = new BruteForceWorkerManager(args[0], BruteForceWorker.class );
                 bruteForcerWorkerManager.startWorkers();
             }
             catch (Exception e)

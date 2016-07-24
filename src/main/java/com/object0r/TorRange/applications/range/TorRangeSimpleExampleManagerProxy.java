@@ -1,6 +1,7 @@
 package com.object0r.TorRange.applications.range;
 
 import com.object0r.TorRange.ProxyRangeWorkerManager;
+import com.object0r.TorRange.ProxyWorkerManager;
 import org.ini4j.Ini;
 
 import java.io.File;
@@ -9,7 +10,7 @@ public class TorRangeSimpleExampleManagerProxy extends ProxyRangeWorkerManager
 {
     public TorRangeSimpleExampleManagerProxy(String iniFilename, Class workerClass)
     {
-        super(iniFilename, workerClass);
+        super(iniFilename, workerClass, TorRangeSimpleExampleManagerProxy.class);
     }
 
     @Override

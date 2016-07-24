@@ -19,6 +19,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     private static final String LATEST_ENTRY = "LATEST_ENTRY";
 
     Class<ProxyWorker> workerClass;
+    private final Class managerClass;
     protected String session;
     protected DB state;
     int exitSeconds = 5;
@@ -54,11 +55,12 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return new DB(session, name);
     }
 
-    public ProxyWorkerManager(String iniFilename, Class workerClass)
+    public ProxyWorkerManager(String iniFilename, Class workerClass, Class managerClass)
     {
         session = getSessionFromFilename(iniFilename);
         RecurringProcessHelper.checkAndRun(session);
         this.workerClass = workerClass;
+        this.managerClass = managerClass;
         state = new DB(session, "state");
         if (iniFilename != null)
         {
@@ -110,7 +112,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     private ProxyWorker getNewWorker(int i) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
     {
         //Constructor AND class should be public.
-        return workerClass.getConstructor(ProxyWorkerManager.class, int.class).newInstance(this, i);
+        return workerClass.getConstructor(managerClass, int.class).newInstance(this, i);
     }
 
     /**

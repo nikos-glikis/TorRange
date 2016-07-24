@@ -1,6 +1,7 @@
 package com.object0r.TorRange.applications.db;
 
 import com.object0r.TorRange.ProxyRangeWorkerManager;
+import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.datatypes.EntriesRange;
 import com.object0r.toortools.ConsoleColors;
 import org.ini4j.Ini;
@@ -39,9 +40,9 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
      */
     static String columnsString = "";
 
-    public DbProxyWorkerManager(String iniFilename, Class workerClass)
+    public DbProxyWorkerManager(String iniFilename, Class<? extends DbProxyWorker> workerClass, Class<? extends ProxyWorkerManager> managerClass)
     {
-        super(iniFilename, workerClass);
+        super(iniFilename, workerClass, managerClass);
         prepareColumns();
     }
 
@@ -178,7 +179,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             //System.out.println(query);
             ResultSet rs = st.executeQuery(query);
             rs.next();
-            System.out.println("Min is: "+ rs.getInt(1));
+            System.out.println("Min is: " + rs.getInt(1));
             int min = rs.getInt(1);
             //Max
             query = "SELECT MAX(`" + dbIdColumn + "`) FROM `" + dbValuesTable + "` ";
@@ -186,7 +187,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             rs = st.executeQuery(query);
             rs.next();
             int max = rs.getInt(1);
-            System.out.println("Max is: "+ max);
+            System.out.println("Max is: " + max);
             EntriesRange entriesRange = new EntriesRange(min, max);
             ranges.add(entriesRange);
         }
@@ -198,6 +199,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         }
         return ranges;
     }
+
     public void readGeneralOptions(String filename)
     {
         try

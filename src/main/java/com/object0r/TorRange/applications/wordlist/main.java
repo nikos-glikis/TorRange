@@ -25,7 +25,7 @@ public class main
 
             try
             {
-                WordlistConsumerWorkerManager wordlistConsumerWorkerManager = new WordlistConsumerWorkerManager(args[0], WordlistConsumerWorkerExample.class);
+                WordlistConsumerWorkerManager wordlistConsumerWorkerManager = new WordlistConsumerWorkerManager(args[0], WordlistConsumerWorkerExample.class );
                 wordlistConsumerWorkerManager.startWorkers();
             }
             catch (Exception e)

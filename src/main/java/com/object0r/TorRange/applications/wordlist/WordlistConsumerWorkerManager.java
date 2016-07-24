@@ -1,5 +1,6 @@
 package com.object0r.TorRange.applications.wordlist;
 
+import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.datatypes.EntriesRange;
 import com.object0r.TorRange.ProxyRangeWorkerManager;
 
@@ -12,9 +13,9 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
     private final String LATEST_ENTRY_WORDLIST = "latest_entry_wordlist";
     private String wordlistFile;
 
-    public WordlistConsumerWorkerManager(String iniFilename, Class workerClass)
+    public WordlistConsumerWorkerManager(String iniFilename, Class workerClass )
     {
-        super(iniFilename, workerClass);
+        super(iniFilename, workerClass, WordlistConsumerWorkerManager.class);
     }
 
     @Override

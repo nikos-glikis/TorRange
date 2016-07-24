@@ -20,7 +20,7 @@ public class MainDb
 
         try
         {
-            ProxyWorkerManager dbRangeSimpleExampleManager = new DbProxyWorkerManagerExample(args[0], TorRangeSimpleExampleWorker.class);
+            ProxyWorkerManager dbRangeSimpleExampleManager = new DbProxyWorkerManagerExample(args[0], DbProxyWorkerExample.class);
             dbRangeSimpleExampleManager.startWorkers();
         }
         catch (Exception e)

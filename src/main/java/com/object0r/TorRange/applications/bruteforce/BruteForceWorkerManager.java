@@ -13,9 +13,9 @@ public class BruteForceWorkerManager extends ProxyWorkerManager
 {
     Vector<BruteForcer> bruteForcers;
 
-    public BruteForceWorkerManager(String iniFilename, Class workerClass)
+    public BruteForceWorkerManager(String iniFilename, Class workerClass )
     {
-        super(iniFilename, workerClass);
+        super(iniFilename, workerClass, BruteForceWorkerManager.class);
     }
 
     @Override

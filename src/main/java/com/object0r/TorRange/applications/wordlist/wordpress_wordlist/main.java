@@ -27,7 +27,7 @@ public class main
 
             try
             {
-                WordlistConsumerWorkerManager wordpressCrackerWorkerManager = new WordlistConsumerWorkerManager(args[0], WordpressWordlistBruteForceWorker.class);
+                WordlistConsumerWorkerManager wordpressCrackerWorkerManager = new WordlistConsumerWorkerManager(args[0], WordpressWordlistBruteForceWorker.class );
                 wordpressCrackerWorkerManager.startWorkers();
             }
             catch (Exception e)

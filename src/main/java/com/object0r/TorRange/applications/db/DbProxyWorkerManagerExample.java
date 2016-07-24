@@ -17,11 +17,15 @@ public class DbProxyWorkerManagerExample extends DbProxyWorkerManager
     @Override
     public void readOptions(String filename)
     {
-        dbConnectionUrl = "jdbc:mysql://domain.com/dbName";
-        dbIdColumn = "id";
-        dbValuesTable = "table";
-        dbValueColumn = "column";
-        dbConnectionUsername = "root";
-        dbConnectionPassword = "";
+       /*
+
+         dbConnectionUrl = "jdbc:mysql://domain.com/dbName";
+         dbIdColumn = "id";
+         dbValuesTable = "table";
+         dbValueColumn = "column";
+         dbConnectionUsername = "root";
+         dbConnectionPassword = "";
+
+       */
     }
 }

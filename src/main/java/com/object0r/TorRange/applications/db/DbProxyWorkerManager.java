@@ -8,6 +8,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 
 abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 {
@@ -21,12 +24,48 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
     static public String dbIdColumn;
     static public String dbValueColumn;
     static public String dbFetchSize;
-
     static public DbRangeResult dbRangeResult;
+
+    /**
+     * Derived from dbValueColumn
+     */
+    static ArrayList<String> columns = new ArrayList<String>();
+
+    /**
+     * Derived from dbValueColumn - Used in select statements.
+     */
+    static String columnsString = "";
 
     public DbProxyWorkerManager(String iniFilename, Class workerClass)
     {
         super(iniFilename, workerClass);
+        prepareColumns();
+    }
+
+    private void prepareColumns()
+    {
+        if (dbValueColumn.contains(","))
+        {
+            StringTokenizer stringTokenizer = new StringTokenizer(dbValueColumn, ",");
+            while (stringTokenizer.hasMoreTokens())
+            {
+                columns.add(stringTokenizer.nextToken());
+            }
+        }
+        else
+        {
+            columns.add(dbValueColumn);
+        }
+
+        for (String column : columns)
+        {
+            columnsString = columnsString + "`" + column.trim() + "`,";
+        }
+        columnsString = columnsString.substring(0, columnsString.length() - 1);
+
+        /*System.out.println(dbValueColumn);
+        System.out.println(columnsString);
+        System.exit(0);*/
     }
 
     public int getNextIdInt()
@@ -83,13 +122,22 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             int end = id + Integer.parseInt(dbFetchSize);
             dbRangeResult.setEnd(end);
             Statement st = dbConnection.createStatement();
-            String query = "SELECT `" + dbIdColumn + "`,`" + dbValueColumn + "` FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
+            //String query = "SELECT `" + dbIdColumn + "`,`" + dbValueColumn + "` FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
+            String query = "SELECT `" + dbIdColumn + "`," + columnsString + " FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
             System.out.println(query);
             ResultSet rs = st.executeQuery(query);
             while (rs.next())
             {
-                //System.out.println(rs.getString(1));
                 dbRangeResult.addValue(rs.getInt(1), rs.getString(2));
+                int i = 2;
+                HashMap<String, String> hashMap = new HashMap<String, String>();
+
+                for (String column : columns)
+                {
+                    hashMap.put(column, rs.getString(i++));
+                }
+
+                dbRangeResult.addToAllValues(rs.getInt(1), hashMap);
             }
         }
         catch (Exception e)
@@ -135,8 +183,8 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
                 dbConnectionClass = "com.mysql.jdbc.Driver";
             }
 
-            System.out.println("dbConnectionClass:" + dbConnectionClass);
-            System.out.println("dbConnectionUrl:" + dbConnectionUrl);
+            System.out.println("dbConnectionClass: " + dbConnectionClass);
+            System.out.println("dbConnectionUrl: " + dbConnectionUrl);
         }
         catch (Exception e)
         {

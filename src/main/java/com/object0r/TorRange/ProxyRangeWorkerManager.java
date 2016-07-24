@@ -189,6 +189,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     public Vector<EntriesRange> getUserRanges()
     {
+        ConsoleColors.printRed("This method should be overwritten (ProxyRangeWorkerManager.getUserRanges). Most probably there is something wrong with the configuration.");
+        System.exit(-1);
         return new Vector<EntriesRange>();
     }
 
@@ -328,6 +330,11 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         try
         {
+            if (!new File(filename).exists())
+            {
+                ConsoleColors.printRed("Ranges file does not exist. Exiting.("+filename+")");
+                System.exit(-1);
+            }
             Scanner sc = new Scanner(new FileInputStream(filename));
             while (sc.hasNext())
             {

@@ -1,6 +1,8 @@
 package com.object0r.TorRange.applications.db;
 
 import com.object0r.TorRange.ProxyRangeWorkerManager;
+import com.object0r.TorRange.datatypes.EntriesRange;
+import com.object0r.toortools.ConsoleColors;
 import org.ini4j.Ini;
 
 import java.io.File;
@@ -11,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 {
@@ -85,11 +88,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         {
             try
             {
-                if (dbConnection == null)
-                {
-                    Class.forName(dbConnectionClass);
-                    dbConnection = DriverManager.getConnection(dbConnectionUrl, dbConnectionUsername, dbConnectionPassword);
-                }
+                initDb();
                 int id = getNextIdInt();
                 String value = dbRangeResult.getValue(id);
                 while (value == null)
@@ -111,6 +110,24 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             e.printStackTrace();
         }
         return "";
+    }
+
+    private void initDb()
+    {
+        try
+        {
+            if (dbConnection == null)
+            {
+                Class.forName(dbConnectionClass);
+                dbConnection = DriverManager.getConnection(dbConnectionUrl, dbConnectionUsername, dbConnectionPassword);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            ConsoleColors.printRed("There was some error connecting to the database. Exiting.");
+            System.exit(-1);
+        }
     }
 
     private void fetchNewResult(int id)
@@ -143,10 +160,44 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         catch (Exception e)
         {
             e.printStackTrace();
+            ConsoleColors.printRed("There was some error getting data from the database. Exiting now.");
+            System.exit(-1);
         }
     }
 
+    public Vector<EntriesRange> getUserRanges()
+    {
+        Vector<EntriesRange> ranges = new Vector<EntriesRange>();
+        try
+        {
+            initDb();
+            Statement st = dbConnection.createStatement();
 
+            //Find out MIN
+            String query = "SELECT MIN(`" + dbIdColumn + "`) FROM `" + dbValuesTable + "` ";
+            //System.out.println(query);
+            ResultSet rs = st.executeQuery(query);
+            rs.next();
+            System.out.println("Min is: "+ rs.getInt(1));
+            int min = rs.getInt(1);
+            //Max
+            query = "SELECT MAX(`" + dbIdColumn + "`) FROM `" + dbValuesTable + "` ";
+            //System.out.println(query);
+            rs = st.executeQuery(query);
+            rs.next();
+            int max = rs.getInt(1);
+            System.out.println("Max is: "+ max);
+            EntriesRange entriesRange = new EntriesRange(min, max);
+            ranges.add(entriesRange);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            ConsoleColors.printRed("There was some error reading min/max values id. Please recheck database data.");
+            System.exit(-1);
+        }
+        return ranges;
+    }
     public void readGeneralOptions(String filename)
     {
         try

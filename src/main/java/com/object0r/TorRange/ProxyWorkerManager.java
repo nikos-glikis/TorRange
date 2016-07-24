@@ -56,8 +56,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
     public ProxyWorkerManager(String iniFilename, Class workerClass)
     {
-
-        session = iniFilename.replace(".ini", "");
+        session = getSessionFromFilename(iniFilename);
         RecurringProcessHelper.checkAndRun(session);
         this.workerClass = workerClass;
         state = new DB(session, "state");
@@ -305,11 +304,18 @@ public abstract class ProxyWorkerManager extends WorkerManager
         }
     }
 
+    private String getSessionFromFilename(String filename)
+    {
+        session = filename.replace(".ini", "");
+        session = session.replace(":","_");
+        return session;
+    }
+
     public void basicReadGeneralOptions(String filename)
     {
         try
         {
-            session = filename.replace(".ini", "");
+            session = getSessionFromFilename(filename);
             Ini prefs = new Ini(new File(filename));
 
             try

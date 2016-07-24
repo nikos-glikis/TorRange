@@ -13,7 +13,9 @@ public class TorRangeSimpleExampleWorker extends TorWorker
         try
         {
             System.out.println(readUrl("http://cpanel.com/showip.shtml"));
-            manager.markSuccessful(entry);
+
+            //manager.markSuccessful(entry);
+
             sleep(1000);
             changeIp();
 

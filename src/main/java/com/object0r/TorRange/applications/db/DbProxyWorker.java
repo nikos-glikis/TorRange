@@ -14,5 +14,13 @@ abstract class DbProxyWorker extends TorWorker
         this.manager = manager;
     }
 
+    @Override
+    protected void getNextAndProcess()
+    {
+        HashMap<String, String> values = manager.getNextEntryMap();
+        setIdle(false);
+        process(values);
+    }
+
     abstract void process(HashMap<String, String> values);
 }

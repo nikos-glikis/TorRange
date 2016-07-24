@@ -83,6 +83,37 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         return id;
     }
 
+    public synchronized HashMap<String, String> getNextEntryMap()
+    {
+        HashMap<String, String> value = new HashMap<String, String>();
+        try
+        {
+            try
+            {
+                initDb();
+                int id = getNextIdInt();
+                value = dbRangeResult.getAllValues(id);
+                while (value == null)
+                {
+                    id = getNextIdInt();
+                    value = dbRangeResult.getAllValues(id);
+                }
+                return value;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                System.exit(-1);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        return value;
+    }
+
     public synchronized String getNextEntry()
     {
         try
@@ -98,7 +129,6 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
                     value = dbRangeResult.getValue(id);
                 }
                 return value;
-
             }
             catch (Exception e)
             {

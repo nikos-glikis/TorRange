@@ -89,9 +89,7 @@ abstract public class ProxyWorker extends Thread
                     continue;
                 }
 
-                String nextToProcess = manager.getNextEntry();
-                setIdle(false);
-                process(nextToProcess);
+                getNextAndProcess();
                 setIdle(false);
                 if (manager.exiting)
                 {
@@ -105,6 +103,13 @@ abstract public class ProxyWorker extends Thread
         {
             e.printStackTrace();
         }
+    }
+
+    protected void getNextAndProcess()
+    {
+        String nextToProcess = manager.getNextEntry();
+        setIdle(false);
+        process(nextToProcess);
     }
 
     public void verifyTor(final boolean killOld)

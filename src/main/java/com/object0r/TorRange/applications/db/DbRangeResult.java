@@ -21,9 +21,9 @@ public class DbRangeResult
         return values.get(index);
     }
 
-    public String getAllValues(int index)
+    public HashMap<String, String> getAllValues(int index)
     {
-        return values.get(index);
+        return allValues.get(index);
     }
 
     public void addToAllValues(int index, HashMap<String, String> values)

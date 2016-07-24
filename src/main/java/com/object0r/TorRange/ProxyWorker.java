@@ -1,10 +1,10 @@
 package com.object0r.TorRange;
 
-
 import com.object0r.TorRange.connections.ProxyConnection;
 import com.object0r.TorRange.connections.TorConnection;
 import com.object0r.TorRange.datatypes.ProxyInfo;
 import com.object0r.TorRange.datatypes.ReadUrlResult;
+import com.object0r.toortools.Utilities;
 import com.object0r.toortools.http.HttpRequestInformation;
 import org.apache.commons.io.IOUtils;
 
@@ -251,7 +251,7 @@ abstract public class ProxyWorker extends Thread
      */
     public String getUserAgent()
     {
-        return "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0";
+        return Utilities.getBrowserUserAgent();
     }
 
     public String readUrlWithProxy(String url) throws Exception
@@ -262,7 +262,6 @@ abstract public class ProxyWorker extends Thread
 
     public ReadUrlResult resilientReadUrl(String url)
     {
-
         //TODO research what happens in https redirect, and www
         //System.out.print(".");
         String contents = null;

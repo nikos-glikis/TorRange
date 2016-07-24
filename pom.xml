@@ -4,10 +4,23 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.object0r</groupId>
+    <groupId>com.object0r.TorRange</groupId>
     <artifactId>TorRange</artifactId>
     <version>1.0.4</version>
 
+    <licenses>
+        <license>
+            <name>LGPL license, Version 3.0</name>
+            <url>https://www.gnu.org/licenses/lgpl.txt</url>
+        </license>
+    </licenses>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <plugins>
@@ -20,6 +33,60 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.sonatype.plugins</groupId>
+                <artifactId>nexus-staging-maven-plugin</artifactId>
+                <version>1.6.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <serverId>ossrh</serverId>
+                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.5</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
@@ -111,7 +178,7 @@
 
     </dependencies>
 
-    <repositories>
+   <!-- <repositories>
         <repository>
             <releases>
                 <enabled>true</enabled>
@@ -123,6 +190,26 @@
             <url>http://maven2.object0r.com/</url>
             <layout>default</layout>
         </repository>
-    </repositories>
+    </repositories>-->
 
+    <name>TorRange</name>
+    <description>Multithreaded Range/Range consumer with Tor integration</description>
+    <url>http://www.object0r.com</url>
+
+
+
+    <developers>
+        <developer>
+            <name>Nikos glikis</name>
+            <email>nikosglikis@gmail.com</email>
+            <organization>Object0r</organization>
+            <organizationUrl>https://www.object0r.com</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <url>https://github.com/nikos-glikis/TorRange</url>
+        <connection>scm:git:git@github.com:nikos-glikis/TorRange.git</connection>
+        <developerConnection>scm:git:git@github.com:nikos-glikis/TorRange.git</developerConnection>
+    </scm>
 </project>

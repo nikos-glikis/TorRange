@@ -1,7 +1,6 @@
 package com.object0r.TorRange.applications.db;
 
 import java.util.HashMap;
-import java.util.Vector;
 
 public class DbRangeResult
 {

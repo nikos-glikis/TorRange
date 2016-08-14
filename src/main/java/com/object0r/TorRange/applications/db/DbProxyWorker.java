@@ -4,7 +4,7 @@ import com.object0r.TorRange.TorWorker;
 
 import java.util.HashMap;
 
-abstract class DbProxyWorker extends TorWorker
+abstract public class DbProxyWorker extends TorWorker
 {
     DbProxyWorkerManager manager;
 

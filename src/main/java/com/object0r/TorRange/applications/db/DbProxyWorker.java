@@ -22,5 +22,5 @@ abstract public class DbProxyWorker extends TorWorker
         process(values);
     }
 
-    abstract void process(HashMap<String, String> values);
+    abstract protected void process(HashMap<String, String> values);
 }

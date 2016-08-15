@@ -1,19 +1,29 @@
 Threaded Range Processor, with TOR Integration
 ==============================================
 
+TorRange is a library that can create multiple threads and consume large input of any size efficiently. 
+
+A Tor Instance is tied to each thread if needed and the thread can control the connection (Restart circuit/change ip etc).
+
+The process can be stopped and resumed at any point. 
+
 Introduction
 -------------
 
-This repository contains a library that can read one or more Ranges, and process each number in that process. It also contains an application of that library, that downloads and the ip of each thread for each number in the range.
+This repository contains a library that can read one or more Integer Ranges/DatabaseTables/Wordlists/Bruteforce words, and process each entry in that process.
 
-Each thread is connected to a tor connection, which it has control over. When needed the ip of the Thread can be changed, and a readUrl method is provided that downloads some url, using TOR.
+Each thread is connected to a tor connection, which it has control over. When needed the ip of the Thread can be refreshed (changeIp() in worker), and a readUrl(String url) method is provided that downloads some url, using TOR.
+
+You can control the number of threads running and you can stop/resume the process at any point.
+
+This library was created to process many millions of requests on a service that limits requests per ip, anonymously.
 
 Requirements
 -----------
 
 To run this you need a linux box with tor and java (obviously) installed.
 
-TOR path must be added in the PATH of the linux box tor can be manually runned.
+TOR path must be added in the PATH of the linux box tor can be manually runned. To verify that open a console and run tor command.
 
 This has been tested only for root user.
 
@@ -60,9 +70,9 @@ WorkerManager is responsible for:
 
 You will have to create and run only ONE WorkerManager. When a WorkerManager is created, you then create the Workers (Threads) and you pass the WorkerManager as an argument.
 
-Steps to create a new software.
+Steps to create a new app using TorRange.
 
-1) Create a file that Extends WorkerManager. If you want to consume a database table, extend DbWorkerManager or use default.
+1) Create a file that Extends WorkerManager.
 
 2) Create a worker class that extends TorWorker. Create a constructor similar to that of TorRangeSimpleExampleWorker. 
 

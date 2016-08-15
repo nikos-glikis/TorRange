@@ -71,6 +71,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
         try
         {
+            System.out.println("Worker Count is: "+workerCount);
             for (int i = 0; i < workerCount; i++)
             {
                 try

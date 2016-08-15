@@ -1,16 +1,18 @@
 package com.object0r.TorRange.applications.wordlist;
 
-
-import com.object0r.TorRange.ProxyWorkerManager;
+import com.object0r.TorRange.TorWorker;
 import com.object0r.TorRange.helpers.TorRangeHttpHelper;
 
-public class WordlistConsumerWorkerExample extends WordlistConsumerWorker
+public class WordlistConsumerWorkerExample extends TorWorker
 {
-    public WordlistConsumerWorkerExample(ProxyWorkerManager manager, int id)
+    WordlistConsumerWorkerManager manager;
+    public WordlistConsumerWorkerExample(WordlistConsumerWorkerManager manager, int id)
     {
         super(manager, id);
+        this.manager = manager;
     }
 
+    public int threadCounter = 0;
     public void process(String entry)
     {
         System.out.println("Entry: " + entry);
@@ -47,6 +49,19 @@ public class WordlistConsumerWorkerExample extends WordlistConsumerWorker
                 //System.out.println("Changing ip");
                 changeIp();
             }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    public void logWinner(String page, String entry)
+    {
+        try
+        {
+            System.out.println("We have a winner: " + entry);
+            manager.logWinner(page, entry);
+            System.exit(0);
         }
         catch (Exception e)
         {

@@ -1,10 +1,9 @@
 package com.object0r.TorRange.connections;
 
-import com.object0r.TorRange.helpers.CommandRunner;
-
-import com.object0r.toortools.os.OsHelper;
 import com.object0r.TorRange.datatypes.ProxyInfo;
+import com.object0r.TorRange.helpers.CommandRunner;
 import com.object0r.toortools.Utilities;
+import com.object0r.toortools.os.OsHelper;
 
 import java.io.*;
 import java.net.InetSocketAddress;

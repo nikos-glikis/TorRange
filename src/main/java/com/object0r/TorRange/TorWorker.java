@@ -1,25 +1,25 @@
 package com.object0r.TorRange;
 
-
+import com.object0r.TorRange.connections.DummyProxyConnection;
 import com.object0r.TorRange.connections.TorConnection;
 
 abstract public class TorWorker extends ProxyWorker
 {
-
-    int timeToSleepAfterKillTor = 30;
-
     ProxyWorkerManager manager;
 
     public TorWorker(ProxyWorkerManager manager, final int id)
     {
         super(manager, id);
 
-        this.manager = (ProxyWorkerManager)manager;
-        proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
-
+        this.manager = (ProxyWorkerManager) manager;
         if (manager.useTor())
         {
+            proxyConnection = new TorConnection(this.manager.getTorRangeStart() + id);
             verifyTor(true);
+        }
+        else
+        {
+            proxyConnection = new DummyProxyConnection();
         }
     }
 

@@ -63,13 +63,10 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 
         for (String column : columns)
         {
-            columnsString = columnsString + "`" + column.trim() + "`,";
+            columnsString = columnsString + "`" + column.trim().replace("`", "") + "`,";
         }
         columnsString = columnsString.substring(0, columnsString.length() - 1);
 
-        /*System.out.println(dbValueColumn);
-        System.out.println(columnsString);
-        System.exit(0);*/
     }
 
     public int getNextIdInt()
@@ -172,7 +169,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
             Statement st = dbConnection.createStatement();
             //String query = "SELECT `" + dbIdColumn + "`,`" + dbValueColumn + "` FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
             String query = "SELECT `" + dbIdColumn + "`," + columnsString + " FROM `" + dbValuesTable + "` WHERE  `" + dbIdColumn + "` BETWEEN " + id + " AND " + (end) + "";
-            System.out.println(query);
+
             ResultSet rs = st.executeQuery(query);
             while (rs.next())
             {
@@ -182,7 +179,7 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
 
                 for (String column : columns)
                 {
-                    hashMap.put(column, rs.getString(i++));
+                    hashMap.put(column.trim(), rs.getString(i++));
                 }
 
                 dbRangeResult.addToAllValues(rs.getInt(1), hashMap);

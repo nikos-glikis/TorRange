@@ -178,25 +178,9 @@
 
     </dependencies>
 
-   <!-- <repositories>
-        <repository>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>ignore</checksumPolicy>
-            </releases>
-            <id>Object0r</id>
-            <name>Object0r</name>
-            <url>http://maven2.object0r.com/</url>
-            <layout>default</layout>
-        </repository>
-    </repositories>-->
-
     <name>TorRange</name>
     <description>Multithreaded Range/Range consumer with Tor integration</description>
     <url>http://www.object0r.com</url>
-
-
 
     <developers>
         <developer>

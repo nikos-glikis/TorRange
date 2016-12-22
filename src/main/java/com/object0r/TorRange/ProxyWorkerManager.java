@@ -27,7 +27,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
     protected boolean isProxyWorkerReady = false;
-    protected String iniFilename = "";
+    private static String iniFilename = "";
     //Sleep period between marking as idle, and rechecking if it is idle.
     long secondsBetweenIdleChecks = 180;
     //How often to check for idle workers.
@@ -58,6 +58,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     public ProxyWorkerManager(String iniFilename, Class workerClass, Class managerClass)
     {
         session = getSessionFromFilename(iniFilename);
+        ProxyWorkerManager.iniFilename = iniFilename;
         RecurringProcessHelper.checkAndRun(session);
         this.workerClass = workerClass;
         this.managerClass = managerClass;
@@ -273,7 +274,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         String value = null;
         try
         {
-            Ini prefs = new Ini(new File(iniFilename));
+            Ini prefs = new Ini(new File(getIniFilename()));
             if (prefs.get(section, variable) != null)
             {
                 value = prefs.get(section, variable);
@@ -286,15 +287,16 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return value;
     }
 
+    public String getIniFilename()
+    {
+        return iniFilename;
+    }
 
     public void readGeneralOptions(String filename)
     {
         try
         {
             Ini prefs = new Ini(new File(filename));
-            this.iniFilename = filename;
-
-
             if (prefs.get("ProxyWorkerManager", "torRangeStart") != null)
             {
                 torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));

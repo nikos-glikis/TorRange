@@ -219,7 +219,10 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             }
         }
 
-        doneCount += (currentEntry - currentRange.getStart());
+        if (!isRangeDone(currentRange))
+        {
+            doneCount += (currentEntry - currentRange.getStart());
+        }
 
         return doneCount;
     }

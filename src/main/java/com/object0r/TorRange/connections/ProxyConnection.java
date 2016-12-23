@@ -10,6 +10,8 @@ abstract public class ProxyConnection
     Proxy proxy = Proxy.NO_PROXY;
     ProxyInfo proxyInfo;
 
+    abstract public void close();
+
     /**
      * This must generate a new proxy and proxyInfo
      **/

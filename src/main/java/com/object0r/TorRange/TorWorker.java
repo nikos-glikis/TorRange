@@ -27,6 +27,6 @@ abstract public class TorWorker extends ProxyWorker
     public synchronized void shutDown()
     {
         System.out.println("Closing tor connection ...");
-        ((TorConnection) proxyConnection).closeTor();
+        proxyConnection.close();
     }
 }

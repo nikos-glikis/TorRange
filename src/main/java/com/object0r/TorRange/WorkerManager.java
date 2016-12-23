@@ -20,42 +20,44 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
     public WorkerManager()
     {
-        Runtime.getRuntime().addShutdownHook(new Thread()
-        {
-            public void run()
-            {
-                try
+        Runtime.getRuntime().addShutdownHook(
+                new Thread()
                 {
-                    System.out.println("\nExiting in " + exitInSeconds() + " seconds.");
-                    exiting = true;
-                    for (final ProxyWorker worker : workers)
+                    public void run()
                     {
-                        new Thread()
+                        try
                         {
-                            public void run()
+                            System.out.println("\nExiting in " + exitInSeconds() + " seconds.");
+                            exiting = true;
+                            for (final ProxyWorker worker : workers)
                             {
-                                try
+                                new Thread()
                                 {
-                                    worker._shutDown();
-                                }
-                                catch (Exception e)
-                                {
+                                    public void run()
+                                    {
+                                        try
+                                        {
+                                            worker._shutDown();
+                                        }
+                                        catch (Exception e)
+                                        {
 
-                                }
+                                        }
+                                    }
+
+                                }.start();
                             }
+                            Thread.sleep(exitInSeconds() * 1000);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
 
-                        }.start();
+                        prepareForExit();
                     }
-                    Thread.sleep(exitInSeconds() * 1000);
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-                prepareForExit();
-            }
-        });
+        );
 
 
         new Thread()
@@ -90,6 +92,7 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                     {
                         Thread.sleep(reportEverySeconds);
                         printReport();
+
                     }
                 }
                 catch (Exception e)

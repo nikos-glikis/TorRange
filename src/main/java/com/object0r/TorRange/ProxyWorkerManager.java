@@ -29,15 +29,14 @@ public abstract class ProxyWorkerManager extends WorkerManager
     protected boolean isProxyWorkerReady = false;
     private static String iniFilename = "";
     //Sleep period between marking as idle, and rechecking if it is idle.
-    long secondsBetweenIdleChecks = 180;
+    long secondsBetweenIdleChecks = 120;
     //How often to check for idle workers.
-    long minutesBetweenIdleThreadChecks = 10;
+    long minutesBetweenIdleThreadChecks = 1;
     long msSleepBetweenWorkersStart = 200;
 
     public int saveEvery = 300;
 
     long currentEntry;
-
 
     public boolean useProxy()
     {
@@ -49,6 +48,22 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return useProxy;
     }
 
+    /**
+     * Returnes true if all workers are Idle.
+     *
+     * @return true if all workers are Idle
+     */
+    protected boolean allWorkersIdle()
+    {
+        for (ProxyWorker worker : workers)
+        {
+            if (worker.isActive())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     public DB createSessionDb(String name)
     {

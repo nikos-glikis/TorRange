@@ -202,6 +202,12 @@ public class TorConnection extends ProxyConnection
         }
     }
 
+    @Override
+    public void close()
+    {
+        closeTor();
+    }
+
     public void changeIp()
     {
         try

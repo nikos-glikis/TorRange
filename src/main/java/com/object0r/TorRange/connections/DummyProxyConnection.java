@@ -7,6 +7,12 @@ public class DummyProxyConnection extends ProxyConnection
 {
 
     @Override
+    public void close()
+    {
+
+    }
+
+    @Override
     public void changeIp()
     {
 

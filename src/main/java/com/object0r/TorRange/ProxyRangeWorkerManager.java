@@ -264,7 +264,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         if (exiting)
         {
-            sleepForALogTime();
+            sleepForALongTime();
         }
 
         if (currentRange == null)
@@ -313,7 +313,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     }
 
-    private void sleepForALogTime()
+    private void sleepForALongTime()
     {
         try
         {
@@ -332,7 +332,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         {
             if (!new File(filename).exists())
             {
-                ConsoleColors.printRed("Ranges file does not exist. Exiting.("+filename+")");
+                ConsoleColors.printRed("Ranges file does not exist. Exiting.(" + filename + ")");
                 System.exit(-1);
             }
             Scanner sc = new Scanner(new FileInputStream(filename));
@@ -398,17 +398,39 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
         if (!found)
         {
             System.out.println("Seems that all ranges have ended. Will stop in a few seconds.");
-            try
+            new Thread()
             {
-                Thread.sleep(20000);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            //System.exit(0);
+                public void run()
+                {
+                    while (true)
+
+                    {
+                        try
+                        {
+                            Thread.sleep(8000);
+                            if (allWorkersIdle())
+                            {
+                                Thread.sleep(5000);
+                                if (allWorkersIdle())
+                                {
+                                    printReport();
+                                    System.out.println("All workers are idle, exiting.");
+                                    System.exit(0);
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }.start();
+
+            sleepForALongTime();
         }
     }
+
 
     synchronized long getCurrentEntry()
     {

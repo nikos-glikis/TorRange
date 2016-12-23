@@ -402,8 +402,9 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 public void run()
                 {
+                    exiting = true;
+                    shutDownAllWorkers();
                     while (true)
-
                     {
                         try
                         {
@@ -430,6 +431,8 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             sleepForALongTime();
         }
     }
+
+
 
 
     synchronized long getCurrentEntry()

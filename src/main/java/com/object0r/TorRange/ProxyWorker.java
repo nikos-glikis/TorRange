@@ -88,23 +88,13 @@ abstract public class ProxyWorker extends Thread
                     Thread.sleep(5000);
                     continue;
                 }
-                if (isInterrupted())
-                {
-                    return;
-                }
                 getNextAndProcess();
                 setIdle(false);
-                if (isInterrupted())
-                {
-                    return;
-                }
                 if (manager.exiting)
                 {
                     Thread.sleep(60000000);
                 }
             }
-
-            interrupt();
         }
         catch (Exception e)
         {
@@ -355,8 +345,6 @@ abstract public class ProxyWorker extends Thread
         isTurnedOff = true;
         isReady = false;
         shutDown();
-
-        interrupt();
     }
 
     public boolean isActive()

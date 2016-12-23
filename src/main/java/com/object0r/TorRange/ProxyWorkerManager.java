@@ -163,7 +163,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                         Thread.sleep(secondsBetweenIdleChecks * 1000);
                         for (int i = 0; i < workers.size(); i++)
                         {
-                            if (workers.get(i).isIdle())
+                            if (workers.get(i).isIdle() && !exiting)
                             {
                                 workers.get(i)._shutDown();
                                 ProxyWorker newWorker = getNewWorker(workers.get(i).getWorkerId());
@@ -327,7 +327,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     private String getSessionFromFilename(String filename)
     {
         session = filename.replace(".ini", "");
-        session = session.replace(":","_");
+        session = session.replace(":", "_");
         return session;
     }
 

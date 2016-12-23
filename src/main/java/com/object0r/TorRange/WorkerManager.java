@@ -18,6 +18,14 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
     abstract public void prepareForExit();
 
+    protected void shutDownAllWorkers()
+    {
+        for (final ProxyWorker worker : workers)
+        {
+            worker._shutDown();
+        }
+    }
+
     public WorkerManager()
     {
         Runtime.getRuntime().addShutdownHook(

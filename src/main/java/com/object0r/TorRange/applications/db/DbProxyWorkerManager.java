@@ -227,11 +227,11 @@ abstract public class DbProxyWorkerManager extends ProxyRangeWorkerManager
         return ranges;
     }
 
-    public void readGeneralOptions(String filename)
+    public void readIniOptions(String filename)
     {
         try
         {
-            basicReadGeneralOptions(filename);
+            super.readIniOptions(filename);
             Ini prefs = new Ini(new File(filename));
             dbConnectionUrl = (prefs.get("dbInfo", "dbConnectionUrl"));
             dbConnectionClass = (prefs.get("dbInfo", "dbConnectionClass"));

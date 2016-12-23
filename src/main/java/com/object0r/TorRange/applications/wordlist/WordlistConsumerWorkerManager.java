@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
+abstract public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
 {
     private final String LATEST_ENTRY_WORDLIST = "latest_entry_wordlist";
     private String wordlistFile;
@@ -89,8 +89,9 @@ public class WordlistConsumerWorkerManager extends ProxyRangeWorkerManager
     }
 
     @Override
-    public void readOptions(String filename)
+    public void readIniOptions(String filename)
     {
+        super.readIniOptions(filename);
         readWordlistOptions(filename);
     }
 

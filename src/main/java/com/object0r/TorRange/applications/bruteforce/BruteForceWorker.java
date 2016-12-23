@@ -2,13 +2,11 @@ package com.object0r.TorRange.applications.bruteforce;
 
 import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.TorWorker;
-import com.object0r.TorRange.applications.wordlist.WordlistConsumerWorkerManager;
-import com.object0r.TorRange.helpers.TorRangeHttpHelper;
 
 public class BruteForceWorker extends TorWorker
 {
     public int threadCounter = 0;
-    BruteForceWorkerManager manager;
+    AbstractBruteForceWorkerManager manager;
 
     public BruteForceWorker(ProxyWorkerManager manager, final int id)
     {

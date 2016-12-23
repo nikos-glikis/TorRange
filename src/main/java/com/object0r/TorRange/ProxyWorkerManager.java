@@ -80,8 +80,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         state = new DB(session, "state");
         if (iniFilename != null)
         {
-            basicReadGeneralOptions(iniFilename);
-            readGeneralOptions(iniFilename);
+            readIniOptions(iniFilename);
             readOptions(iniFilename);
         }
 
@@ -264,7 +263,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
      *                 for example to get
      *                 [ConnectionManager]
      *                 remoteHost=192.168.1.200
-     *                 run readOptions("ConnectionManager,"remoteHost");
+     *                 run getIniValue("ConnectionManager,"remoteHost");
      * @return null|String
      */
     public String getIniValue(String section, String variable)
@@ -281,7 +280,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
      *                 for example to get
      *                 [ConnectionManager]
      *                 remoteHost=192.168.1.200
-     *                 run readOptions("ConnectionManager,"remoteHost");
+     *                 run getIniValue("ConnectionManager,"remoteHost");
      * @return null|String
      */
     public String getIniValue(String section, String variable, String defaultValue)
@@ -307,22 +306,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return iniFilename;
     }
 
-    public void readGeneralOptions(String filename)
-    {
-        try
-        {
-            Ini prefs = new Ini(new File(filename));
-            if (prefs.get("ProxyWorkerManager", "torRangeStart") != null)
-            {
-                torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            System.exit(0);
-        }
-    }
+
 
     private String getSessionFromFilename(String filename)
     {
@@ -331,7 +315,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return session;
     }
 
-    public void basicReadGeneralOptions(String filename)
+    public void readIniOptions(String filename)
     {
         try
         {
@@ -435,6 +419,19 @@ public abstract class ProxyWorkerManager extends WorkerManager
                 Thread.sleep(5000);
             }
 
+            try
+            {
+                prefs = new Ini(new File(filename));
+                if (prefs.get("ProxyWorkerManager", "torRangeStart") != null)
+                {
+                    torRangeStart = Integer.parseInt(prefs.get("ProxyWorkerManager", "torRangeStart"));
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                System.exit(0);
+            }
 
         }
         catch (Exception e)

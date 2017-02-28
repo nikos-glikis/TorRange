@@ -18,6 +18,20 @@ You can control the number of threads running and you can stop/resume the proces
 
 This library was created to process many millions of requests on a service that limits requests per ip, anonymously.
 
+Examples
+---------
+
+Ready to edit examples are located here:
+
+https://github.com/nikos-glikis/TorRangeWordlistExample
+
+https://github.com/nikos-glikis/TorRangeSimpleExample
+
+https://github.com/nikos-glikis/TorRangeDbExample
+
+Just clone and read the README for instructions.
+
+
 Requirements
 -----------
 

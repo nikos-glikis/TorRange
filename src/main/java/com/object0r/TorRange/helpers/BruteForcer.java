@@ -1,6 +1,5 @@
 package com.object0r.TorRange.helpers;
 
-import com.object0r.toortools.Utilities;
 import org.apache.commons.lang.ArrayUtils;
 
 import java.util.Arrays;
@@ -8,10 +7,10 @@ import java.util.Date;
 
 public class BruteForcer
 {
-    public static  String password = "AZZZZS";
-    public  char[] charset;
+    public static String password = "AZZZZS";
+    public char[] charset;
 
-    private  char[] currentGuess = new char[1];
+    private char[] currentGuess = new char[1];
 
     int minLength = 1;
     int maxLength = Integer.MAX_VALUE;
@@ -21,7 +20,7 @@ public class BruteForcer
         BruteForcer in = null;
         try
         {
-            in = new BruteForcer("ABCDEFGHIJKLMNOPQRSTUVWXYZ",6,6);
+            in = new BruteForcer("ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6, 6);
 
             String attempt = new String();
             Date start = new Date();
@@ -85,17 +84,17 @@ public class BruteForcer
 
     public void setStart(String start) throws Exception
     {
-        if (start.length()< this.minLength)
+        if (start.length() < this.minLength)
         {
             throw new Exception("Start string length is less than minLength");
         }
-        if (start.length()> this.maxLength)
+        if (start.length() > this.maxLength)
         {
             throw new Exception("Start string length is more than maxLength");
         }
-        for (int i = 0; i<start.length(); i++)
+        for (int i = 0; i < start.length(); i++)
         {
-            if (!ArrayUtils.contains(charset,start.charAt(i)))
+            if (!ArrayUtils.contains(charset, start.charAt(i)))
             {
                 throw new Exception("Invalid characted detected in start string");
             }
@@ -129,12 +128,14 @@ public class BruteForcer
                     currentGuess = new char[currentGuess.length + 1];
                     Arrays.fill(currentGuess, charset[0]);
                     break;
-                } else
+                }
+                else
                 {
                     currentGuess[index] = charset[0];
                     index--;
                 }
-            } else
+            }
+            else
             {
                 currentGuess[index] = charset[Arrays.binarySearch(charset, currentGuess[index]) + 1];
                 break;

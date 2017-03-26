@@ -1,6 +1,6 @@
 package com.object0r.TorRange.applications.bruteforce;
 
-public class main
+public class BruteForceExample
 {
     public static void main(String args[])
     {

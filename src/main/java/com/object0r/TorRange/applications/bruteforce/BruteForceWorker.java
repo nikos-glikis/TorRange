@@ -8,7 +8,7 @@ public class BruteForceWorker extends TorWorker
     public int threadCounter = 0;
     AbstractBruteForceWorkerManager manager;
 
-    public BruteForceWorker(ProxyWorkerManager manager, final int id)
+    public BruteForceWorker(AbstractBruteForceWorkerManager manager, final int id)
     {
         super(manager, id);
 

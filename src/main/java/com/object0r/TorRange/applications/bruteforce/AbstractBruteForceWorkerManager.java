@@ -95,7 +95,11 @@ abstract public class AbstractBruteForceWorkerManager extends ProxyWorkerManager
                 {
                     throw new Exception("Error, MinLength more than MaxLength");
                 }
-
+                System.out.println(characters);
+                char[] chars = characters.toCharArray();
+                java.util.Arrays.sort(chars);
+                characters = new String(chars);
+                System.out.println(characters);
                 BruteForcer bruteForcer = new BruteForcer(characters, Integer.parseInt(minLength), Integer.parseInt(maxLength));
 
                 String start = this.getIniValue("bruteforce", "start" + i);

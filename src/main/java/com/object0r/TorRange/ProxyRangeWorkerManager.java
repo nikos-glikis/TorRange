@@ -6,7 +6,10 @@ import com.object0r.toortools.ConsoleColors;
 import com.object0r.toortools.DB;
 import org.ini4j.Ini;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -419,7 +422,14 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                                 {
                                     printReport();
                                     System.out.println("All workers are idle, exiting.");
-                                    System.exit(0);
+                                    if (autoExitOnFinish)
+                                    {
+                                        System.exit(0);
+                                    }
+                                    else
+                                    {
+                                        isFinished = true;
+                                    }
                                 }
                             }
                         }
@@ -434,8 +444,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             sleepForALongTime();
         }
     }
-
-
 
 
     synchronized long getCurrentEntry()
@@ -574,5 +582,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             e.printStackTrace();
         }
     }
+
+
 
 }

@@ -33,6 +33,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
     //How often to check for idle workers.
     long minutesBetweenIdleThreadChecks = 1;
     long msSleepBetweenWorkersStart = 200;
+    boolean autoExitOnFinish = true;
+    boolean isFinished = false;
 
     public int saveEvery = 300;
 
@@ -307,7 +309,6 @@ public abstract class ProxyWorkerManager extends WorkerManager
     }
 
 
-
     private String getSessionFromFilename(String filename)
     {
         session = filename.replace(".ini", "");
@@ -334,6 +335,22 @@ public abstract class ProxyWorkerManager extends WorkerManager
             {
                 e.printStackTrace();
             }
+
+            try
+            {
+                String autoExitOnFinishString = prefs.get("ProxyWorkerManager", "autoExitOnFinish");
+                if (autoExitOnFinishString != null)
+                {
+                    autoExitOnFinish = Boolean.parseBoolean(autoExitOnFinishString);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                System.out.println("autoExitOnFinish should be true of false.");
+                System.exit(-1);
+            }
+
 
             System.out.println("Starting " + workerCount + " threads");
 
@@ -533,4 +550,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
         return saveEvery;
     }
 
+    public boolean isFinished()
+    {
+        return isFinished;
+    }
 }

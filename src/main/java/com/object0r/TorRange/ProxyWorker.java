@@ -88,11 +88,15 @@ abstract public class ProxyWorker extends Thread
                     Thread.sleep(5000);
                     continue;
                 }
-                getNextAndProcess();
+                if (!getNextAndProcess())
+                {
+                    _shutDown();
+                    return;
+                }
                 setIdle(false);
                 if (manager.exiting)
                 {
-                    Thread.sleep(60000000);
+                    _shutDown();
                 }
             }
         }
@@ -102,11 +106,22 @@ abstract public class ProxyWorker extends Thread
         }
     }
 
-    protected void getNextAndProcess()
+    /**
+     * Returns true if there is indeed next to process and false when response is false.
+     *
+     * @return boolean
+     */
+    protected boolean getNextAndProcess()
     {
         String nextToProcess = manager.getNextEntry();
+        if (nextToProcess == null)
+        {
+            _shutDown();
+            return false;
+        }
         setIdle(false);
         process(nextToProcess);
+        return true;
     }
 
     public void verifyTor(final boolean killOld)

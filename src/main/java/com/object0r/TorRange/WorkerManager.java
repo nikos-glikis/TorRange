@@ -2,7 +2,8 @@ package com.object0r.TorRange;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
 
 abstract public class WorkerManager extends Thread implements IWorkerManager
@@ -75,12 +76,45 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                 try
                 {
 
+
                     while (true)
                     {
-                        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
-                        read.read();
-                        //Thread.sleep(10000);
-                        printReport();
+                        final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+
+                        TimerTask ft = new TimerTask()
+                        {
+                            public void run()
+                            {
+                                try
+                                {
+                                    read.close();
+                                }
+                                catch (Exception e)
+                                {
+                                    e.printStackTrace();
+                                }
+                            }
+                        };
+
+                        (new Timer()).schedule(ft, 30000);
+                        try
+                        {
+                            read.read();
+                            printReport();
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+                        finally
+                        {
+                            if (exiting)
+                            {
+                                return;
+                            }
+                        }
+
+
                     }
                 }
                 catch (Exception e)
@@ -99,8 +133,11 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                     while (true)
                     {
                         Thread.sleep(reportEverySeconds);
+                        if (exiting)
+                        {
+                            break;
+                        }
                         printReport();
-
                     }
                 }
                 catch (Exception e)

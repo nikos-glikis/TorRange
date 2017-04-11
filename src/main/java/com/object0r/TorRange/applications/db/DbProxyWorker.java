@@ -14,12 +14,22 @@ abstract public class DbProxyWorker extends TorWorker
         this.manager = manager;
     }
 
+    /**
+     * Returns true if there is indeed next to process and false when response is false.
+     *
+     * @return boolean
+     */
     @Override
-    protected void getNextAndProcess()
+    protected boolean getNextAndProcess()
     {
         HashMap<String, String> values = manager.getNextEntryMap();
+        if (values == null)
+        {
+            return false;
+        }
         setIdle(false);
         process(values);
+        return true;
     }
 
     abstract protected void process(HashMap<String, String> values);

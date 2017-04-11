@@ -270,13 +270,18 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
     {
         if (exiting)
         {
-            sleepForALongTime();
+            sleepWhileActiveWorkers();
         }
 
         if (currentRange == null)
         {
             updateCurrentRange();
             //saveCurrentEntry();
+        }
+
+        if (currentRange == null)
+        {
+            return null;
         }
 
         if (currentEntry == 0)
@@ -319,11 +324,22 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
 
     }
 
-    private void sleepForALongTime()
+    private void sleepWhileActiveWorkers()
     {
         try
         {
-            Thread.sleep(20000000);
+
+            do
+            {
+                try
+                {
+                    Thread.sleep(10000);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } while (!allWorkersIdle());
         }
         catch (Exception e)
         {
@@ -429,6 +445,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                                     else
                                     {
                                         isFinished = true;
+                                        break;
                                     }
                                 }
                             }
@@ -441,7 +458,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 }
             }.start();
 
-            //sleepForALongTime();
+            sleepWhileActiveWorkers();
         }
     }
 
@@ -582,7 +599,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             e.printStackTrace();
         }
     }
-
 
 
 }

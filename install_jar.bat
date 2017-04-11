@@ -1,2 +1,2 @@
-rem call mvn install:install-file  -DgroupId=com.object0r -DartifactId=TorRange -Dversion=1.0.4 -Dpackaging=jar -Dfile=target/TorRange-1.0.4-jar-with-dependencies.jar
+rem call mvn install:install-file  -DgroupId=com.object0r.TorRange -DartifactId=TorRange -Dversion=1.0.6-SNAPSHOT -Dpackaging=jar -Dfile=target/TorRange-1.0.6-SNAPSHOT-jar-with-dependencies.jar
 call mvn install -DperformRelease=true -DcreateChecksum=true

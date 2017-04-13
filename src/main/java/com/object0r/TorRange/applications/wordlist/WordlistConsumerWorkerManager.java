@@ -4,7 +4,7 @@ import com.object0r.TorRange.ProxyWorkerManager;
 import com.object0r.TorRange.datatypes.EntriesRange;
 import com.object0r.TorRange.ProxyRangeWorkerManager;
 
-import java.io.*; 
+import java.io.*;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -13,16 +13,11 @@ abstract public class WordlistConsumerWorkerManager extends ProxyRangeWorkerMana
     private final String LATEST_ENTRY_WORDLIST = "latest_entry_wordlist";
     private String wordlistFile;
 
-    public WordlistConsumerWorkerManager(String iniFilename, Class workerClass )
+    public WordlistConsumerWorkerManager(String iniFilename, Class workerClass)
     {
         super(iniFilename, workerClass, WordlistConsumerWorkerManager.class);
     }
 
-    @Override
-    public void prepareForExit()
-    {
-
-    }
 
     Scanner wordListScanner = null;
     static int globalCounter = 0;

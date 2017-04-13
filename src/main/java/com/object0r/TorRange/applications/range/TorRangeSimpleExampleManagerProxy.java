@@ -13,11 +13,6 @@ public class TorRangeSimpleExampleManagerProxy extends ProxyRangeWorkerManager
         super(iniFilename, workerClass, TorRangeSimpleExampleManagerProxy.class);
     }
 
-    @Override
-    public void prepareForExit()
-    {
-
-    }
 
     @Override
     public void readOptions(String filename)

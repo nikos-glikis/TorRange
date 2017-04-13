@@ -424,8 +424,12 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 public void run()
                 {
+
+
                     exiting = true;
                     shutDownAllWorkers();
+                    prepareForExit();
+                    System.out.println("Seems that all ranges have ended. Will stop in a few seconds [Thread2].");
                     while (true)
                     {
                         try
@@ -449,6 +453,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                                     }
                                 }
                             }
+                            sleepWhileActiveWorkers();
                         }
                         catch (Exception e)
                         {
@@ -458,7 +463,7 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                 }
             }.start();
 
-            sleepWhileActiveWorkers();
+
         }
     }
 

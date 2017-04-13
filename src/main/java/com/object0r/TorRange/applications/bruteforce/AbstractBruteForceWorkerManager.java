@@ -15,11 +15,6 @@ abstract public class AbstractBruteForceWorkerManager extends ProxyWorkerManager
         super(iniFilename, workerClass, AbstractBruteForceWorkerManager.class);
     }
 
-    @Override
-    public void prepareForExit()
-    {
-
-    }
 
     static long globalCounter = 0;
 

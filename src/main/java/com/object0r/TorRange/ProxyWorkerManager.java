@@ -147,6 +147,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
                 while (true)
                 {
                     //Check every 10 minutes.
+
+
                     try
                     {
                         Thread.sleep(minutesBetweenIdleThreadChecks * 60 * 1000);
@@ -154,6 +156,10 @@ public abstract class ProxyWorkerManager extends WorkerManager
                     catch (InterruptedException e)
                     {
                         e.printStackTrace();
+                    }
+                    if (exiting)
+                    {
+                        break;
                     }
                     try
                     {
@@ -235,7 +241,12 @@ public abstract class ProxyWorkerManager extends WorkerManager
      * This function is called when Ctrl+C is called or when the user tries to close the process.
      * Close resources, commit changes, close threads etc.
      */
-    public abstract void prepareForExit();
+    public void prepareForExit()
+    {
+        System.out.println("Stopping status threads.");
+        statusThread.stop();
+        statusEnterThread.stop();
+    }
 
     public int getActiveThreadCount()
     {

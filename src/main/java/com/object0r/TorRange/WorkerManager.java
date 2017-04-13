@@ -11,6 +11,9 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
     Vector<ProxyWorker> workers = new Vector<ProxyWorker>();
     Vector<ProxyWorker> allWorkers = new Vector<ProxyWorker>();
 
+    protected Thread statusEnterThread;
+    protected Thread statusThread;
+
     abstract public int exitInSeconds();
 
     protected boolean exiting = false;
@@ -38,6 +41,7 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                         {
                             System.out.println("\nExiting in " + exitInSeconds() + " seconds.");
                             exiting = true;
+
                             for (final ProxyWorker worker : workers)
                             {
                                 new Thread()
@@ -69,34 +73,16 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
         );
 
 
-        new Thread()
+        statusEnterThread = new Thread()
         {
             public void run()
             {
                 try
                 {
-
-
                     while (true)
                     {
                         final BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 
-                        TimerTask ft = new TimerTask()
-                        {
-                            public void run()
-                            {
-                                try
-                                {
-                                    read.close();
-                                }
-                                catch (Exception e)
-                                {
-                                    e.printStackTrace();
-                                }
-                            }
-                        };
-
-                        (new Timer()).schedule(ft, 30000);
                         try
                         {
                             read.read();
@@ -106,14 +92,6 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                         {
                             e.printStackTrace();
                         }
-                        finally
-                        {
-                            if (exiting)
-                            {
-                                return;
-                            }
-                        }
-
 
                     }
                 }
@@ -122,9 +100,10 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                     e.printStackTrace();
                 }
             }
-        }.start();
+        };
+        statusEnterThread.start();
 
-        new Thread()
+        statusThread = new Thread()
         {
             public void run()
             {
@@ -133,10 +112,7 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                     while (true)
                     {
                         Thread.sleep(reportEverySeconds);
-                        if (exiting)
-                        {
-                            break;
-                        }
+
                         printReport();
                     }
                 }
@@ -145,7 +121,8 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
                     e.printStackTrace();
                 }
             }
-        }.start();
+        };
+        statusThread.start();
     }
 
     public void printReport()

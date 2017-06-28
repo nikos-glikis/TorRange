@@ -424,8 +424,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
             {
                 public void run()
                 {
-
-
                     exiting = true;
                     shutDownAllWorkers();
                     prepareForExit();
@@ -462,8 +460,6 @@ public abstract class ProxyRangeWorkerManager extends ProxyWorkerManager
                     }
                 }
             }.start();
-
-
         }
     }
 

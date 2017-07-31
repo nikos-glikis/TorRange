@@ -32,7 +32,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     long secondsBetweenIdleChecks = 120;
     //How often to check for idle workers.
     long minutesBetweenIdleThreadChecks = 1;
-    long msSleepBetweenWorkersStart = 200;
+    long msSleepBetweenWorkersStart = 50;
     boolean autoExitOnFinish = true;
     boolean isFinished = false;
 

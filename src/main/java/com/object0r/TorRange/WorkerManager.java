@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicInteger;
 
 abstract public class WorkerManager extends Thread implements IWorkerManager
 {
@@ -13,6 +14,9 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
 
     protected Thread statusEnterThread;
     protected Thread statusThread;
+
+    //How many requests are done per minute.
+    private int requestsPerMinute;
 
     abstract public int exitInSeconds();
 
@@ -131,4 +135,14 @@ abstract public class WorkerManager extends Thread implements IWorkerManager
     }
 
     abstract void printGeneralReport();
+
+    public void setRequestsPerMinute(int requestsPerMinute)
+    {
+        this.requestsPerMinute = requestsPerMinute;
+    }
+
+    public int getRequestsPerMinute()
+    {
+        return this.requestsPerMinute;
+    }
 }

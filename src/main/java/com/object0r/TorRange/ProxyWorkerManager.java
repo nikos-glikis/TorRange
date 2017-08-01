@@ -530,7 +530,16 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
         DecimalFormat df = new DecimalFormat("#.00");
 
+        int requestsPerMinute = getRequestsPerMinute();
+
+
         ConsoleColors.printCyan("Done: " + getDoneCount() + "/" + getTotalJobsCount() + " - " + df.format(percentage) + "%");
+        ConsoleColors.printCyan("Requests per minute: " + getRequestsPerMinute());
+        if (requestsPerMinute > 0)
+        {
+            double hours = (getTotalJobsCount() + 0.0 - getDoneCount()) / (getRequestsPerMinute() + 0.0);
+            ConsoleColors.printCyan(hours + " hours to end");
+        }
         ConsoleColors.printCyan("allWorkers count: " + allWorkers.size());
     }
 

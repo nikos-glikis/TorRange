@@ -10,7 +10,10 @@ import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.*;
+import java.util.Calendar;
+import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.GZIPInputStream;
 
 abstract public class ProxyWorker extends Thread
@@ -24,6 +27,11 @@ abstract public class ProxyWorker extends Thread
     //if the worker is ready to start processing things (for example false if waiting for tor to connect)
     protected boolean isReady = true;
     private boolean isTurnedOff = false;
+
+    //requests per minute.
+    static int frequencies[] = new int[60];
+    static int lastMinute = 0;
+    Calendar frequenciesCalendar;
 
     /**
      * Used to check from manager if thread is running. Only for manager checks. Does not mean anything.
@@ -83,6 +91,7 @@ abstract public class ProxyWorker extends Thread
 
             while (!isTurnedOff)
             {
+                updateFrequencies();
                 if (!isActive || !isReady)
                 {
                     Thread.sleep(5000);
@@ -104,6 +113,30 @@ abstract public class ProxyWorker extends Thread
         {
             e.printStackTrace();
         }
+    }
+
+    private void updateFrequencies()
+    {
+        frequenciesCalendar = Calendar.getInstance();
+        int currentMinute = frequenciesCalendar.get(Calendar.MINUTE);
+
+        if (lastMinute != currentMinute)
+        {
+            synchronized (this)
+            {
+                int requestsPerMinute = 0;
+                for (int num : frequencies)
+                {
+                    requestsPerMinute += num;
+                }
+                manager.setRequestsPerMinute(requestsPerMinute);
+                frequencies = new int[60];
+            }
+            lastMinute = currentMinute;
+        }
+        // frequencies points to current second at this point
+        int requestSecond = frequenciesCalendar.get(Calendar.SECOND);
+        frequencies[requestSecond]++;
     }
 
     /**

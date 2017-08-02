@@ -1,6 +1,7 @@
 package com.object0r.TorRange;
 
 
+import com.object0r.TorRange.helpers.SuperMinutesChangerClass;
 import com.object0r.toortools.ConsoleColors;
 import com.object0r.toortools.DB;
 import com.object0r.toortools.os.RecurringProcessHelper;
@@ -209,7 +210,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
             worker.setActive(true);
             try
             {
-                Thread.sleep(100);
+                Thread.sleep(25);
             }
             catch (InterruptedException e)
             {
@@ -537,8 +538,8 @@ public abstract class ProxyWorkerManager extends WorkerManager
         ConsoleColors.printCyan("Requests per minute: " + getRequestsPerMinute());
         if (requestsPerMinute > 0)
         {
-            double hours = (getTotalJobsCount() + 0.0 - getDoneCount()) / (getRequestsPerMinute() + 0.0);
-            ConsoleColors.printCyan(hours + " hours to end");
+            int minutes = (int) ((getTotalJobsCount() + 0.0 - getDoneCount()) / (getRequestsPerMinute()));
+            ConsoleColors.printCyan(SuperMinutesChangerClass.minutesToHumanReadable(minutes) + " to end (" + minutes + " minutes)");
         }
         ConsoleColors.printCyan("allWorkers count: " + allWorkers.size());
     }

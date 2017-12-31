@@ -24,6 +24,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     protected String session;
     protected DB state;
     int exitSeconds = 5;
+    int maxTorConnections = 999;
     private int workerCount = 50;
     static private int torRangeStart = 0;
     protected boolean useProxy = true;
@@ -364,6 +365,21 @@ public abstract class ProxyWorkerManager extends WorkerManager
             }
 
 
+            try
+            {
+                String maxTorConnections = prefs.get("ProxyWorkerManager", "maxTorConnections");
+                if (maxTorConnections != null)
+                {
+                    this.maxTorConnections = Integer.parseInt(maxTorConnections);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                System.out.println("maxTorConnections should be integer.");
+                System.exit(-1);
+            }
+
             System.out.println("Starting " + workerCount + " threads");
 
             try
@@ -574,5 +590,15 @@ public abstract class ProxyWorkerManager extends WorkerManager
     public boolean isFinished()
     {
         return isFinished;
+    }
+
+    public int getMaxTorConnections()
+    {
+        return maxTorConnections;
+    }
+
+    public void setMaxTorConnections(int maxTorConnections)
+    {
+        this.maxTorConnections = maxTorConnections;
     }
 }

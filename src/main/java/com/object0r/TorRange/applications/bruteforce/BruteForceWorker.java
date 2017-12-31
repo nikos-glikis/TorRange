@@ -17,6 +17,21 @@ public class BruteForceWorker extends TorWorker
     public void process(String entry)
     {
         System.out.println("Entry: " + entry);
+
+        try
+        {
+            System.out.println(readUrl("http://cpanel.com/showip.shtml"));
+
+            //manager.markSuccessful(entry);
+
+            sleep(1000);
+            changeIp();
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
         try
         {
             Thread.sleep(100);

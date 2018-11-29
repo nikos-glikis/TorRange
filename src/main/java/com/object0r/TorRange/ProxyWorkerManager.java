@@ -29,10 +29,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
     protected boolean useProxy = true;
     protected boolean isProxyWorkerReady = false;
     private static String iniFilename = "";
-    //Sleep period between marking as idle, and rechecking if it is idle.
-    long secondsBetweenIdleChecks = 120;
-    //How often to check for idle workers.
-    long minutesBetweenIdleThreadChecks = 1;
+
     long msSleepBetweenWorkersStart = 5;
     boolean autoExitOnFinish = true;
     boolean isFinished = false;
@@ -152,7 +149,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
 
                     try
                     {
-                        Thread.sleep(minutesBetweenIdleThreadChecks * 60 * 1000);
+                        Thread.sleep(getMinutesBetweenIdleChecks() * 60 * 1000);
                     }
                     catch (InterruptedException e)
                     {
@@ -168,7 +165,7 @@ public abstract class ProxyWorkerManager extends WorkerManager
                         {
                             workers.get(i).setIdle(true);
                         }
-                        Thread.sleep(secondsBetweenIdleChecks * 1000);
+                        Thread.sleep(getSecondsBetweenIdleChecks() * 1000);
                         for (int i = 0; i < workers.size(); i++)
                         {
                             if (workers.get(i).isIdle() && !exiting)
@@ -190,6 +187,21 @@ public abstract class ProxyWorkerManager extends WorkerManager
             }
         }.start();
     }
+
+    //Sleep period between marking as idle, and rechecking if it is idle.
+    protected long getSecondsBetweenIdleChecks()
+    {
+        return 120;
+    }
+
+    //How often to check for idle workers.
+    protected long getMinutesBetweenIdleChecks()
+    {
+        return 1;
+    }
+
+
+
 
     public void startWorkers()
     {
